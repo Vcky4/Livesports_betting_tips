@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.livesportsbettingtips"
+    namespace = "com.lsbt.livesportsbettingtips"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.example.livesportsbettingtips"
+        applicationId = "com.lsbt.livesportsbettingtips"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

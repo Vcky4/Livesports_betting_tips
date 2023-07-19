@@ -1,4 +1,4 @@
-package com.example.livesportsbettingtips.ui.screens.free
+package com.lsbt.livesportsbettingtips.ui.screens.free
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,17 +14,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.lsbt.livesportsbettingtips.R
+import com.lsbt.livesportsbettingtips.ui.theme.Prep
+import com.lsbt.livesportsbettingtips.ui.theme.Primary
 
 @Composable
 fun FreeItem(){
     Column (
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.Prep),
+            .background(color = Prep),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
@@ -32,7 +38,7 @@ fun FreeItem(){
             .fillMaxWidth()
             .padding(start = 15.dp, end = 15.dp)
             .size(width = 358.dp, height = 107.dp)
-            .background(color = Color.Primary, shape = RoundedCornerShape(7.dp)),
+            .background(color = Primary, shape = RoundedCornerShape(7.dp)),
             contentAlignment = Alignment.TopStart
             ){
             Spacer(modifier = Modifier.height(10.dp))
@@ -46,14 +52,14 @@ fun FreeItem(){
                 Column {
                     Text(
                         text = "Daily Sure Tips",
-                        fontSize = 20.dp,
+                        fontSize = 20.sp,
                         fontWeight = FontWeight.Medium
                     )
                     Spacer(modifier = Modifier.height(10.dp))
 
                     Text(
                         text = "Last Updated 2 Weeks Ago",
-                        fontSize = 13.dp,
+                        fontSize = 13.sp,
                         fontWeight = FontWeight.Medium
                     )
                 }

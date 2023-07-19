@@ -1,4 +1,4 @@
-package com.example.livesportsbettingtips
+package com.lsbt.livesportsbettingtips
 
 import org.junit.Test
 

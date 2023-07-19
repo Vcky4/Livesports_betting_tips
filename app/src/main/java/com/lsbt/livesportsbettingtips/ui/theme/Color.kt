@@ -1,4 +1,4 @@
-package com.example.livesportsbettingtips.ui.theme
+package com.lsbt.livesportsbettingtips.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

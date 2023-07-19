@@ -1,4 +1,4 @@
-package com.example.livesportsbettingtips.ui.screens.free
+package com.lsbt.livesportsbettingtips.ui.screens.free
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable

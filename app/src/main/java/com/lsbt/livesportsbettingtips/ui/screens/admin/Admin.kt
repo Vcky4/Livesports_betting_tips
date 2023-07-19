@@ -1,4 +1,4 @@
-package com.example.livesportsbettingtips.ui.screens.admin
+package com.lsbt.livesportsbettingtips.ui.screens.admin
 
 import androidx.compose.runtime.Composable
 import com.ramcosta.composedestinations.annotation.Destination

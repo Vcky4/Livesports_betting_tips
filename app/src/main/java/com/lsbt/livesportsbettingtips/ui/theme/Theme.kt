@@ -1,4 +1,4 @@
-package com.example.livesportsbettingtips.ui.theme
+package com.lsbt.livesportsbettingtips.ui.theme
 
 import android.app.Activity
 import android.os.Build
