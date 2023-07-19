@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
 import com.lsbt.livesportsbettingtips.ui.screens.NavGraphs
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
@@ -52,6 +53,7 @@ fun NavHost() {
                 Text(
                     "Live Sports Betting Tips",
                     color = Background,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
                 IconButton(onClick = { /*TODO*/ }) {
