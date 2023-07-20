@@ -1,6 +1,5 @@
 package com.lsbt.livesportsbettingtips.ui.screens.free
 
-import android.graphics.ColorMatrix
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,56 +23,52 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.R
-import com.lsbt.livesportsbettingtips.ui.theme.Prep
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
-import com.lsbt.livesportsbettingtips.ui.theme.Secondary
 
 @Composable
-fun FreeItem(){
-    Column (
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Prep),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 15.dp, end = 15.dp)
-            .size(width = 358.dp, height = 107.dp)
-            .background(color = Primary, shape = RoundedCornerShape(7.dp)),
-            contentAlignment = Alignment.CenterStart
-            ){
-            Row (
+fun FreeItem() {
+
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start
-            ){
-               Spacer(modifier = Modifier.fillMaxWidth(0.05f))
+                    .fillMaxWidth()
+                    .padding(start = 15.dp, end = 15.dp)
+                    .size(width = 358.dp, height = 107.dp)
+                    .background(color = Primary, shape = RoundedCornerShape(10.dp)),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Spacer(modifier = Modifier.fillMaxWidth(0.05f))
 
-                Column {
-                    Text(
-                        text = "Daily Sure Tips",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.White
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Column {
+                        Text(
+                            text = "Daily Sure Tips",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.White
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
 
-                    Text(
-                        text = "Last Updated 2 Weeks Ago",
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.White
+                        Text(
+                            text = "Last Updated 2 Weeks Ago",
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.White
+                        )
+                    }
+                    Spacer(modifier = Modifier.fillMaxWidth(0.35f))
+
+                    Image(
+                        painter = painterResource(id = R.drawable.cil_image),
+                        contentDescription = ""
                     )
+
+                    Spacer(modifier = Modifier.fillMaxWidth(0.03f))
                 }
-                Spacer(modifier = Modifier.fillMaxWidth(0.35f))
-
-                Image(painter = painterResource(id = R.drawable.cil_image), contentDescription = "")
-
-                Spacer(modifier = Modifier.fillMaxWidth(0.03f))
             }
+    Spacer(modifier = Modifier.height(20.dp))
         }
-        Spacer(modifier = Modifier.height(13.dp))
-    }
-}
+    
