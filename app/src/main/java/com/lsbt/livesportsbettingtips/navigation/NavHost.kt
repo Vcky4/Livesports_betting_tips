@@ -35,6 +35,7 @@ import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.ui.screens.appCurrentDestinationAsState
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.Destination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.FreeDestination
+import com.lsbt.livesportsbettingtips.ui.screens.destinations.NotificationsDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.VipDestination
 import com.lsbt.livesportsbettingtips.ui.screens.startAppDestination
 import com.lsbt.livesportsbettingtips.ui.theme.Background
@@ -75,7 +76,7 @@ fun NavHost() {
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navController.navigate(NotificationsDestination) }) {
                     Icon(
                         painter = painterResource(id = R.drawable.notifications),
                         contentDescription = "notification",
