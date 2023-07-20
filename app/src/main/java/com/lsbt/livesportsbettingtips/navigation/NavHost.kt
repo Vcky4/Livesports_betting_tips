@@ -1,9 +1,11 @@
 package com.lsbt.livesportsbettingtips.navigation
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,10 +32,16 @@ import com.lsbt.livesportsbettingtips.ui.theme.Primary
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.lsbt.livesportsbettingtips.R
+import com.lsbt.livesportsbettingtips.ui.screens.appCurrentDestinationAsState
+import com.lsbt.livesportsbettingtips.ui.screens.destinations.Destination
+import com.lsbt.livesportsbettingtips.ui.screens.destinations.FreeDestination
+import com.lsbt.livesportsbettingtips.ui.screens.destinations.VipDestination
+import com.lsbt.livesportsbettingtips.ui.screens.startAppDestination
 import com.lsbt.livesportsbettingtips.ui.theme.Background
 import com.lsbt.livesportsbettingtips.ui.theme.Secondary
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
+import com.ramcosta.composedestinations.navigation.navigate
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(
@@ -43,6 +51,8 @@ import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 @Composable
 fun NavHost() {
     val navController = rememberAnimatedNavController()
+    val currentDestination: Destination = navController.appCurrentDestinationAsState().value
+        ?: NavGraphs.root.startAppDestination
     Scaffold(
         topBar = {
             Row(
@@ -75,32 +85,36 @@ fun NavHost() {
             }
         },
         floatingActionButton = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .background(Secondary, RoundedCornerShape(50))
-                    .clip(RoundedCornerShape(50))
-                    .padding(vertical = 14.dp, horizontal = 20.dp)
-            ) {
-                Text(
-                    "VIP",
-                    color = Background,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Icon(
-                    painter = painterResource(id = R.drawable.arrow_forward),
-                    contentDescription = "add",
-                    tint = Background
-                )
+            AnimatedVisibility(currentDestination == FreeDestination) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .clickable { navController.navigate(VipDestination) }
+                        .background(Secondary, RoundedCornerShape(50))
+                        .clip(RoundedCornerShape(50))
+                        .padding(vertical = 14.dp, horizontal = 20.dp)
+                ) {
+                    Text(
+                        "VIP",
+                        color = Background,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Icon(
+                        painter = painterResource(id = R.drawable.arrow_forward),
+                        contentDescription = "add",
+                        tint = Background
+                    )
+                }
             }
         },
     ) {
-        Image(painter = painterResource(id = R.drawable.bacf),
+        Image(
+            painter = painterResource(id = R.drawable.bacf),
             contentDescription = "background",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.FillWidth
-            )
+        )
         DestinationsNavHost(
             navGraph = NavGraphs.root,
             navController = navController,
