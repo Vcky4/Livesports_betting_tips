@@ -17,8 +17,6 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Destination
 @Composable
 fun Free(navigator: DestinationsNavigator) {
-        Image(painter = painterResource(id = R.drawable.bacf), contentDescription = "background",
-            modifier = Modifier.fillMaxSize())
     LazyColumn {
         items(10) {
             FreeItem()
