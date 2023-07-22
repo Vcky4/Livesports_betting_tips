@@ -28,7 +28,7 @@ import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
 
 @Composable
-fun FreeItem() {
+fun FreeItem(item: FreeModel) {
     Card(Modifier.padding(vertical = 8.dp, horizontal = 16.dp)) {
         Row(
             modifier = Modifier
@@ -45,21 +45,24 @@ fun FreeItem() {
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Daily Sure Tips",
-                    fontSize = 24.sp,
+                    text = item.title,
+                    fontSize = 30.sp,
                     fontWeight = FontWeight.Medium,
                     color = Color.White
                 )
                 Text(
-                    text = "Last Updated 2 Weeks Ago",
+                    text = item.description,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Medium,
                     color = Color.White
                 )
             }
             Image(
-                painter = painterResource(id = R.drawable.cil_image),
-                contentDescription = ""
+                painter = painterResource(id = item.image),
+                contentDescription = "",
+                modifier = Modifier
+                    .size(70.dp)
+                    .align(Alignment.CenterVertically)
             )
         }
     }
