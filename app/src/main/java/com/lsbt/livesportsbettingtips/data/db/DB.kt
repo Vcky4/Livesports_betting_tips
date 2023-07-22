@@ -2,6 +2,7 @@ package com.lsbt.livesportsbettingtips.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.lsbt.livesportsbettingtips.data.db.daos.FreeDao
 import com.lsbt.livesportsbettingtips.data.db.models.FreeModel
 
 @Database(
@@ -12,4 +13,7 @@ import com.lsbt.livesportsbettingtips.data.db.models.FreeModel
     exportSchema = true
 )
 abstract class DB : RoomDatabase() {
+
+    //free doa
+    abstract fun freeDao(): FreeDao
 }
