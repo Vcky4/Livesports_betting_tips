@@ -75,4 +75,14 @@ dependencies {
     // Koin
     implementation(libs.koin)
     implementation(libs.koin.worker)
+
+    // livedata
+    implementation(libs.livedata)
+    implementation(libs.livedata.runtime)
+
+    // room
+    implementation(libs.room)
+    implementation(libs.room.ktx)
+    implementation(libs.datastore.preferences)
+    ksp(libs.room.compiler)
 }
