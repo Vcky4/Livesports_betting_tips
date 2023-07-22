@@ -76,7 +76,7 @@ fun NavHost() {
                 Text(
                     "About Us",
                     color = Background,
-                    fontSize = 16.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .padding(16.dp)
@@ -90,7 +90,7 @@ fun NavHost() {
                 Text(
                     "Contact Us",
                     color = Background,
-                    fontSize = 16.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .padding(16.dp)
@@ -104,7 +104,7 @@ fun NavHost() {
                 Text(
                     "Privacy Policy",
                     color = Background,
-                    fontSize = 16.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .padding(16.dp)
@@ -118,7 +118,7 @@ fun NavHost() {
                 Text(
                     "Terms and Conditions",
                     color = Background,
-                    fontSize = 16.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .padding(16.dp)

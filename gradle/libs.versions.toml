@@ -18,6 +18,10 @@ composeDestinationsVersion = "1.9.42-beta"
 ksp = "1.8.10-1.0.9"
 firebase-database-ktx = "20.2.2"
 
+# koin
+koin = "3.4.4"
+koin-worker = "3.4.0"
+
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -39,6 +43,9 @@ destinations-ksp = { group = "io.github.raamcosta.compose-destinations", name = 
 firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebase-database-ktx" }
 # kotlinx serialization
 #serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
+# Koin
+koin = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
+koin-worker = { group = "io.insert-koin", name = "koin-androidx-workmanager", version.ref = "koin-worker" }
 
 
 
