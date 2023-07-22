@@ -7,7 +7,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -64,7 +66,72 @@ fun NavHost() {
 
     ModalNavigationDrawer(
         drawerState = drawerState,
-        drawerContent = { /*TODO*/ }) {
+        drawerContent = {
+            Column(
+                Modifier
+                    .background(Primary)
+                    .fillMaxWidth(0.5f)
+            ) {
+                Spacer(modifier = Modifier.padding(16.dp))
+                Text(
+                    "About Us",
+                    color = Background,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+//                           navController.navigate(FreeDestination)
+                            scope.launch {
+                                drawerState.close()
+                            }
+                        }
+                )
+                Text(
+                    "Contact Us",
+                    color = Background,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+//                           navController.navigate(VipDestination)
+                            scope.launch {
+                                drawerState.close()
+                            }
+                        }
+                )
+                Text(
+                    "Privacy Policy",
+                    color = Background,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+//                           navController.navigate(VipDestination)
+                            scope.launch {
+                                drawerState.close()
+                            }
+                        }
+                )
+                Text(
+                    "Terms and Conditions",
+                    color = Background,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+//                           navController.navigate(VipDestination)
+                            scope.launch {
+                                drawerState.close()
+                            }
+                        }
+                )
+            }
+        }
+    ) {
         Scaffold(
             topBar = {
                 Row(
