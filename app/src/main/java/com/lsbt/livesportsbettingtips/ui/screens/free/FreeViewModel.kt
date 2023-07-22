@@ -2,6 +2,7 @@ package com.lsbt.livesportsbettingtips.ui.screens.free
 
 import androidx.lifecycle.ViewModel
 import com.lsbt.livesportsbettingtips.R
+import com.lsbt.livesportsbettingtips.data.db.models.FreeModel
 import org.koin.core.component.KoinComponent
 
 class FreeViewModel : ViewModel(), KoinComponent {
@@ -44,12 +45,4 @@ class FreeViewModel : ViewModel(), KoinComponent {
         ),
     )
 }
-
-data class FreeModel(
-    val id: Int,
-    val title: String,
-    val description: String,
-    val date: Long = System.currentTimeMillis(),
-    val image: Int
-)
 
