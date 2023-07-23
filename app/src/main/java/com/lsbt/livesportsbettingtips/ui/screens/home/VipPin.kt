@@ -82,7 +82,7 @@ fun VipPin(trigger: String, navigator: DestinationsNavigator) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Vip Pin",
+                    text = "VIP Pin",
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextDeep,
@@ -91,7 +91,7 @@ fun VipPin(trigger: String, navigator: DestinationsNavigator) {
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "Please enter your vip pin to access the vip tips",
+                    text = "Please enter your VIP pin to access the VIP tips",
                     fontSize = 18.sp,
                     color = Primary,
                     textAlign = TextAlign.Center,
@@ -115,7 +115,7 @@ fun VipPin(trigger: String, navigator: DestinationsNavigator) {
                     ),
                     placeholder = {
                         Text(
-                            text = "Enter your vip pin",
+                            text = "Enter your VIP pin",
                             fontSize = 18.sp,
                             color = TextDeep.copy(alpha = 0.6f),
                             textAlign = TextAlign.Center,
@@ -125,7 +125,7 @@ fun VipPin(trigger: String, navigator: DestinationsNavigator) {
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
-                    text = "Don't have a vip pin? Get one now contact us on",
+                    text = "Don't have a VIP pin? Get one now contact us on",
                     fontSize = 18.sp,
                     color = TextDeep,
                     textAlign = TextAlign.Center,
