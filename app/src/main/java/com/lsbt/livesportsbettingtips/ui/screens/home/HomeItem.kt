@@ -5,11 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
@@ -26,14 +28,14 @@ import com.lsbt.livesportsbettingtips.ui.theme.Primary
 
 @Composable
 fun HomeItem(item: HomeItemModel) {
-    Card(Modifier.padding(vertical = 8.dp, horizontal = 16.dp)) {
+    Card(Modifier.padding(vertical = 8.dp, horizontal = 14.dp)) {
         Row(
             modifier = Modifier
                 .background(Primary, RoundedCornerShape(8.dp))
-                .padding(horizontal = 16.dp, vertical = 16.dp)
-                .fillMaxWidth(0.4f),
-            horizontalArrangement = Arrangement.SpaceBetween,
-//        verticalAlignment = Alignment.CenterVertically,
+                .fillMaxWidth()
+                .padding(horizontal = 14.dp, vertical = 16.dp),
+//            horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 painter = painterResource(id = item.image),
@@ -42,9 +44,10 @@ fun HomeItem(item: HomeItemModel) {
                     .size(24.dp)
                     .align(Alignment.CenterVertically)
             )
+            Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = item.title,
-                    fontSize = 28.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
                     color = Color.White
                 )
