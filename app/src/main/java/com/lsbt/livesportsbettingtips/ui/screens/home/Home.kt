@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lsbt.livesportsbettingtips.ui.screens.destinations.DetailScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -49,7 +50,7 @@ fun Home(navigator: DestinationsNavigator) {
                 items = freeItems,
             ) {
                 HomeItem(it) {
-
+                    navigator.navigate(DetailScreenDestination(it.title))
                 }
             }
         }
@@ -69,7 +70,7 @@ fun Home(navigator: DestinationsNavigator) {
                 items = vipItems,
             ) {
                 HomeItem(it) {
-
+                    navigator.navigate(DetailScreenDestination(it.title))
                 }
             }
         }
