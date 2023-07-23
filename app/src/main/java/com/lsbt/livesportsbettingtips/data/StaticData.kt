@@ -58,13 +58,13 @@ object StaticData {
         ),
         HomeItemModel(
             id = 5,
-            title = "Previous CR SCR",
+            title = "Previous correct score",
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.preview
         ),
         HomeItemModel(
             id = 6,
-            title = "P. Draws results",
+            title = "Previous Draws results",
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.bar_chart
         ),

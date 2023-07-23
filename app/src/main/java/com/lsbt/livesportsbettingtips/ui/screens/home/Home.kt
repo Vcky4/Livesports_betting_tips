@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.DetailScreenDestination
+import com.lsbt.livesportsbettingtips.ui.screens.destinations.VipPinDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -78,7 +79,7 @@ fun Home(navigator: DestinationsNavigator) {
                 items = vipItems,
             ) {
                 HomeItem(it) {
-                    navigator.navigate(DetailScreenDestination(it.title))
+                    navigator.navigate(VipPinDestination(it.title))
                 }
             }
         }

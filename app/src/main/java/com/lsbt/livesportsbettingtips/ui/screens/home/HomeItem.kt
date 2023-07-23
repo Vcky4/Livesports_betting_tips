@@ -39,18 +39,18 @@ fun HomeItem(item: HomeItemModel, onClick: () -> Unit) {
             Icon(
                 painter = painterResource(id = item.image),
                 contentDescription = "",
-                tint=Primary,
+                tint = Primary,
                 modifier = Modifier
                     .size(24.dp)
                     .align(Alignment.CenterVertically)
             )
             Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = item.title,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Primary
-                )
+            Text(
+                text = item.title,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = Primary
+            )
         }
     }
 }
