@@ -29,6 +29,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -270,7 +271,9 @@ fun NavHost() {
             Image(
                 painter = painterResource(id = R.drawable.bg),
                 contentDescription = "background",
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .blur(10.dp)
+                    .fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
             DestinationsNavHost(

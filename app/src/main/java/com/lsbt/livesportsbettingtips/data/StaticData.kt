@@ -29,6 +29,36 @@ object StaticData {
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.sports_tennis
         ),
+    )
+
+    val vipItems = listOf(
+        HomeItemModel(
+            id = 1,
+            title = "Daily Sure Tips",
+            description = "Last Updated 2 Weeks Ago",
+            image = R.drawable.tips_and_updates
+        ),
+        HomeItemModel(
+            id = 2,
+            title = "Football Tips",
+            description = "Last Updated 2 Weeks Ago",
+            image = R.drawable.sports_football
+        ),
+        HomeItemModel(
+            id = 3,
+            title = "Basketball Tips",
+            description = "Last Updated 2 Weeks Ago",
+            image = R.drawable.sports_basketball
+        ),
+        HomeItemModel(
+            id = 4,
+            title = "Tennis Tips",
+            description = "Last Updated 2 Weeks Ago",
+            image = R.drawable.sports_tennis
+        ),
+    )
+
+    val liveItems = listOf(
         HomeItemModel(
             id = 5,
             title = "Live Score",
