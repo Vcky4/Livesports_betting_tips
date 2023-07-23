@@ -1,4 +1,4 @@
-package com.lsbt.livesportsbettingtips.ui.screens.free
+package com.lsbt.livesportsbettingtips.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,13 +10,13 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class HomeViewModel : ViewModel(), KoinComponent {
-    private val freeRepository: FreeRepository by inject()
-    val freeItems = freeRepository.getAll()
+//    private val freeRepository: FreeRepository by inject()
+    val freeItems = StaticData.freeItems
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            freeRepository.createMany(StaticData.freeItems)
-        }
+//        viewModelScope.launch(Dispatchers.IO) {
+//            freeRepository.createMany(StaticData.freeItems)
+//        }
     }
 }
 

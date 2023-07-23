@@ -268,7 +268,7 @@ fun NavHost() {
             },*/
         ) {
             Image(
-                painter = painterResource(id = R.drawable.bacf),
+                painter = painterResource(id = R.drawable.bg),
                 contentDescription = "background",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.FillWidth

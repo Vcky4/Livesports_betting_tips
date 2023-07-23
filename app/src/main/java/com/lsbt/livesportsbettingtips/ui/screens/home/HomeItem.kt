@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,15 +32,16 @@ fun HomeItem(item: HomeItemModel) {
     Card(Modifier.padding(vertical = 8.dp, horizontal = 14.dp)) {
         Row(
             modifier = Modifier
-                .background(Primary, RoundedCornerShape(8.dp))
+                .background(Color.White, RoundedCornerShape(8.dp))
                 .fillMaxWidth()
                 .padding(horizontal = 14.dp, vertical = 16.dp),
 //            horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         ) {
-            Image(
+            Icon(
                 painter = painterResource(id = item.image),
                 contentDescription = "",
+                tint=Primary,
                 modifier = Modifier
                     .size(24.dp)
                     .align(Alignment.CenterVertically)
@@ -49,7 +51,7 @@ fun HomeItem(item: HomeItemModel) {
                     text = item.title,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color.White
+                    color = Primary
                 )
         }
     }
