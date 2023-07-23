@@ -2,6 +2,7 @@ package com.lsbt.livesportsbettingtips.ui.screens.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.DetailScreenDestination
@@ -40,7 +42,10 @@ fun Home(navigator: DestinationsNavigator) {
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,
-            modifier = Modifier.padding(start = 16.dp)
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .fillMaxWidth(),
+            textAlign = TextAlign.Center
         )
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
@@ -60,7 +65,10 @@ fun Home(navigator: DestinationsNavigator) {
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,
-            modifier = Modifier.padding(start = 16.dp)
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .fillMaxWidth(),
+            textAlign = TextAlign.Center
         )
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
@@ -80,7 +88,10 @@ fun Home(navigator: DestinationsNavigator) {
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,
-            modifier = Modifier.padding(start = 16.dp)
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .fillMaxWidth(),
+            textAlign = TextAlign.Center
         )
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
