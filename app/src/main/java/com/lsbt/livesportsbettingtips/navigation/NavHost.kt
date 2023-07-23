@@ -271,7 +271,7 @@ fun NavHost() {
                 painter = painterResource(id = R.drawable.bg),
                 contentDescription = "background",
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.FillWidth
+                contentScale = ContentScale.Crop
             )
             DestinationsNavHost(
                 navGraph = NavGraphs.root,
