@@ -75,7 +75,7 @@ object StaticData {
             id = 5,
             title = "Live Score",
             description = "Last Updated 2 Weeks Ago",
-            image = R.drawable.sports_score
+            image = R.drawable.sports_score,
         ),
         HomeItemModel(
             id = 6,

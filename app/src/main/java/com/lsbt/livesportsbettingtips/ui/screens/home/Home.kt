@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,6 +31,7 @@ fun Home(navigator: DestinationsNavigator) {
     val freeItems = homeViewModel.freeItems
     val vipItems = homeViewModel.vipItems
     val liveItems = homeViewModel.liveItems
+    val uriHandler = LocalUriHandler.current
 
     Column(Modifier.verticalScroll(rememberScrollState())) {
         Text(
@@ -46,7 +48,9 @@ fun Home(navigator: DestinationsNavigator) {
             items(
                 items = freeItems,
             ) {
-                HomeItem(it)
+                HomeItem(it) {
+
+                }
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -64,7 +68,9 @@ fun Home(navigator: DestinationsNavigator) {
             items(
                 items = vipItems,
             ) {
-                HomeItem(it)
+                HomeItem(it) {
+
+                }
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -82,7 +88,13 @@ fun Home(navigator: DestinationsNavigator) {
             items(
                 items = liveItems,
             ) {
-                HomeItem(it)
+                HomeItem(it) {
+                    if (it.id == 5) {
+                        uriHandler.openUri("https://www.livescore.com")
+                    } else {
+                        uriHandler.openUri("https://www.livesports088.com")
+                    }
+                }
             }
         }
     }

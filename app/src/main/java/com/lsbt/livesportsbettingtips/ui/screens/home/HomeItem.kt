@@ -1,14 +1,10 @@
 package com.lsbt.livesportsbettingtips.ui.screens.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,15 +24,17 @@ import com.lsbt.livesportsbettingtips.data.db.models.HomeItemModel
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
 
 @Composable
-fun HomeItem(item: HomeItemModel) {
-    Card(Modifier.padding(vertical = 8.dp, horizontal = 14.dp)) {
+fun HomeItem(item: HomeItemModel, onClick: () -> Unit) {
+    Card(Modifier
+        .clickable { onClick.invoke() }
+        .padding(vertical = 8.dp, horizontal = 14.dp)) {
         Row(
             modifier = Modifier
                 .background(Color.White, RoundedCornerShape(8.dp))
                 .fillMaxWidth()
                 .padding(horizontal = 14.dp, vertical = 16.dp),
 //            horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 painter = painterResource(id = item.image),
