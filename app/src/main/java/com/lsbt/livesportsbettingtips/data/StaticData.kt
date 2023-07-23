@@ -34,27 +34,39 @@ object StaticData {
     val vipItems = listOf(
         HomeItemModel(
             id = 1,
-            title = "Daily Sure Tips",
+            title = "Correct Score",
             description = "Last Updated 2 Weeks Ago",
-            image = R.drawable.tips_and_updates
+            image = R.drawable.sports_score
         ),
         HomeItemModel(
             id = 2,
-            title = "Football Tips",
+            title = "Fixed draws",
             description = "Last Updated 2 Weeks Ago",
-            image = R.drawable.sports_football
+            image = R.drawable.gps_fixed
         ),
         HomeItemModel(
             id = 3,
-            title = "Basketball Tips",
+            title = "50+ odds vip",
             description = "Last Updated 2 Weeks Ago",
-            image = R.drawable.sports_basketball
+            image = R.drawable.casino
         ),
         HomeItemModel(
             id = 4,
-            title = "Tennis Tips",
+            title = "Special offers",
             description = "Last Updated 2 Weeks Ago",
-            image = R.drawable.sports_tennis
+            image = R.drawable.local_offer
+        ),
+        HomeItemModel(
+            id = 5,
+            title = "Previous CR SCR",
+            description = "Last Updated 2 Weeks Ago",
+            image = R.drawable.preview
+        ),
+        HomeItemModel(
+            id = 6,
+            title = "P. Draws results",
+            description = "Last Updated 2 Weeks Ago",
+            image = R.drawable.bar_chart
         ),
     )
 

@@ -39,7 +39,10 @@ fun Home(navigator: DestinationsNavigator) {
             color = Color.White,
             modifier = Modifier.padding(start = 16.dp)
         )
-        LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.heightIn(max = 200.dp)) {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier.heightIn(max = 200.dp)
+        ) {
             items(
                 items = freeItems,
             ) {
@@ -54,17 +57,10 @@ fun Home(navigator: DestinationsNavigator) {
             color = Color.White,
             modifier = Modifier.padding(start = 16.dp)
         )
-//       vipItems.mapIndexed { index, it ->
-//           Row {
-//               Box(modifier = Modifier.weight(0.5f)) {
-//                   HomeItem(it)
-//               }
-//               Box(modifier = Modifier.weight(0.5f)) {
-//                   HomeItem(it)
-//               }
-//           }
-//       }
-        LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.heightIn(max = 200.dp)) {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier.heightIn(max = 300.dp)
+        ) {
             items(
                 items = vipItems,
             ) {
@@ -79,7 +75,10 @@ fun Home(navigator: DestinationsNavigator) {
             color = Color.White,
             modifier = Modifier.padding(start = 16.dp)
         )
-        LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.heightIn(max = 200.dp)) {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier.heightIn(max = 200.dp)
+        ) {
             items(
                 items = liveItems,
             ) {
