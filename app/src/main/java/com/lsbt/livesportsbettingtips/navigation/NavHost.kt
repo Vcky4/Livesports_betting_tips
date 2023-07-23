@@ -45,6 +45,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.ui.screens.appCurrentDestinationAsState
+import com.lsbt.livesportsbettingtips.ui.screens.destinations.AdminDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.Destination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.FreeDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.NotificationsDestination
@@ -146,7 +147,7 @@ fun NavHost() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-//                           navController.navigate(FreeDestination)
+                           navController.navigate(AdminDestination)
                             scope.launch {
                                 drawerState.close()
                             }
