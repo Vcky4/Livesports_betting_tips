@@ -1,9 +1,6 @@
 package com.lsbt.livesportsbettingtips.navigation
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
@@ -16,10 +13,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalNavigationDrawer
@@ -27,32 +22,36 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.content.pm.PackageInfoCompat
-import com.lsbt.livesportsbettingtips.ui.screens.NavGraphs
-import com.lsbt.livesportsbettingtips.ui.theme.Primary
+import androidx.compose.ui.unit.sp
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.lsbt.livesportsbettingtips.R
+import com.lsbt.livesportsbettingtips.ui.screens.NavGraphs
 import com.lsbt.livesportsbettingtips.ui.screens.appCurrentDestinationAsState
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.AdminDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.Destination
-import com.lsbt.livesportsbettingtips.ui.screens.destinations.FreeDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.NotificationsDestination
-import com.lsbt.livesportsbettingtips.ui.screens.destinations.VipDestination
 import com.lsbt.livesportsbettingtips.ui.screens.startAppDestination
 import com.lsbt.livesportsbettingtips.ui.theme.Background
-import com.lsbt.livesportsbettingtips.ui.theme.Secondary
+import com.lsbt.livesportsbettingtips.ui.theme.Primary
+import com.lsbt.livesportsbettingtips.utils.getAppVersion
+import com.lsbt.livesportsbettingtips.utils.openWhatsApp
+import com.lsbt.livesportsbettingtips.utils.sendMail
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 import com.ramcosta.composedestinations.navigation.navigate
@@ -71,6 +70,10 @@ fun NavHost() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
+    var isContactsOpen by remember {
+        mutableStateOf(false)
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -89,26 +92,71 @@ fun NavHost() {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-//                           navController.navigate(FreeDestination)
+//                            uriHandler.openUri(uri)
                             scope.launch {
                                 drawerState.close()
                             }
                         }
                 )
-                Text(
-                    "Contact Us",
-                    color = Background,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
+                Row(
                     modifier = Modifier
                         .padding(16.dp)
+                        .fillMaxWidth()
                         .clickable {
-//                           navController.navigate(VipDestination)
-                            scope.launch {
-                                drawerState.close()
-                            }
-                        }
-                )
+                            isContactsOpen = !isContactsOpen
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        "Contact Us",
+                        color = Background,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Icon(
+                        painter = painterResource(id = R.drawable.arrow_right),
+                        contentDescription = "expand",
+                        tint = Background,
+                        modifier = Modifier
+                            .rotate(if (isContactsOpen) 90f else 0f)
+                    )
+                }
+                AnimatedVisibility(visible = isContactsOpen) {
+                    Column {
+                        Text(
+                            "Email",
+                            color = Background,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .padding(bottom = 16.dp, start = 30.dp)
+                                .clickable {
+                                    scope.launch {
+                                        context.sendMail(
+                                            "Livesportstips1@gmail.com",
+                                            "Live Sports Betting Tips"
+                                        )
+                                        drawerState.close()
+                                    }
+                                }
+                        )
+                        Text(
+                            "WhatsApp",
+                            color = Background,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .padding(vertical = 16.dp, horizontal = 30.dp)
+                                .clickable {
+                                    scope.launch {
+                                        context.openWhatsApp()
+                                        drawerState.close()
+                                    }
+                                }
+                        )
+                    }
+                }
                 Text(
                     "Privacy Policy",
                     color = Background,
@@ -139,7 +187,7 @@ fun NavHost() {
                 )
                 Spacer(modifier = Modifier.padding(20.dp))
                 Text(
-                    "V "+ getAppVersion(context)?.versionName,
+                    "V " + context.getAppVersion()?.versionName,
                     color = Background,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
@@ -147,7 +195,7 @@ fun NavHost() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                           navController.navigate(AdminDestination)
+                            navController.navigate(AdminDestination)
                             scope.launch {
                                 drawerState.close()
                             }
@@ -194,7 +242,7 @@ fun NavHost() {
                     }
                 }
             },
-            floatingActionButton = {
+            /*floatingActionButton = {
                 AnimatedVisibility(currentDestination == FreeDestination) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -217,7 +265,7 @@ fun NavHost() {
                         )
                     }
                 }
-            },
+            },*/
         ) {
             Image(
                 painter = painterResource(id = R.drawable.bacf),
@@ -234,31 +282,4 @@ fun NavHost() {
         }
     }
 
-}
-
-
-
-data class AppVersion(
-    val versionName: String,
-    val versionNumber: Long,
-)
-
-fun getAppVersion(
-    context: Context,
-): AppVersion? {
-    return try {
-        val packageManager = context.packageManager
-        val packageName = context.packageName
-        val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0))
-        } else {
-            packageManager.getPackageInfo(packageName, 0)
-        }
-        AppVersion(
-            versionName = packageInfo.versionName,
-            versionNumber = PackageInfoCompat.getLongVersionCode(packageInfo),
-        )
-    } catch (e: Exception) {
-        null
-    }
 }
