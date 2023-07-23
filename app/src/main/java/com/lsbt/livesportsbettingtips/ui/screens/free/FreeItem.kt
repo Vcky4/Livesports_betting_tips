@@ -43,7 +43,7 @@ fun FreeItem(item: FreeModel) {
             ) {
                 Text(
                     text = item.title,
-                    fontSize = 30.sp,
+                    fontSize = 28.sp,
                     fontWeight = FontWeight.Medium,
                     color = Color.White
                 )

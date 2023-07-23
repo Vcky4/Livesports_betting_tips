@@ -1,6 +1,9 @@
 package com.lsbt.livesportsbettingtips.navigation
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
@@ -29,10 +32,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.pm.PackageInfoCompat
 import com.lsbt.livesportsbettingtips.ui.screens.NavGraphs
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -63,6 +69,7 @@ fun NavHost() {
         ?: NavGraphs.root.startAppDestination
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -70,7 +77,7 @@ fun NavHost() {
             Column(
                 Modifier
                     .background(Primary)
-                    .fillMaxWidth(0.5f)
+                    .fillMaxWidth(0.6f)
             ) {
                 Spacer(modifier = Modifier.padding(16.dp))
                 Text(
@@ -129,7 +136,26 @@ fun NavHost() {
                             }
                         }
                 )
+                Spacer(modifier = Modifier.padding(20.dp))
+                Text(
+                    "V "+ getAppVersion(context)?.versionName,
+                    color = Background,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+//                           navController.navigate(FreeDestination)
+                            scope.launch {
+                                drawerState.close()
+                            }
+                        }
+                )
+                Spacer(modifier = Modifier.padding(20.dp))
             }
+
+
         }
     ) {
         Scaffold(
@@ -207,4 +233,31 @@ fun NavHost() {
         }
     }
 
+}
+
+
+
+data class AppVersion(
+    val versionName: String,
+    val versionNumber: Long,
+)
+
+fun getAppVersion(
+    context: Context,
+): AppVersion? {
+    return try {
+        val packageManager = context.packageManager
+        val packageName = context.packageName
+        val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0))
+        } else {
+            packageManager.getPackageInfo(packageName, 0)
+        }
+        AppVersion(
+            versionName = packageInfo.versionName,
+            versionNumber = PackageInfoCompat.getLongVersionCode(packageInfo),
+        )
+    } catch (e: Exception) {
+        null
+    }
 }
