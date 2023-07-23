@@ -84,4 +84,25 @@ object StaticData {
             image = R.drawable.live_tv
         ),
     )
+
+    val contactItems = listOf(
+        HomeItemModel(
+            id = 5,
+            title = "WhatsApp",
+            description = "Last Updated 2 Weeks Ago",
+            image = R.drawable.whatsapp,
+        ),
+        HomeItemModel(
+            id = 6,
+            title = "Email",
+            description = "Last Updated 2 Weeks Ago",
+            image = R.drawable.outline_email
+        ),
+        HomeItemModel(
+            id = 7,
+            title = "Telegram",
+            description = "Last Updated 2 Weeks Ago",
+            image = R.drawable.telegram
+        ),
+    )
 }

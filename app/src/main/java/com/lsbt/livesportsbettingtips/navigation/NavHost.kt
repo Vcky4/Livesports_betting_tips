@@ -47,16 +47,19 @@ import com.lsbt.livesportsbettingtips.ui.screens.appCurrentDestinationAsState
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.AdminDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.Destination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.NotificationsDestination
+import com.lsbt.livesportsbettingtips.ui.screens.home.HomeViewModel
 import com.lsbt.livesportsbettingtips.ui.screens.startAppDestination
 import com.lsbt.livesportsbettingtips.ui.theme.Background
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
 import com.lsbt.livesportsbettingtips.utils.getAppVersion
+import com.lsbt.livesportsbettingtips.utils.openTelegram
 import com.lsbt.livesportsbettingtips.utils.openWhatsApp
 import com.lsbt.livesportsbettingtips.utils.sendMail
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 import com.ramcosta.composedestinations.navigation.navigate
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(
@@ -66,6 +69,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun NavHost() {
     val navController = rememberAnimatedNavController()
+    val homeViewModel: HomeViewModel = koinViewModel()
     val currentDestination: Destination = navController.appCurrentDestinationAsState().value
         ?: NavGraphs.root.startAppDestination
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -135,7 +139,7 @@ fun NavHost() {
                                 .clickable {
                                     scope.launch {
                                         context.sendMail(
-                                            "Livesportstips1@gmail.com",
+                                            homeViewModel.email,
                                             "Live Sports Betting Tips"
                                         )
                                         drawerState.close()
@@ -148,10 +152,24 @@ fun NavHost() {
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
+                                .padding(start = 30.dp, bottom = 16.dp)
+                                .clickable {
+                                    scope.launch {
+                                        context.openWhatsApp(homeViewModel.whatsApp)
+                                        drawerState.close()
+                                    }
+                                }
+                        )
+                        Text(
+                            "Telegram",
+                            color = Background,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
                                 .padding(top = 10.dp, start = 30.dp, bottom = 16.dp)
                                 .clickable {
                                     scope.launch {
-                                        context.openWhatsApp()
+                                        context.openTelegram(homeViewModel.telegram)
                                         drawerState.close()
                                     }
                                 }

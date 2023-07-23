@@ -5,14 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 
-fun Context.openWhatsApp() {
+fun Context.openWhatsApp(phoneNumber: String) {
     try {
         val sendIntent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, "Hello Swapz")
             putExtra(
                 "jid",
-                "${"+2348097647881"}@s.whatsapp.net"
+                "$phoneNumber@s.whatsapp.net"
             )
             type = "text/plain"
             setPackage("com.whatsapp")
