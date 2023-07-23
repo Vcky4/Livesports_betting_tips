@@ -43,6 +43,27 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
             )
         }
         LazyColumn {
+            item {
+                Text(
+                    text = "Today",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+            }
+            items(count = 2) {
+                DetailItem()
+            }
+            item {
+                Text(
+                    text = "History",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+            }
             items(count = 10) {
                 DetailItem()
             }

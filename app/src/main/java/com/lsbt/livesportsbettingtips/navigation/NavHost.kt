@@ -236,12 +236,26 @@ fun NavHost() {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     IconButton(onClick = {
-                        scope.launch {
-                            drawerState.open()
+                        if (currentDestination == AdminDestination
+                            || currentDestination == NotificationsDestination
+                        ) {
+                            navController.navigateUp()
+                        } else {
+                            scope.launch {
+                                drawerState.open()
+                            }
                         }
                     }) {
                         Icon(
-                            painter = painterResource(id = R.drawable.menu),
+                            painter = painterResource(
+                                id = if (currentDestination == AdminDestination
+                                    || currentDestination == NotificationsDestination
+                                ) {
+                                    R.drawable.arrow_back
+                                } else {
+                                    R.drawable.menu
+                                }
+                            ),
                             contentDescription = "menu",
                             tint = Background
                         )
@@ -252,12 +266,18 @@ fun NavHost() {
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    IconButton(onClick = { navController.navigate(NotificationsDestination) }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.notifications),
-                            contentDescription = "notification",
-                            tint = Background
-                        )
+                    if (currentDestination != AdminDestination
+                        && currentDestination != NotificationsDestination
+                    ) {
+                        IconButton(onClick = { navController.navigate(NotificationsDestination) }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.notifications),
+                                contentDescription = "notification",
+                                tint = Background
+                            )
+                        }
+                    } else {
+                        Spacer(modifier = Modifier.padding(16.dp))
                     }
                 }
             },

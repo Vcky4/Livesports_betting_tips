@@ -91,7 +91,7 @@ fun Login(viewModel: AdminViewModel) {
             )
             Spacer(modifier = Modifier.height(20.dp))
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { viewModel.login("hjnbhj") },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = TextDeep,
                     contentColor = Color.White

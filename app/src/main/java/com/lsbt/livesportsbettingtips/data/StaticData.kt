@@ -15,7 +15,7 @@ object StaticData {
             id = 2,
             title = "Football Tips",
             description = "Last Updated 2 Weeks Ago",
-            image = R.drawable.sports_football
+            image = R.drawable.sports_basketball
         ),
         HomeItemModel(
             id = 3,
