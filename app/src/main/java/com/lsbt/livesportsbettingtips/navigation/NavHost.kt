@@ -147,7 +147,7 @@ fun NavHost() {
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
-                                .padding(vertical = 16.dp, horizontal = 30.dp)
+                                .padding(top = 10.dp, start = 30.dp, bottom = 16.dp)
                                 .clickable {
                                     scope.launch {
                                         context.openWhatsApp()
