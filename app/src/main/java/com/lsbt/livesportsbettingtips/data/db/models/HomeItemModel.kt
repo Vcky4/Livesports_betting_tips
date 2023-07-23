@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity("freeTips")
-data class FreeModel(
+data class HomeItemModel(
     @PrimaryKey
     val id: Int,
     val title: String,

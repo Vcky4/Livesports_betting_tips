@@ -3,14 +3,14 @@ package com.lsbt.livesportsbettingtips.di
 import androidx.room.Room
 import com.lsbt.livesportsbettingtips.data.db.DB
 import com.lsbt.livesportsbettingtips.data.repositories.FreeRepository
-import com.lsbt.livesportsbettingtips.ui.screens.free.FreeViewModel
+import com.lsbt.livesportsbettingtips.ui.screens.free.HomeViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val modules = module {
     viewModel {
-        FreeViewModel()
+        HomeViewModel()
     }
 
     //database

@@ -1,41 +1,41 @@
 package com.lsbt.livesportsbettingtips.data
 
 import com.lsbt.livesportsbettingtips.R
-import com.lsbt.livesportsbettingtips.data.db.models.FreeModel
+import com.lsbt.livesportsbettingtips.data.db.models.HomeItemModel
 
 object StaticData {
     val freeItems =   listOf(
-        FreeModel(
+        HomeItemModel(
             id = 1,
             title = "Daily Sure Tips",
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.tips_and_updates
         ),
-        FreeModel(
+        HomeItemModel(
             id = 2,
             title = "Football Tips",
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.sports_football
         ),
-        FreeModel(
+        HomeItemModel(
             id = 3,
             title = "Basketball Tips",
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.sports_basketball
         ),
-        FreeModel(
+        HomeItemModel(
             id = 4,
             title = "Tennis Tips",
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.sports_tennis
         ),
-        FreeModel(
+        HomeItemModel(
             id = 5,
             title = "Live Score",
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.sports_score
         ),
-        FreeModel(
+        HomeItemModel(
             id = 6,
             title = "Live Match",
             description = "Last Updated 2 Weeks Ago",

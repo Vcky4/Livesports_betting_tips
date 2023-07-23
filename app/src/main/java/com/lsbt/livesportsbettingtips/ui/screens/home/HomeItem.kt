@@ -1,4 +1,4 @@
-package com.lsbt.livesportsbettingtips.ui.screens.free
+package com.lsbt.livesportsbettingtips.ui.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,46 +21,33 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.lsbt.livesportsbettingtips.data.db.models.FreeModel
+import com.lsbt.livesportsbettingtips.data.db.models.HomeItemModel
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
 
 @Composable
-fun FreeItem(item: FreeModel) {
+fun HomeItem(item: HomeItemModel) {
     Card(Modifier.padding(vertical = 8.dp, horizontal = 16.dp)) {
         Row(
             modifier = Modifier
                 .background(Primary, RoundedCornerShape(8.dp))
                 .padding(horizontal = 16.dp, vertical = 16.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth(0.4f),
             horizontalArrangement = Arrangement.SpaceBetween,
 //        verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column(
-                Modifier
-                    .height(80.dp)
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
+            Image(
+                painter = painterResource(id = item.image),
+                contentDescription = "",
+                modifier = Modifier
+                    .size(24.dp)
+                    .align(Alignment.CenterVertically)
+            )
                 Text(
                     text = item.title,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Medium,
                     color = Color.White
                 )
-                Text(
-                    text = item.description,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.White
-                )
-            }
-            Image(
-                painter = painterResource(id = item.image),
-                contentDescription = "",
-                modifier = Modifier
-                    .size(70.dp)
-                    .align(Alignment.CenterVertically)
-            )
         }
     }
 }

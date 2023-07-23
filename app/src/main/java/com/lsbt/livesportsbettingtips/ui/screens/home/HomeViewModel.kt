@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class FreeViewModel : ViewModel(), KoinComponent {
+class HomeViewModel : ViewModel(), KoinComponent {
     private val freeRepository: FreeRepository by inject()
     val freeItems = freeRepository.getAll()
 
