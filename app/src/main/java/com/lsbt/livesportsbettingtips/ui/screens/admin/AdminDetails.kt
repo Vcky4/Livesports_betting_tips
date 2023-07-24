@@ -277,7 +277,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                                 text = "League",
                                                 fontSize = 18.sp,
                                                 color = TextDeep.copy(alpha = 0.6f),
-                                                textAlign = TextAlign.Center,
+                                                textAlign = TextAlign.Start,
                                                 modifier = Modifier.fillMaxWidth()
                                             )
                                         },
