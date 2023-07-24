@@ -1,19 +1,17 @@
 package com.lsbt.livesportsbettingtips.ui.screens.admin
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -22,8 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,7 +39,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -50,18 +46,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Popup
 import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.AdminDetailScreenDestination
 import com.lsbt.livesportsbettingtips.ui.screens.home.HomeItem
-import com.lsbt.livesportsbettingtips.ui.theme.CardColor
-import com.lsbt.livesportsbettingtips.ui.theme.CardColor2
-import com.lsbt.livesportsbettingtips.ui.theme.Primary
 import com.lsbt.livesportsbettingtips.ui.theme.Secondary
 import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
-import com.lsbt.livesportsbettingtips.utils.openTelegram
-import com.lsbt.livesportsbettingtips.utils.openWhatsApp
-import com.lsbt.livesportsbettingtips.utils.sendMail
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
@@ -81,12 +70,18 @@ fun Admin(navigator: DestinationsNavigator) {
     var contact by remember {
         mutableStateOf(TextFieldValue(""))
     }
+    var processing by remember {
+        mutableStateOf(false)
+    }
+    val whatsapp = viewModel.whatsApp.observeAsState().value
+    val telegram = viewModel.telegram.observeAsState().value
+    val email = viewModel.email.observeAsState().value
 
     LaunchedEffect(key1 = contactTrigger) {
         contact = when (contactTrigger) {
-            "WhatsApp" -> TextFieldValue(viewModel.whatsApp)
-            "Email" -> TextFieldValue(viewModel.email)
-            else -> TextFieldValue(viewModel.telegram)
+            "WhatsApp" -> TextFieldValue(whatsapp ?: "")
+            "Email" -> TextFieldValue(email ?: "")
+            else -> TextFieldValue(telegram ?: "")
         }
     }
 
@@ -225,20 +220,70 @@ fun Admin(navigator: DestinationsNavigator) {
 
                     Spacer(modifier = Modifier.height(20.dp))
                     Button(
-                        onClick = { contactTrigger = "" },
+                        onClick = {
+                            processing = true
+                            when (contactTrigger) {
+                                "WhatsApp" -> viewModel.setWhatsApp(contact.text)
+                                    .addOnSuccessListener {
+                                        Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
+                                        processing = false
+                                        contactTrigger = ""
+                                    }.addOnFailureListener {
+                                        Toast.makeText(
+                                            context,
+                                            "Failed: ${it.localizedMessage}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        processing = false
+                                        contactTrigger = ""
+                                    }
+
+                                "Email" -> viewModel.setEmail(contact.text).addOnSuccessListener {
+                                    Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
+                                    processing = false
+                                    contactTrigger = ""
+                                }.addOnFailureListener {
+                                    Toast.makeText(
+                                        context,
+                                        "Failed: ${it.localizedMessage}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    processing = false
+                                    contactTrigger = ""
+                                }
+
+                                else -> viewModel.setTelegram(contact.text).addOnSuccessListener {
+                                    Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
+                                    processing = false
+                                    contactTrigger = ""
+                                }.addOnFailureListener {
+                                    Toast.makeText(
+                                        context,
+                                        "Failed: ${it.localizedMessage}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    processing = false
+                                    contactTrigger = ""
+                                }
+                            }
+                        },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = TextDeep,
                             contentColor = Color.White
                         ),
                         modifier = Modifier.padding(horizontal = 26.dp)
                     ) {
-                        Text(
-                            text = "Save",
-                            fontSize = 18.sp,
-                            color = Color.White,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                        if (!processing) {
+                            Text(
+                                text = "Save",
+                                fontSize = 18.sp,
+                                color = Color.White,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        } else {
+                            CircularProgressIndicator(color = Color.White)
+                        }
                     }
                 }
             }

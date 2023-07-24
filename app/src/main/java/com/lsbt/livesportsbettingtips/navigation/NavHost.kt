@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -79,6 +80,9 @@ fun NavHost() {
     var isContactsOpen by remember {
         mutableStateOf(false)
     }
+    val whatsapp = homeViewModel.whatsApp.observeAsState("").value
+    val telegram = homeViewModel.telegram.observeAsState("").value
+    val email = homeViewModel.email.observeAsState("").value
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -139,7 +143,7 @@ fun NavHost() {
                                 .clickable {
                                     scope.launch {
                                         context.sendMail(
-                                            homeViewModel.email,
+                                            email,
                                             "Live Sports Betting Tips"
                                         )
                                         drawerState.close()
@@ -155,7 +159,7 @@ fun NavHost() {
                                 .padding(start = 30.dp, bottom = 16.dp)
                                 .clickable {
                                     scope.launch {
-                                        context.openWhatsApp(homeViewModel.whatsApp)
+                                        context.openWhatsApp(whatsapp)
                                         drawerState.close()
                                     }
                                 }
@@ -169,7 +173,7 @@ fun NavHost() {
                                 .padding(top = 10.dp, start = 30.dp, bottom = 16.dp)
                                 .clickable {
                                     scope.launch {
-                                        context.openTelegram(homeViewModel.telegram)
+                                        context.openTelegram(telegram)
                                         drawerState.close()
                                     }
                                 }

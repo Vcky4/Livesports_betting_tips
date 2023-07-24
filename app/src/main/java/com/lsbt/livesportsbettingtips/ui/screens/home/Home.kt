@@ -13,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -42,6 +43,9 @@ fun Home(navigator: DestinationsNavigator) {
     val contactItems = homeViewModel.contactItems
     val uriHandler = LocalUriHandler.current
     val context = LocalContext.current
+    val whatsapp = homeViewModel.whatsApp.observeAsState().value
+    val telegram = homeViewModel.telegram.observeAsState().value
+    val email = homeViewModel.email.observeAsState().value
 
     Column(Modifier.verticalScroll(rememberScrollState())) {
         Text(
@@ -136,13 +140,13 @@ fun Home(navigator: DestinationsNavigator) {
             ) {
                 HomeItem(it) {
                     when (it.id) {
-                        5 -> context.openWhatsApp(homeViewModel.whatsApp)
+                        5 -> context.openWhatsApp(whatsapp ?: "")
                         6 -> context.sendMail(
-                            homeViewModel.email,
+                            email ?: "",
                             "Live Sports Betting Tips"
                         )
 
-                        else -> context.openTelegram(homeViewModel.telegram)
+                        else -> context.openTelegram(telegram ?: "")
                     }
                 }
             }
