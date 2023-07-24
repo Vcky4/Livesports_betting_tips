@@ -2,6 +2,7 @@ package com.lsbt.livesportsbettingtips.data
 
 import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.data.db.models.HomeItemModel
+import com.lsbt.livesportsbettingtips.data.db.models.NotificationModel
 import com.lsbt.livesportsbettingtips.data.db.models.TipModel
 
 object StaticData {
@@ -179,6 +180,21 @@ object StaticData {
             time = "20:00",
             status = "won",
             prediction = "over 2.5"
+        ),
+    )
+
+    val notification = listOf(
+        NotificationModel(
+            id = 1,
+            title = "New Tips",
+            body = "New tips are available",
+            date = System.currentTimeMillis()
+        ),
+        NotificationModel(
+            id = 2,
+            title = "New Tips",
+            body = "New tips are available",
+            date = System.currentTimeMillis()
         ),
     )
 }
