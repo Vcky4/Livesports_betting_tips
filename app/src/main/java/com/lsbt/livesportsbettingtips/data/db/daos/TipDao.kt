@@ -7,22 +7,23 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.lsbt.livesportsbettingtips.data.db.models.HomeItemModel
+import com.lsbt.livesportsbettingtips.data.db.models.TipModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface FreeDao {
+interface TipDao {
     //get all free items
-    @Query("SELECT * FROM freeTips")
-    fun getAll():Flow<List<HomeItemModel>>
+    @Query("SELECT * FROM tips")
+    fun getAll():Flow<List<TipModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun create(data: HomeItemModel)
+    suspend fun create(data: TipModel)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun createMany(data: List<HomeItemModel>)
+    suspend fun createMany(data: List<TipModel>)
     @Delete
-    suspend fun delete(data: HomeItemModel)
+    suspend fun delete(data: TipModel)
 
     @Update
-    suspend fun update(data: HomeItemModel)
+    suspend fun update(data: TipModel)
 }

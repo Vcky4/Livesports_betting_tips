@@ -25,14 +25,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.R
+import com.lsbt.livesportsbettingtips.data.db.models.TipModel
 import com.lsbt.livesportsbettingtips.ui.theme.CardColor
 import com.lsbt.livesportsbettingtips.ui.theme.CardColor2
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
 import com.lsbt.livesportsbettingtips.ui.theme.Secondary
 import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
+import java.util.Date
 
 @Composable
-fun DetailItem(onClick: () -> Unit = {}) {
+fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
+    //convert date to time and format it HH:mm
+    val date = Date(item.date)
+    val time = date.hours.toString() + ":" + date.minutes.toString()
+
     Card(
         Modifier
             .clickable { onClick.invoke() }
@@ -57,14 +63,14 @@ fun DetailItem(onClick: () -> Unit = {}) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Egypt Premier League", fontSize = 18.sp,
+                        text = item.league, fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color.White,
                         modifier = Modifier
                     )
                 }
                 Text(
-                    text = "21:30", fontSize = 18.sp,
+                    text = time, fontSize = 18.sp,
                     color = Color.White,
                     modifier = Modifier
                 )
@@ -80,7 +86,7 @@ fun DetailItem(onClick: () -> Unit = {}) {
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = "Cairo", fontSize = 18.sp,
+                        text = item.home, fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
                         color = TextDeep,
                         modifier = Modifier.weight(0.3f),
@@ -90,7 +96,7 @@ fun DetailItem(onClick: () -> Unit = {}) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "0", fontSize = 18.sp,
+                            text = item.homeScore, fontSize = 18.sp,
                             color = TextDeep,
                             fontWeight = FontWeight.Bold,
                         )
@@ -102,13 +108,13 @@ fun DetailItem(onClick: () -> Unit = {}) {
                         )
                         Spacer(modifier = Modifier.width(5.dp))
                         Text(
-                            text = "1", fontSize = 18.sp,
+                            text = item.awayScore, fontSize = 18.sp,
                             color = TextDeep,
                             fontWeight = FontWeight.Bold,
                         )
                     }
                     Text(
-                        text = "Cairo", fontSize = 18.sp,
+                        text = item.away, fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
                         color = TextDeep,
                         modifier = Modifier.weight(0.3f),
@@ -128,7 +134,7 @@ fun DetailItem(onClick: () -> Unit = {}) {
                         )
                     ) {
                         Text(
-                            text = "Over+ 1,5 Goals", fontSize = 16.sp,
+                            text = item.prediction, fontSize = 16.sp,
                             color = TextDeep,
                             modifier = Modifier.padding(vertical = 6.dp, horizontal = 14.dp)
                         )
@@ -139,7 +145,7 @@ fun DetailItem(onClick: () -> Unit = {}) {
                         )
                     ) {
                         Text(
-                            text = "1.15", fontSize = 16.sp,
+                            text = item.odd, fontSize = 16.sp,
                             color = TextDeep,
                             modifier = Modifier.padding(vertical = 6.dp, horizontal = 16.dp)
                         )

@@ -2,7 +2,7 @@ package com.lsbt.livesportsbettingtips.di
 
 import androidx.room.Room
 import com.lsbt.livesportsbettingtips.data.db.DB
-import com.lsbt.livesportsbettingtips.data.repositories.FreeRepository
+import com.lsbt.livesportsbettingtips.data.repositories.TipsRepository
 import com.lsbt.livesportsbettingtips.ui.screens.admin.AdminViewModel
 import com.lsbt.livesportsbettingtips.ui.screens.home.HomeViewModel
 import org.koin.android.ext.koin.androidContext
@@ -28,10 +28,10 @@ val modules = module {
     }
 
     //Doa
-    single { get<DB>().freeDao() }
+    single { get<DB>().tipDao() }
 
     //Repositories
     single {
-        FreeRepository(get())
+        TipsRepository(get())
     }
 }

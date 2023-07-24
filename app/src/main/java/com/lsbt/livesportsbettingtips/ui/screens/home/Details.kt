@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -16,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.R
+import com.lsbt.livesportsbettingtips.data.StaticData
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -52,8 +54,10 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     modifier = Modifier.padding(start = 16.dp)
                 )
             }
-            items(count = 2) {
-                DetailItem()
+            items(
+                items = StaticData.tips
+            ) {
+                DetailItem(it)
             }
             item {
                 Text(
@@ -63,9 +67,18 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     color = Color.White,
                     modifier = Modifier.padding(start = 16.dp)
                 )
+                Text(
+                    text = "12/10/2021",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
             }
-            items(count = 10) {
-                DetailItem()
+            items(
+                items = StaticData.tips
+            ) {
+                DetailItem(it)
             }
         }
     }

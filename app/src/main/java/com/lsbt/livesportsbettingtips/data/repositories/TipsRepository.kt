@@ -1,9 +1,9 @@
 package com.lsbt.livesportsbettingtips.data.repositories
 
-import com.lsbt.livesportsbettingtips.data.db.daos.FreeDao
+import com.lsbt.livesportsbettingtips.data.db.daos.TipDao
 import com.lsbt.livesportsbettingtips.data.db.models.HomeItemModel
 
-class FreeRepository(private val dao: FreeDao) {
+class TipsRepository(private val dao: TipDao) {
     //get all
     fun getAll() = dao.getAll()
 

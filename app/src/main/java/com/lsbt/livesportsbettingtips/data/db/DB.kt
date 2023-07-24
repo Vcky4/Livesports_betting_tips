@@ -2,12 +2,12 @@ package com.lsbt.livesportsbettingtips.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.lsbt.livesportsbettingtips.data.db.daos.FreeDao
-import com.lsbt.livesportsbettingtips.data.db.models.HomeItemModel
+import com.lsbt.livesportsbettingtips.data.db.daos.TipDao
+import com.lsbt.livesportsbettingtips.data.db.models.TipModel
 
 @Database(
     entities = [
-        HomeItemModel::class
+        TipModel::class
     ],
     version = 1,
     exportSchema = true
@@ -15,5 +15,5 @@ import com.lsbt.livesportsbettingtips.data.db.models.HomeItemModel
 abstract class DB : RoomDatabase() {
 
     //free doa
-    abstract fun freeDao(): FreeDao
+    abstract fun tipDao(): TipDao
 }
