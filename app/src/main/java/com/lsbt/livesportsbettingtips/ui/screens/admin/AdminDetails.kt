@@ -85,6 +85,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
     var odd by remember {
         mutableStateOf(TextFieldValue(""))
     }
+
     Column {
         Row(
             modifier = Modifier.padding(vertical = 14.dp),
@@ -467,6 +468,8 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                         }
                     }
                 }
+
+
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
                     onClick = { editOpen = false },

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -79,6 +80,7 @@ fun Login(viewModel: AdminViewModel) {
                     cursorColor = Primary,
                     textColor = TextDeep
                 ),
+                shape = RoundedCornerShape(8.dp),
                 placeholder = {
                     Text(
                         text = "Enter your pin",

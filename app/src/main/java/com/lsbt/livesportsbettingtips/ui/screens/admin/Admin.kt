@@ -24,11 +24,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -40,7 +44,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,6 +66,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Destination
 @Composable
 fun Admin(navigator: DestinationsNavigator) {
@@ -68,9 +75,23 @@ fun Admin(navigator: DestinationsNavigator) {
     val freeItems = viewModel.freeItems
     val contactItems = viewModel.contactItems
     val context = LocalContext.current
+    var contactTrigger by remember {
+        mutableStateOf("")
+    }
+    var contact by remember {
+        mutableStateOf(TextFieldValue(""))
+    }
+
+    LaunchedEffect(key1 = contactTrigger) {
+        contact = when (contactTrigger) {
+            "WhatsApp" -> TextFieldValue(viewModel.whatsApp)
+            "Email" -> TextFieldValue(viewModel.email)
+            else -> TextFieldValue(viewModel.telegram)
+        }
+    }
 
 
-    AnimatedVisibility(visible = token.isNotEmpty()) {
+    AnimatedVisibility(visible = token.isNotEmpty() && contactTrigger.isEmpty()) {
         Column(
             Modifier
                 .verticalScroll(rememberScrollState())
@@ -120,15 +141,104 @@ fun Admin(navigator: DestinationsNavigator) {
                     items = contactItems,
                 ) {
                     HomeItem(it) {
-                        when (it.id) {
-                            5 -> context.openWhatsApp(viewModel.whatsApp)
-                            6 -> context.sendMail(
-                                viewModel.email,
-                                "Live Sports Betting Tips"
-                            )
-
-                            else -> context.openTelegram(viewModel.telegram)
+                        contactTrigger = when (it.id) {
+                            5 -> "WhatsApp"
+                            6 -> "Email"
+                            else -> "Telegram"
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    AnimatedVisibility(visible = contactTrigger.isNotEmpty()) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Column(
+                Modifier
+                    .background(Secondary, shape = MaterialTheme.shapes.medium)
+                    .fillMaxWidth(0.9f)
+                    .padding(top = 20.dp, start = 16.dp, end = 16.dp, bottom = 50.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                IconButton(
+                    onClick = { contactTrigger = "" },
+                    modifier = Modifier.align(Alignment.End)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.cancel),
+                        contentDescription = "",
+                        tint = Color.White
+                    )
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = "Click field to edit",
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextDeep,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Column {
+                    Text(
+                        text = contactTrigger,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = TextDeep,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    TextField(
+                        value = contact,
+                        onValueChange = { contact = it },
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = Color.White,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            disabledIndicatorColor = Color.Transparent,
+                            errorIndicatorColor = Color.Transparent,
+                            cursorColor = TextDeep,
+                            textColor = TextDeep
+                        ),
+                        shape = RoundedCornerShape(8.dp),
+                        textStyle = TextStyle(fontSize = 18.sp, textAlign = TextAlign.Center),
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(top = 20.dp),
+                        placeholder = {
+                            Text(
+                                text = when (contactTrigger) {
+                                    "WhatsApp" -> "Enter WhatsApp Number"
+                                    "Email" -> "Enter Email Address"
+                                    else -> "Enter Telegram Username"
+                                },
+                                fontSize = 18.sp,
+                                color = TextDeep.copy(alpha = 0.6f),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        },
+                    )
+
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Button(
+                        onClick = { contactTrigger = "" },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = TextDeep,
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier.padding(horizontal = 26.dp)
+                    ) {
+                        Text(
+                            text = "Save",
+                            fontSize = 18.sp,
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     }
                 }
             }
