@@ -281,36 +281,12 @@ fun NavHost() {
                     }
                 }
             },
-            /*floatingActionButton = {
-                AnimatedVisibility(currentDestination == FreeDestination) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .clickable { navController.navigate(VipDestination) }
-                            .background(Secondary, RoundedCornerShape(50))
-                            .clip(RoundedCornerShape(50))
-                            .padding(vertical = 14.dp, horizontal = 20.dp)
-                    ) {
-                        Text(
-                            "VIP",
-                            color = Background,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Icon(
-                            painter = painterResource(id = R.drawable.arrow_forward),
-                            contentDescription = "add",
-                            tint = Background
-                        )
-                    }
-                }
-            },*/
         ) {
             Image(
                 painter = painterResource(id = R.drawable.bg),
                 contentDescription = "background",
                 modifier = Modifier
-                    .blur(10.dp)
+                    .blur(11.dp)
                     .fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
