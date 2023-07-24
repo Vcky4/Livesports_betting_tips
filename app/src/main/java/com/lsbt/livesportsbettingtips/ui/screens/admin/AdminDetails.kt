@@ -269,7 +269,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                             cursorColor = TextDeep,
                                             textColor = TextDeep
                                         ),
-                                        textStyle = TextStyle(fontSize = 18.sp),
+                                        textStyle = TextStyle(fontSize = 18.sp, textAlign = TextAlign.Start),
                                         modifier = Modifier
                                             .fillMaxWidth(0.7f),
                                         placeholder = {
@@ -458,7 +458,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                             textStyle = TextStyle(
                                                 fontSize = 18.sp,
                                             ),
-                                            modifier = Modifier.widthIn(max = 100.dp),
+                                            modifier = Modifier.widthIn(max = 120.dp),
                                             placeholder = {
                                                 Text(
                                                     text = "prediction",
