@@ -25,22 +25,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.R
+import com.lsbt.livesportsbettingtips.ui.theme.CardColor
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
+import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
 
 @Composable
 fun NotificationItem() {
-    Card(Modifier.padding(vertical = 8.dp, horizontal = 16.dp)) {
+    Card(Modifier.padding(vertical = 3.dp, horizontal = 16.dp)) {
         Row(
             modifier = Modifier
-                .background(Primary, RoundedCornerShape(8.dp))
-                .padding(horizontal = 16.dp, vertical = 16.dp)
+                .background(CardColor, RoundedCornerShape(8.dp))
+                .padding(horizontal = 16.dp, vertical = 14.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
 //        verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(
                 Modifier
-                    .height(80.dp)
+                    .height(50.dp)
                     .fillMaxHeight(),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
@@ -48,18 +50,20 @@ fun NotificationItem() {
                     text = "Daily Sure Tips",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color.White
+                    color = TextDeep
                 )
                 Text(
-                    text = "Last Updated 2 Weeks Ago",
+                    text = "2 Odds on 1.5 Goals Over 2.5 Goals and GG 100% Sure",
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color.White
+                    color = TextDeep.copy(alpha = 0.8f)
                 )
             }
-            Image(
-                painter = painterResource(id = R.drawable.cil_image),
-                contentDescription = ""
+            Text(
+                text = "2 Weeks Ago",
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Medium,
+                color = TextDeep
             )
         }
     }
