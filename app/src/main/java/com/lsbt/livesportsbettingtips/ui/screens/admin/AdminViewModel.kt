@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -15,6 +16,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.lsbt.livesportsbettingtips.data.StaticData
+import com.lsbt.livesportsbettingtips.data.db.models.TipModel
 import org.koin.core.component.KoinComponent
 
 class AdminViewModel : ViewModel(), KoinComponent {
@@ -47,13 +49,39 @@ class AdminViewModel : ViewModel(), KoinComponent {
     fun setEmail(email: String) =
         database.child("contacts").child("email").setValue(email)
 
+    fun saveTip(
+        league: String,
+        home: String,
+        away: String,
+        homeScore: String,
+        awayScore: String,
+        odd: String,
+        status: String,
+        prediction: String,
+        date: Long = System.currentTimeMillis()
+    ): Task<Void> {
+        val key = database.child("tips").push().key
+        val tip = TipModel(
+            key ?: "",
+            league,
+            home,
+            away,
+            homeScore,
+            awayScore,
+            odd,
+            date,
+            status,
+            prediction,
+        )
+        return database.child("tips").child(key ?: "").setValue(tip)
+    }
+
 
     //get data on init
     init {
         val contactListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val value = dataSnapshot.getValue<ContactModel>()
-                Log.d(TAG, "Value is: $value")
                 _whatsapp.value = value?.whatsapp ?: ""
                 _telegram.value = value?.telegram ?: ""
                 _email.value = value?.email ?: ""
@@ -63,6 +91,17 @@ class AdminViewModel : ViewModel(), KoinComponent {
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
             }
         }
+        val getTips = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val value = dataSnapshot.getValue()
+                Log.d(TAG, "Value is: $dataSnapshot")
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        database.child("tips").addValueEventListener(getTips)
         database.child("contacts").addValueEventListener(contactListener)
     }
 

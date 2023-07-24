@@ -1,6 +1,7 @@
 package com.lsbt.livesportsbettingtips.ui.screens.admin
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,6 +24,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -60,12 +63,14 @@ import com.lsbt.livesportsbettingtips.ui.theme.Secondary
 import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination
 @Composable
 fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
+    val viewModel: AdminViewModel = koinViewModel()
     var editOpen by remember {
         mutableStateOf(false)
     }
@@ -90,6 +95,10 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
     var odd by remember {
         mutableStateOf(TextFieldValue(""))
     }
+    var processing by remember {
+        mutableStateOf(false)
+    }
+    val context = LocalContext.current
     Box {
         Column {
             Row(
@@ -112,7 +121,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                 )
             }
             AnimatedVisibility(visible = !editOpen) {
-                LazyColumn {
+                LazyColumn(Modifier.fillMaxSize()) {
                     item {
                         Text(
                             text = "Today",
@@ -122,17 +131,33 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                             modifier = Modifier.padding(start = 16.dp)
                         )
                     }
-                    items(StaticData.tips) {
-                        DetailItem(it) {
-                            //set values
-                            league = TextFieldValue(it.league)
-                            prediction = TextFieldValue(it.prediction)
-                            home = TextFieldValue(it.home)
-                            away = TextFieldValue(it.away)
-                            homeScore = TextFieldValue(it.homeScore)
-                            awayScore = TextFieldValue(it.awayScore)
-                            odd = TextFieldValue(it.odd)
-                            editOpen = true
+                    if (StaticData.tips.isEmpty()) {
+                        item {
+                            Text(
+                                text = "No tips available",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 30.dp),
+                                textAlign = TextAlign.Center
+                            )
+
+                        }
+                    } else {
+                        items(StaticData.tips) {
+                            DetailItem(it) {
+                                //set values
+                                league = TextFieldValue(it.league)
+                                prediction = TextFieldValue(it.prediction)
+                                home = TextFieldValue(it.home)
+                                away = TextFieldValue(it.away)
+                                homeScore = TextFieldValue(it.homeScore)
+                                awayScore = TextFieldValue(it.awayScore)
+                                odd = TextFieldValue(it.odd)
+                                editOpen = true
+                            }
                         }
                     }
                     item {
@@ -143,33 +168,52 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                             color = Color.White,
                             modifier = Modifier.padding(start = 16.dp)
                         )
-                        Text(
-                            text = "12/10/2021",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White,
-                            modifier = Modifier.padding(start = 16.dp)
-                        )
+                        if (StaticData.tips.isNotEmpty()) {
+                            Text(
+                                text = "12/10/2021",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                modifier = Modifier.padding(start = 16.dp)
+                            )
+                        }
                     }
-                    items(StaticData.tips) {
-                        DetailItem(it) {
-                            //set values
-                            league = TextFieldValue(it.league)
-                            prediction = TextFieldValue(it.prediction)
-                            home = TextFieldValue(it.home)
-                            away = TextFieldValue(it.away)
-                            homeScore = TextFieldValue(it.homeScore)
-                            awayScore = TextFieldValue(it.awayScore)
-                            odd = TextFieldValue(it.odd)
-                            editOpen = true
+                    if (StaticData.tips.isEmpty()) {
+                        item {
+                            Text(
+                                text = "No tips available",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 30.dp),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    } else {
+                        items(StaticData.tips) {
+                            DetailItem(it) {
+                                //set values
+                                league = TextFieldValue(it.league)
+                                prediction = TextFieldValue(it.prediction)
+                                home = TextFieldValue(it.home)
+                                away = TextFieldValue(it.away)
+                                homeScore = TextFieldValue(it.homeScore)
+                                awayScore = TextFieldValue(it.awayScore)
+                                odd = TextFieldValue(it.odd)
+                                editOpen = true
+                            }
                         }
                     }
                 }
             }
         }
-        AnimatedVisibility(visible = !editOpen, modifier = Modifier
-            .padding(end = 30.dp, bottom = 40.dp)
-            .align(Alignment.BottomEnd)) {
+        AnimatedVisibility(
+            visible = !editOpen, modifier = Modifier
+                .padding(end = 30.dp, bottom = 40.dp)
+                .align(Alignment.BottomEnd)
+        ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -269,7 +313,10 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                             cursorColor = TextDeep,
                                             textColor = TextDeep
                                         ),
-                                        textStyle = TextStyle(fontSize = 18.sp, textAlign = TextAlign.Start),
+                                        textStyle = TextStyle(
+                                            fontSize = 18.sp,
+                                            textAlign = TextAlign.Start
+                                        ),
                                         modifier = Modifier
                                             .fillMaxWidth(0.7f),
                                         placeholder = {
@@ -316,7 +363,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                             fontSize = 18.sp
                                         ),
                                         modifier = Modifier
-                                            .weight(0.3f),
+                                            .weight(0.35f),
                                         placeholder = {
                                             Text(
                                                 text = "Home",
@@ -417,7 +464,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                             textAlign = TextAlign.End
                                         ),
                                         modifier = Modifier
-                                            .weight(0.3f),
+                                            .weight(0.35f),
                                         placeholder = {
                                             Text(
                                                 text = "Away",
@@ -511,20 +558,49 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
 
                     Spacer(modifier = Modifier.height(20.dp))
                     Button(
-                        onClick = { editOpen = false },
+                        onClick = {
+                            processing = true
+                            viewModel.saveTip(
+                                league.text,
+                                home.text,
+                                away.text,
+                                homeScore.text,
+                                awayScore.text,
+                                odd.text,
+                                "pending",
+                                prediction.text
+                            ).addOnSuccessListener {
+                                Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
+                                processing = false
+                                editOpen = false
+                            }.addOnFailureListener {
+                                Toast.makeText(
+                                    context,
+                                    "Failed: ${it.localizedMessage}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                processing = false
+                                editOpen = false
+                            }
+
+                        },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = TextDeep,
                             contentColor = Color.White
                         ),
                         modifier = Modifier.padding(horizontal = 26.dp)
                     ) {
-                        Text(
-                            text = "Save",
-                            fontSize = 18.sp,
-                            color = Color.White,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                        if (!processing) {
+                            Text(
+                                text = "Save",
+                                fontSize = 18.sp,
+                                color = Color.White,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        } else {
+                            CircularProgressIndicator(color = Color.White)
+                        }
                     }
                 }
             }

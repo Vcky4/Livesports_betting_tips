@@ -108,79 +108,8 @@ object StaticData {
         ),
     )
 
-    val tips = listOf(
-        TipModel(
-            id = 1,
-            league = "UEFA Champions League",
-            home = "Manchester City",
-            away = "Paris Saint Germain",
-            homeScore = "2",
-            awayScore = "0",
-            odd = "1.5",
-            time = "20:00",
-            status = "won",
-            prediction = "over 2.5"
-        ),
-        TipModel(
-            id = 2,
-            league = "UEFA Champions League",
-            home = "Manchester City",
-            away = "Paris Saint Germain",
-            homeScore = "2",
-            awayScore = "0",
-            odd = "1.5",
-            time = "20:00",
-            status = "won",
-            prediction = "over 2.5"
-        ),
-        TipModel(
-            id = 3,
-            league = "UEFA Champions League",
-            home = "Manchester City",
-            away = "Paris Saint Germain",
-            homeScore = "2",
-            awayScore = "0",
-            odd = "1.5",
-            time = "20:00",
-            status = "won",
-            prediction = "over 2.5"
-        ),
-        TipModel(
-            id = 4,
-            league = "UEFA Champions League",
-            home = "Manchester City",
-            away = "Paris Saint Germain",
-            homeScore = "2",
-            awayScore = "0",
-            odd = "1.5",
-            time = "20:00",
-            status = "won",
-            prediction = "over 2.5"
-        ),
-        TipModel(
-            id = 5,
-            league = "UEFA Champions League",
-            home = "Manchester City",
-            away = "Paris Saint Germain",
-            homeScore = "2",
-            awayScore = "0",
-            odd = "1.5",
-            time = "20:00",
-            status = "won",
-            prediction = "over 2.5"
-        ),
-        TipModel(
-            id = 6,
-            league = "UEFA Champions League",
-            home = "Manchester City",
-            away = "Paris Saint Germain",
-            homeScore = "2",
-            awayScore = "0",
-            odd = "1.5",
-            time = "20:00",
-            status = "won",
-            prediction = "over 2.5"
-        ),
+    val tips = listOf<TipModel>(
+
     )
 
     val notification = listOf(
