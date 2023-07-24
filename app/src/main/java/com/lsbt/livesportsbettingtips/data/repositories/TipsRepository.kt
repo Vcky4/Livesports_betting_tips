@@ -1,7 +1,6 @@
 package com.lsbt.livesportsbettingtips.data.repositories
 
 import com.lsbt.livesportsbettingtips.data.db.daos.TipDao
-import com.lsbt.livesportsbettingtips.data.db.models.HomeItemModel
 import com.lsbt.livesportsbettingtips.data.db.models.TipModel
 
 class TipsRepository(private val dao: TipDao) {
