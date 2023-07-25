@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,7 +29,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -47,16 +45,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Popup
 import com.lsbt.livesportsbettingtips.R
-import com.lsbt.livesportsbettingtips.data.StaticData
-import com.lsbt.livesportsbettingtips.data.db.models.TipModel
 import com.lsbt.livesportsbettingtips.ui.screens.home.DetailItem
 import com.lsbt.livesportsbettingtips.ui.theme.Background
 import com.lsbt.livesportsbettingtips.ui.theme.CardColor
@@ -118,7 +114,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                 IconButton(onClick = { navigator.navigateUp() }) {
                     Icon(
                         painter = painterResource(id = R.drawable.arrow_back),
-                        contentDescription = "back",
+                        contentDescription = stringResource(id = R.string.back),
                         tint = Color.White
                     )
                 }
@@ -134,7 +130,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                 LazyColumn(Modifier.fillMaxSize()) {
                     item {
                         Text(
-                            text = "Today",
+                            text = stringResource(id = R.string.today),
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
@@ -144,7 +140,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     if (tips.none { DateUtils.isToday(it.date) }) {
                         item {
                             Text(
-                                text = "No tips available",
+                                text = stringResource(id = R.string.no_tips_available),
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White,
@@ -172,7 +168,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     }
                     item {
                         Text(
-                            text = "History",
+                            text = stringResource(id = R.string.history),
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
@@ -182,7 +178,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     if (tips.none { !DateUtils.isToday(it.date) }) {
                         item {
                             Text(
-                                text = "No tips available",
+                                text = stringResource(id = R.string.no_tips_history_available),
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White,
@@ -236,14 +232,14 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     .padding(vertical = 14.dp, horizontal = 20.dp)
             ) {
                 Text(
-                    "Add",
+                    stringResource(id = R.string.add),
                     color = Background,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.arrow_forward),
-                    contentDescription = "add",
+                    contentDescription = stringResource(id = R.string.add),
                     tint = Background
                 )
             }
@@ -284,7 +280,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                             ) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.delete),
-                                    contentDescription = "delete",
+                                    contentDescription = stringResource(id = R.string.delete),
                                     tint = Color.White
                                 )
                             }
@@ -296,7 +292,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.cancel),
-                                contentDescription = "cancel",
+                                contentDescription = stringResource(id = R.string.cancel),
                                 tint = Color.White
                             )
                         }
@@ -304,7 +300,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
 
                     Spacer(modifier = Modifier.height(20.dp))
                     Text(
-                        text = "Click field to edit",
+                        text = stringResource(id = R.string.click_field_to),
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Bold,
                         color = TextDeep,
@@ -334,7 +330,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Icon(
                                         painter = painterResource(id = R.drawable.outlined_flag),
-                                        contentDescription = "flag",
+                                        contentDescription = stringResource(id = R.string.flag),
                                         tint = Primary
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
@@ -358,7 +354,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                             .fillMaxWidth(0.7f),
                                         placeholder = {
                                             Text(
-                                                text = "League",
+                                                text = stringResource(id = R.string.league),
                                                 fontSize = 18.sp,
                                                 color = TextDeep.copy(alpha = 0.6f),
                                                 textAlign = TextAlign.Start,
@@ -403,7 +399,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                             .weight(0.35f),
                                         placeholder = {
                                             Text(
-                                                text = "Home",
+                                                text = stringResource(id = R.string.home),
                                                 fontSize = 18.sp,
                                                 fontWeight = FontWeight.Medium,
                                                 color = TextDeep.copy(alpha = 0.6f),
@@ -448,7 +444,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                         Spacer(modifier = Modifier.width(5.dp))
                                         Icon(
                                             painter = painterResource(id = R.drawable.outlined_flag),
-                                            contentDescription = "flag",
+                                            contentDescription = stringResource(id = R.string.flag),
                                             tint = Primary
                                         )
                                         Spacer(modifier = Modifier.width(5.dp))
@@ -545,7 +541,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                             modifier = Modifier.widthIn(max = 120.dp),
                                             placeholder = {
                                                 Text(
-                                                    text = "prediction",
+                                                    text = stringResource(id = R.string.prediction),
                                                     fontSize = 18.sp,
                                                     color = TextDeep.copy(alpha = 0.6f),
                                                     textAlign = TextAlign.Center,
@@ -578,7 +574,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                             modifier = Modifier.widthIn(max = 80.dp),
                                             placeholder = {
                                                 Text(
-                                                    text = "odd",
+                                                    text = stringResource(id = R.string.odd),
                                                     fontSize = 18.sp,
                                                     color = TextDeep.copy(alpha = 0.6f),
                                                     textAlign = TextAlign.Center,
@@ -631,7 +627,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     ) {
                         if (!processing) {
                             Text(
-                                text = "Save",
+                                text = stringResource(id = R.string.save),
                                 fontSize = 18.sp,
                                 color = Color.White,
                                 textAlign = TextAlign.Center,

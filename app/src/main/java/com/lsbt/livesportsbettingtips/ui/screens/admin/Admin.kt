@@ -40,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -92,7 +93,7 @@ fun Admin(navigator: DestinationsNavigator) {
                 .verticalScroll(rememberScrollState())
         ) {
             Text(
-                text = "Free",
+                text = stringResource(id = R.string.free),
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
@@ -119,7 +120,7 @@ fun Admin(navigator: DestinationsNavigator) {
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Contact Us",
+                text = stringResource(id = R.string.contact_us),
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
@@ -169,7 +170,7 @@ fun Admin(navigator: DestinationsNavigator) {
                 }
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
-                    text = "Click field to edit",
+                    text = stringResource(id = R.string.click_field_to),
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextDeep,
@@ -206,9 +207,9 @@ fun Admin(navigator: DestinationsNavigator) {
                         placeholder = {
                             Text(
                                 text = when (contactTrigger) {
-                                    "WhatsApp" -> "Enter WhatsApp Number"
-                                    "Email" -> "Enter Email Address"
-                                    else -> "Enter Telegram Username"
+                                    "WhatsApp" -> stringResource(id = R.string.enter_whatsapp_number)
+                                    "Email" -> stringResource(id = R.string.enter_email_address)
+                                    else -> stringResource(id = R.string.enter_telegram_username)
                                 },
                                 fontSize = 18.sp,
                                 color = TextDeep.copy(alpha = 0.6f),
@@ -275,7 +276,7 @@ fun Admin(navigator: DestinationsNavigator) {
                     ) {
                         if (!processing) {
                             Text(
-                                text = "Save",
+                                text = stringResource(id = R.string.save),
                                 fontSize = 18.sp,
                                 color = Color.White,
                                 textAlign = TextAlign.Center,

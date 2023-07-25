@@ -25,10 +25,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
 import com.lsbt.livesportsbettingtips.ui.theme.Secondary
 import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
@@ -49,7 +51,7 @@ fun Login(viewModel: AdminViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Get yourself in",
+                text = stringResource(id = R.string.get_yourself_in),
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
                 color = TextDeep,
@@ -58,7 +60,7 @@ fun Login(viewModel: AdminViewModel) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Please enter your pin to continue",
+                text = stringResource(id = R.string.please_enter_your),
                 fontSize = 18.sp,
                 color = Primary,
                 textAlign = TextAlign.Center,
@@ -83,7 +85,7 @@ fun Login(viewModel: AdminViewModel) {
                 shape = RoundedCornerShape(8.dp),
                 placeholder = {
                     Text(
-                        text = "Enter your pin",
+                        text = stringResource(id = R.string.enter_your_pin),
                         fontSize = 18.sp,
                         color = TextDeep.copy(alpha = 0.6f),
                         textAlign = TextAlign.Center,
@@ -101,7 +103,7 @@ fun Login(viewModel: AdminViewModel) {
                 modifier = Modifier.padding(horizontal = 26.dp)
             ) {
                 Text(
-                    text = "Access",
+                    text = stringResource(id = R.string.access),
                     fontSize = 18.sp,
                     color = Color.White,
                     textAlign = TextAlign.Center,
