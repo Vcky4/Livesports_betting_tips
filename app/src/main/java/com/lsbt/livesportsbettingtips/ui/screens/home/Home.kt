@@ -18,10 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.DetailScreenDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.VipPinDestination
 import com.lsbt.livesportsbettingtips.utils.openTelegram
@@ -49,7 +51,7 @@ fun Home(navigator: DestinationsNavigator) {
 
     Column(Modifier.verticalScroll(rememberScrollState())) {
         Text(
-            text = "Free",
+            text = stringResource(id = R.string.free),
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,
@@ -72,7 +74,7 @@ fun Home(navigator: DestinationsNavigator) {
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "VIP",
+            text = stringResource(id = R.string.vip),
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,
@@ -95,7 +97,7 @@ fun Home(navigator: DestinationsNavigator) {
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Live",
+            text = stringResource(id = R.string.live),
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,
@@ -122,7 +124,7 @@ fun Home(navigator: DestinationsNavigator) {
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Contact Us",
+            text = stringResource(id = R.string.contact_us),
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,
