@@ -1,6 +1,7 @@
 package com.lsbt.livesportsbettingtips.ui.screens.admin
 
 import android.annotation.SuppressLint
+import android.text.format.DateUtils
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -140,7 +141,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                             modifier = Modifier.padding(start = 16.dp)
                         )
                     }
-                    if (tips.isEmpty()) {
+                    if (tips.none { DateUtils.isToday(it.date) }) {
                         item {
                             Text(
                                 text = "No tips available",
@@ -152,10 +153,9 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                     .padding(horizontal = 16.dp, vertical = 30.dp),
                                 textAlign = TextAlign.Center
                             )
-
                         }
                     } else {
-                        items(tips) {
+                        items(tips.filter { DateUtils.isToday(it.date) }) {
                             DetailItem(it) {
                                 //set values
                                 key = it.id
@@ -178,17 +178,8 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                             color = Color.White,
                             modifier = Modifier.padding(start = 16.dp)
                         )
-                        if (tips.isNotEmpty()) {
-                            Text(
-                                text = "12/10/2021",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                modifier = Modifier.padding(start = 16.dp)
-                            )
-                        }
                     }
-                    if (tips.isEmpty()) {
+                    if (tips.none { !DateUtils.isToday(it.date) }) {
                         item {
                             Text(
                                 text = "No tips available",
@@ -202,7 +193,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                             )
                         }
                     } else {
-                        items(tips) {
+                        items(tips.filter { !DateUtils.isToday(it.date) }) {
                             DetailItem(it) {
                                 //set values
                                 key = it.id

@@ -1,5 +1,6 @@
 package com.lsbt.livesportsbettingtips.ui.screens.home
 
+import android.text.format.DateUtils
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -64,7 +65,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     modifier = Modifier.padding(start = 16.dp)
                 )
             }
-            if (tips.isEmpty()) {
+            if (tips.none { DateUtils.isToday(it.date) }) {
                 item {
                     Text(
                         text = "No tips available",
@@ -79,7 +80,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                 }
             } else {
                 items(
-                    items = tips
+                    items = tips.filter { DateUtils.isToday(it.date) }
                 ) {
                     DetailItem(it)
                 }
@@ -92,7 +93,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     color = Color.White,
                     modifier = Modifier.padding(start = 16.dp)
                 )
-                if (tips.isNotEmpty()) {
+                if (tips.none { !DateUtils.isToday(it.date) }) {
                     Text(
                         text = "12/10/2021",
                         fontSize = 20.sp,
@@ -102,10 +103,10 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     )
                 }
             }
-            if (tips.isEmpty()) {
+            if (tips.none { !DateUtils.isToday(it.date) }) {
                 item {
                     Text(
-                        text = "No tips available",
+                        text = "No tips history available",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
@@ -117,7 +118,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                 }
             } else {
                 items(
-                    items = tips
+                    items = tips.filter { !DateUtils.isToday(it.date) }
                 ) {
                     DetailItem(it)
                 }
