@@ -34,7 +34,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -71,6 +73,9 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
     val viewModel: AdminViewModel = koinViewModel()
+    LaunchedEffect(key1 = viewModel) {
+        viewModel.getTips(trigger)
+    }
     var editOpen by remember {
         mutableStateOf(false)
     }
@@ -95,10 +100,14 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
     var odd by remember {
         mutableStateOf(TextFieldValue(""))
     }
+    var key by remember {
+        mutableStateOf<String?>(null)
+    }
     var processing by remember {
         mutableStateOf(false)
     }
     val context = LocalContext.current
+    val tips = viewModel.tips.observeAsState(listOf()).value
     Box {
         Column {
             Row(
@@ -131,7 +140,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                             modifier = Modifier.padding(start = 16.dp)
                         )
                     }
-                    if (StaticData.tips.isEmpty()) {
+                    if (tips.isEmpty()) {
                         item {
                             Text(
                                 text = "No tips available",
@@ -146,9 +155,10 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
 
                         }
                     } else {
-                        items(StaticData.tips) {
+                        items(tips) {
                             DetailItem(it) {
                                 //set values
+                                key = it.id
                                 league = TextFieldValue(it.league)
                                 prediction = TextFieldValue(it.prediction)
                                 home = TextFieldValue(it.home)
@@ -168,7 +178,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                             color = Color.White,
                             modifier = Modifier.padding(start = 16.dp)
                         )
-                        if (StaticData.tips.isNotEmpty()) {
+                        if (tips.isNotEmpty()) {
                             Text(
                                 text = "12/10/2021",
                                 fontSize = 20.sp,
@@ -178,7 +188,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                             )
                         }
                     }
-                    if (StaticData.tips.isEmpty()) {
+                    if (tips.isEmpty()) {
                         item {
                             Text(
                                 text = "No tips available",
@@ -192,9 +202,10 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                             )
                         }
                     } else {
-                        items(StaticData.tips) {
+                        items(tips) {
                             DetailItem(it) {
                                 //set values
+                                key = it.id
                                 league = TextFieldValue(it.league)
                                 prediction = TextFieldValue(it.prediction)
                                 home = TextFieldValue(it.home)
@@ -219,6 +230,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                 modifier = Modifier
                     .clickable {
                         //set values
+                        key = null
                         league = TextFieldValue("")
                         prediction = TextFieldValue("")
                         home = TextFieldValue("")
@@ -255,16 +267,50 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    IconButton(
-                        onClick = { editOpen = false },
-                        modifier = Modifier.align(Alignment.End)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.cancel),
-                            contentDescription = "",
-                            tint = Color.White
-                        )
+                        if (key != null) {
+                            IconButton(
+                                onClick = {
+                                    viewModel.deleteTip(trigger, key!!).addOnSuccessListener {
+                                        Toast.makeText(context, "Deleted!", Toast.LENGTH_SHORT)
+                                            .show()
+                                        processing = false
+                                        editOpen = false
+                                    }.addOnFailureListener {
+                                        Toast.makeText(
+                                            context,
+                                            "Failed: ${it.localizedMessage}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        processing = false
+                                        editOpen = false
+                                    }
+                                },
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.delete),
+                                    contentDescription = "delete",
+                                    tint = Color.White
+                                )
+                            }
+                        } else {
+                            Spacer(modifier = Modifier.width(50.dp))
+                        }
+                        IconButton(
+                            onClick = { editOpen = false },
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.cancel),
+                                contentDescription = "cancel",
+                                tint = Color.White
+                            )
+                        }
                     }
+
                     Spacer(modifier = Modifier.height(20.dp))
                     Text(
                         text = "Click field to edit",
@@ -561,6 +607,8 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                         onClick = {
                             processing = true
                             viewModel.saveTip(
+                                trigger,
+                                key,
                                 league.text,
                                 home.text,
                                 away.text,

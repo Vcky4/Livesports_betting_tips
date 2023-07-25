@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -25,6 +26,8 @@ class AdminViewModel : ViewModel(), KoinComponent {
     private val _whatsapp = MutableLiveData("")
     private val _telegram = MutableLiveData("")
     private val _email = MutableLiveData("")
+    private val _tips = MutableLiveData<List<TipModel>>()
+    val tips: LiveData<List<TipModel>> = _tips
     val token: LiveData<String> = _token
     val freeItems = StaticData.freeItems
     val contactItems = StaticData.contactItems
@@ -49,7 +52,17 @@ class AdminViewModel : ViewModel(), KoinComponent {
     fun setEmail(email: String) =
         database.child("contacts").child("email").setValue(email)
 
+    fun clearTips(tag: String) = database.child("tips").child(tag).removeValue()
+
+    //delete tip
+    fun deleteTip(tag: String, id: String) =
+        database.child("tips").child(tag).child(id).removeValue().addOnSuccessListener {
+            getTips(tag)
+        }
+
     fun saveTip(
+        tag: String,
+        id: String?,
         league: String,
         home: String,
         away: String,
@@ -60,7 +73,7 @@ class AdminViewModel : ViewModel(), KoinComponent {
         prediction: String,
         date: Long = System.currentTimeMillis()
     ): Task<Void> {
-        val key = database.child("tips").push().key
+        val key = id ?: database.child("tips").child(tag).push().key
         val tip = TipModel(
             key ?: "",
             league,
@@ -73,9 +86,53 @@ class AdminViewModel : ViewModel(), KoinComponent {
             status,
             prediction,
         )
-        return database.child("tips").child(key ?: "").setValue(tip)
+        return database.child("tips").child(tag).child(key ?: "").setValue(tip)
+            .addOnSuccessListener {
+                getTips(tag)
+            }
     }
 
+    //get all tips
+    fun getTips(tag: String) {
+        val childEventListener = object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val tipListener = object : ValueEventListener {
+                    private val tipList = mutableListOf<TipModel>()
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        for (dataValues in dataSnapshot.children) {
+                            val tip = dataValues.getValue(TipModel::class.java)
+                            if (tip != null) {
+                                tipList.add(tip)
+                            }
+                        }
+                        _tips.value = tipList
+                        Log.d(TAG, "list value is: $tipList")
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        // handle error
+//                        Toast.makeText(context, "unable to update nuggets", Toast.LENGTH_SHORT).show()
+
+                    }
+                }
+                database.child("tips").child(tag).ref.addListenerForSingleValueEvent(tipListener)
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+
+            override fun onCancelled(error: DatabaseError) {
+//                binding.loadingPost.visibility = GONE
+//                Toast.makeText(context, "unable to update nuggets", Toast.LENGTH_SHORT).show()
+
+            }
+
+        }
+        database.child("tips").child(tag).ref.addChildEventListener(childEventListener)
+    }
 
     //get data on init
     init {
@@ -91,17 +148,6 @@ class AdminViewModel : ViewModel(), KoinComponent {
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
             }
         }
-        val getTips = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val value = dataSnapshot.getValue()
-                Log.d(TAG, "Value is: $dataSnapshot")
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-            }
-        }
-        database.child("tips").addValueEventListener(getTips)
         database.child("contacts").addValueEventListener(contactListener)
     }
 
