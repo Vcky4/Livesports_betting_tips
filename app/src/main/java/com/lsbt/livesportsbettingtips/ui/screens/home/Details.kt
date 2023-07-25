@@ -93,15 +93,6 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     color = Color.White,
                     modifier = Modifier.padding(start = 16.dp)
                 )
-                if (tips.none { !DateUtils.isToday(it.date) }) {
-                    Text(
-                        text = "12/10/2021",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        modifier = Modifier.padding(start = 16.dp)
-                    )
-                }
             }
             if (tips.none { !DateUtils.isToday(it.date) }) {
                 item {

@@ -1,5 +1,6 @@
 package com.lsbt.livesportsbettingtips.ui.screens.home
 
+import android.text.format.DateUtils
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -36,8 +38,20 @@ import java.util.Date
 @Composable
 fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
     //convert date to time and format it HH:mm
-    val date = Date(item.date)
-    val time = date.hours.toString() + ":" + date.minutes.toString()
+    val context = LocalContext.current
+    val time = if(DateUtils.isToday(item.date)){
+        DateUtils.formatDateTime(
+            context,
+            item.date,
+            DateUtils.FORMAT_SHOW_TIME
+        )
+    }else{
+        DateUtils.formatDateTime(
+            context,
+            item.date,
+            DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME
+        )
+    }
 
     Card(
         Modifier
