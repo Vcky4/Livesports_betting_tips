@@ -9,4 +9,8 @@
     <string name="no_tips_available">No tips available</string>
     <string name="history">History</string>
     <string name="no_tips_history_available">No tips history available</string>
+    <string name="vip_pin">VIP pin</string>
+    <string name="please_enter_your_vip_pin_to_access_the_vip_tips">Please enter your VIP pin to access the VIP tips</string>
+    <string name="enter_your_vip_pin">Enter your VIP pin</string>
+    <string name="dont_have_a_vip_pin">Don\'t have a VIP pin? Get one now contact us on</string>
 </resources>

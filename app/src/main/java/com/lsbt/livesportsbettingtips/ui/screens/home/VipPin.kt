@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -71,7 +72,7 @@ fun VipPin(trigger: String, navigator: DestinationsNavigator) {
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.arrow_back),
-                    contentDescription = "back",
+                    contentDescription = stringResource(id = R.string.back),
                     tint = Color.White
                 )
             }
@@ -96,7 +97,7 @@ fun VipPin(trigger: String, navigator: DestinationsNavigator) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "VIP Pin",
+                    text = stringResource(id = R.string.vip_pin),
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextDeep,
@@ -105,7 +106,7 @@ fun VipPin(trigger: String, navigator: DestinationsNavigator) {
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "Please enter your VIP pin to access the VIP tips",
+                    text = stringResource(id = R.string.please_enter_your_vip_pin_to_access_the_vip_tips),
                     fontSize = 18.sp,
                     color = Primary,
                     textAlign = TextAlign.Center,
@@ -131,7 +132,7 @@ fun VipPin(trigger: String, navigator: DestinationsNavigator) {
                     shape = RoundedCornerShape(8.dp),
                     placeholder = {
                         Text(
-                            text = "Enter your VIP pin",
+                            text = stringResource(id = R.string.enter_your_vip_pin),
                             fontSize = 18.sp,
                             color = TextDeep.copy(alpha = 0.6f),
                             textAlign = TextAlign.Center,
@@ -141,7 +142,7 @@ fun VipPin(trigger: String, navigator: DestinationsNavigator) {
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
-                    text = "Don't have a VIP pin? Get one now contact us on",
+                    text = stringResource(id = R.string.dont_have_a_vip_pin),
                     fontSize = 18.sp,
                     color = TextDeep,
                     textAlign = TextAlign.Center,
