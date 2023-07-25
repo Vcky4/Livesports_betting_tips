@@ -17,12 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.R
-import com.lsbt.livesportsbettingtips.data.StaticData
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
@@ -43,7 +43,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
             IconButton(onClick = { navigator.navigateUp() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.arrow_back),
-                    contentDescription = "back",
+                    contentDescription = stringResource(id = R.string.back),
                     tint = Color.White
                 )
             }
@@ -58,7 +58,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
         LazyColumn {
             item {
                 Text(
-                    text = "Today",
+                    text = stringResource(id = R.string.today),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
@@ -68,7 +68,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
             if (tips.none { DateUtils.isToday(it.date) }) {
                 item {
                     Text(
-                        text = "No tips available",
+                        text = stringResource(id = R.string.no_tips_available),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
@@ -87,7 +87,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
             }
             item {
                 Text(
-                    text = "History",
+                    text = stringResource(id = R.string.history),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
@@ -97,7 +97,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
             if (tips.none { !DateUtils.isToday(it.date) }) {
                 item {
                     Text(
-                        text = "No tips history available",
+                        text = stringResource(id = R.string.no_tips_history_available),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
