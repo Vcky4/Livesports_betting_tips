@@ -67,8 +67,9 @@ fun Home(navigator: DestinationsNavigator) {
             items(
                 items = freeItems,
             ) {
+                val title = stringResource(id = it.title)
                 HomeItem(it) {
-                    navigator.navigate(DetailScreenDestination(it.title))
+                    navigator.navigate(DetailScreenDestination(title))
                 }
             }
         }
@@ -90,8 +91,9 @@ fun Home(navigator: DestinationsNavigator) {
             items(
                 items = vipItems,
             ) {
+                val title = stringResource(id = it.title)
                 HomeItem(it) {
-                    navigator.navigate(VipPinDestination(it.title))
+                    navigator.navigate(VipPinDestination(title))
                 }
             }
         }

@@ -109,10 +109,11 @@ fun Admin(navigator: DestinationsNavigator) {
                 items(
                     items = freeItems,
                 ) {
+                    val title = stringResource(id = it.title)
                     HomeItem(it) {
                         navigator.navigate(
                             AdminDetailScreenDestination(
-                                it.title
+                                title
                             )
                         )
                     }
