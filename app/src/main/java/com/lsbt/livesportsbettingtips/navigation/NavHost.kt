@@ -36,6 +36,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -94,7 +95,7 @@ fun NavHost() {
             ) {
                 Spacer(modifier = Modifier.padding(16.dp))
                 Text(
-                    "About Us",
+                    stringResource(id = R.string.about_us),
                     color = Background,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
@@ -118,7 +119,7 @@ fun NavHost() {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        "Contact Us",
+                        stringResource(id = R.string.contact_us),
                         color = Background,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
@@ -134,7 +135,7 @@ fun NavHost() {
                 AnimatedVisibility(visible = isContactsOpen) {
                     Column {
                         Text(
-                            "Email",
+                            stringResource(id = R.string.email),
                             color = Background,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
@@ -151,7 +152,7 @@ fun NavHost() {
                                 }
                         )
                         Text(
-                            "WhatsApp",
+                            stringResource(id = R.string.whatsapp),
                             color = Background,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
@@ -165,7 +166,7 @@ fun NavHost() {
                                 }
                         )
                         Text(
-                            "Telegram",
+                            stringResource(id = R.string.telegram),
                             color = Background,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
@@ -181,7 +182,7 @@ fun NavHost() {
                     }
                 }
                 Text(
-                    "Privacy Policy",
+                    stringResource(id = R.string.privacy_policy),
                     color = Background,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
@@ -195,7 +196,7 @@ fun NavHost() {
                         }
                 )
                 Text(
-                    "Terms and Conditions",
+                    stringResource(id = R.string.terms_and_conditions),
                     color = Background,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
