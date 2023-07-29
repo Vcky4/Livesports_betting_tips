@@ -337,99 +337,101 @@ fun NavHost() {
                 engine = rememberAnimatedNavHostEngine(),
                 modifier = Modifier.padding(it),
             )
-            Dialog(
-                onDismissRequest = {
-                    openDialog = false
-                }
-            ) {
-                Card(
-                    shape = RoundedCornerShape(10.dp)
+            if (openDialog) {
+                Dialog(
+                    onDismissRequest = {
+                        openDialog = false
+                    }
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Top
+                    Card(
+                        shape = RoundedCornerShape(10.dp)
                     ) {
-                        Text(
-                            text = "Choose language",
-                            style = MaterialTheme.typography.headlineLarge
-                        )
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Top
+                        ) {
+                            Text(
+                                text = "Choose language",
+                                style = MaterialTheme.typography.headlineLarge
+                            )
 
-                        OutlinedButton(
-                            colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent),
-                            border = BorderStroke(0.dp, Color.Transparent),
-                            modifier = Modifier.fillMaxWidth(),
-                            onClick = {
-                                AppCompatDelegate.setApplicationLocales(
-                                    LocaleListCompat.create(
-                                        Locale("en")
+                            OutlinedButton(
+                                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent),
+                                border = BorderStroke(0.dp, Color.Transparent),
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = {
+                                    AppCompatDelegate.setApplicationLocales(
+                                        LocaleListCompat.create(
+                                            Locale("en")
+                                        )
                                     )
-                                )
-                                openDialog = false
+                                    openDialog = false
+                                }
+                            ) {
+                                Text(text = "English")
                             }
-                        ) {
-                            Text(text = "English")
-                        }
 
-                        OutlinedButton(
-                            colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent),
-                            border = BorderStroke(0.dp, Color.Transparent),
-                            modifier = Modifier.fillMaxWidth(),
-                            onClick = {
-                                AppCompatDelegate.setApplicationLocales(
-                                    LocaleListCompat.create(
-                                        Locale("es")
+                            OutlinedButton(
+                                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent),
+                                border = BorderStroke(0.dp, Color.Transparent),
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = {
+                                    AppCompatDelegate.setApplicationLocales(
+                                        LocaleListCompat.create(
+                                            Locale("es")
+                                        )
                                     )
-                                )
-                                openDialog = false
+                                    openDialog = false
+                                }
+                            ) {
+                                Text(text = "Spanish")
                             }
-                        ) {
-                            Text(text = "Spanish")
-                        }
 
-                        OutlinedButton(
-                            colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent),
-                            border = BorderStroke(0.dp, Color.Transparent),
-                            modifier = Modifier.fillMaxWidth(),
-                            onClick = {
-                                AppCompatDelegate.setApplicationLocales(
-                                    LocaleListCompat.create(
-                                        Locale("fr")
+                            OutlinedButton(
+                                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent),
+                                border = BorderStroke(0.dp, Color.Transparent),
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = {
+                                    AppCompatDelegate.setApplicationLocales(
+                                        LocaleListCompat.create(
+                                            Locale("fr")
+                                        )
                                     )
-                                )
-                                openDialog = false
+                                    openDialog = false
+                                }
+                            ) {
+                                Text(text = "French")
                             }
-                        ) {
-                            Text(text = "French")
-                        }
 
-                        OutlinedButton(
-                            colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent),
-                            border = BorderStroke(0.dp, Color.Transparent),
-                            modifier = Modifier.fillMaxWidth(),
-                            onClick = {
-                                AppCompatDelegate.setApplicationLocales(
-                                    LocaleListCompat.create(
-                                        Locale("pt")
+                            OutlinedButton(
+                                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent),
+                                border = BorderStroke(0.dp, Color.Transparent),
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = {
+                                    AppCompatDelegate.setApplicationLocales(
+                                        LocaleListCompat.create(
+                                            Locale("pt")
+                                        )
                                     )
-                                )
-                                openDialog = false
+                                    openDialog = false
+                                }
+                            ) {
+                                Text(text = "Portuguese")
                             }
-                        ) {
-                            Text(text = "Portuguese")
-                        }
 
-                        OutlinedButton(
-                            colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent),
-                            border = BorderStroke(0.dp, Color.Transparent),
-                            modifier = Modifier.fillMaxWidth(),
-                            onClick = {
-                                AppCompatDelegate.setApplicationLocales(
-                                    LocaleListCompat.getEmptyLocaleList()
-                                )
-                                openDialog = false
+                            OutlinedButton(
+                                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent),
+                                border = BorderStroke(0.dp, Color.Transparent),
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = {
+                                    AppCompatDelegate.setApplicationLocales(
+                                        LocaleListCompat.getEmptyLocaleList()
+                                    )
+                                    openDialog = false
+                                }
+                            ) {
+                                Text(text = "System default")
                             }
-                        ) {
-                            Text(text = "System default")
                         }
                     }
                 }

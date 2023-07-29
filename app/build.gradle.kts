@@ -21,12 +21,17 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        resConfigs("en", "es", "fr")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -47,6 +52,10 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+//    androidResources{
+//        generateLocaleConfig = true
+//    }
 }
 
 dependencies {
