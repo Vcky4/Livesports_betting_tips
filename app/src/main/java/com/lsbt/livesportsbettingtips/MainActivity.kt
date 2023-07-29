@@ -7,8 +7,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.lsbt.livesportsbettingtips.datastore.Settings
+import com.lsbt.livesportsbettingtips.datastore.SettingsConstants
 import com.lsbt.livesportsbettingtips.navigation.NavHost
 import com.lsbt.livesportsbettingtips.ui.theme.LivesportsBettingTipsTheme
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +32,11 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+//    override fun attachBaseContext(newBase: Context) {
+//        super.attachBaseContext(
+//            LocaleHelper.setLocale(newBase, language)
+//        )
+//    }
 }
 
 

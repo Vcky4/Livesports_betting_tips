@@ -1,8 +1,10 @@
 package com.lsbt.livesportsbettingtips.navigation
 
 import android.annotation.SuppressLint
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,15 +15,21 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
@@ -41,6 +50,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.core.os.LocaleListCompat
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.lsbt.livesportsbettingtips.R
@@ -62,6 +73,7 @@ import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 import com.ramcosta.composedestinations.navigation.navigate
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(
@@ -84,6 +96,16 @@ fun NavHost() {
     val whatsapp = homeViewModel.whatsApp.observeAsState("").value
     val telegram = homeViewModel.telegram.observeAsState("").value
     val email = homeViewModel.email.observeAsState("").value
+    var openDialog by remember {
+        mutableStateOf(false)
+    }
+    val isFirstTime = homeViewModel.isFirstTime.observeAsState(false).value
+    LaunchedEffect(key1 = isFirstTime) {
+        if (isFirstTime) {
+            openDialog = true
+            homeViewModel.setFirstTime()
+        }
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -103,6 +125,20 @@ fun NavHost() {
                         .padding(16.dp)
                         .clickable {
 //                            uriHandler.openUri(uri)
+                            scope.launch {
+                                drawerState.close()
+                            }
+                        }
+                )
+                Text(
+                    stringResource(id = R.string.set_langauge),
+                    color = Background,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+                            openDialog = true
                             scope.launch {
                                 drawerState.close()
                             }
@@ -301,6 +337,103 @@ fun NavHost() {
                 engine = rememberAnimatedNavHostEngine(),
                 modifier = Modifier.padding(it),
             )
+            Dialog(
+                onDismissRequest = {
+                    openDialog = false
+                }
+            ) {
+                Card(
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Top
+                    ) {
+                        Text(
+                            text = "Choose language",
+                            style = MaterialTheme.typography.headlineLarge
+                        )
+
+                        OutlinedButton(
+                            colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent),
+                            border = BorderStroke(0.dp, Color.Transparent),
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                AppCompatDelegate.setApplicationLocales(
+                                    LocaleListCompat.create(
+                                        Locale("en")
+                                    )
+                                )
+                                openDialog = false
+                            }
+                        ) {
+                            Text(text = "English")
+                        }
+
+                        OutlinedButton(
+                            colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent),
+                            border = BorderStroke(0.dp, Color.Transparent),
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                AppCompatDelegate.setApplicationLocales(
+                                    LocaleListCompat.create(
+                                        Locale("es")
+                                    )
+                                )
+                                openDialog = false
+                            }
+                        ) {
+                            Text(text = "Spanish")
+                        }
+
+                        OutlinedButton(
+                            colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent),
+                            border = BorderStroke(0.dp, Color.Transparent),
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                AppCompatDelegate.setApplicationLocales(
+                                    LocaleListCompat.create(
+                                        Locale("fr")
+                                    )
+                                )
+                                openDialog = false
+                            }
+                        ) {
+                            Text(text = "French")
+                        }
+
+                        OutlinedButton(
+                            colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent),
+                            border = BorderStroke(0.dp, Color.Transparent),
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                AppCompatDelegate.setApplicationLocales(
+                                    LocaleListCompat.create(
+                                        Locale("pt")
+                                    )
+                                )
+                                openDialog = false
+                            }
+                        ) {
+                            Text(text = "Portuguese")
+                        }
+
+                        OutlinedButton(
+                            colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent),
+                            border = BorderStroke(0.dp, Color.Transparent),
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                AppCompatDelegate.setApplicationLocales(
+                                    LocaleListCompat.getEmptyLocaleList()
+                                )
+                                openDialog = false
+                            }
+                        ) {
+                            Text(text = "System default")
+                        }
+                    }
+                }
+            }
         }
     }
 

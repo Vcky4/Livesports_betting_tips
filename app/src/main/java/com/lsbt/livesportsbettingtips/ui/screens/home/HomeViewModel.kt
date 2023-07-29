@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -15,14 +16,20 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.lsbt.livesportsbettingtips.data.StaticData
 import com.lsbt.livesportsbettingtips.data.db.models.TipModel
+import com.lsbt.livesportsbettingtips.datastore.Settings
+import com.lsbt.livesportsbettingtips.datastore.SettingsConstants
 import com.lsbt.livesportsbettingtips.ui.screens.admin.ContactModel
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class HomeViewModel : ViewModel(), KoinComponent {
+    val settings: Settings by inject()
     private val database: DatabaseReference = Firebase.database.reference
     private val _whatsapp = MutableLiveData("")
     private val _telegram = MutableLiveData("")
     private val _email = MutableLiveData("")
+    private val _isFirstTime = MutableLiveData(false)
     private val _tips = MutableLiveData<List<TipModel>>()
     val tips: LiveData<List<TipModel>> = _tips
     val whatsApp = _whatsapp
@@ -32,10 +39,11 @@ class HomeViewModel : ViewModel(), KoinComponent {
     val vipItems = StaticData.vipItems
     val liveItems = StaticData.liveItems
     val contactItems = StaticData.contactItems
+    val isFirstTime = _isFirstTime
 
 
     //get all tips
-    fun getTips(tag:String) {
+    fun getTips(tag: String) {
         val childEventListener = object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val tipListener = object : ValueEventListener {
@@ -76,8 +84,22 @@ class HomeViewModel : ViewModel(), KoinComponent {
         database.child("tips").child(tag).ref.addChildEventListener(childEventListener)
     }
 
+    //set first time to false
+    fun setFirstTime() {
+        viewModelScope.launch {
+            settings.putPreference(SettingsConstants.IS_FIRST_RUN, false)
+        }
+    }
+
     //get data on init
     init {
+        viewModelScope.launch {
+            settings.getPreference(SettingsConstants.IS_FIRST_RUN, false).collect {
+                if (it) {
+                    _isFirstTime.value = true
+                }
+            }
+        }
         val contactListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val value = dataSnapshot.getValue<ContactModel>()

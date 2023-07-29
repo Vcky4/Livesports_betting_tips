@@ -41,11 +41,12 @@
     <string name="tennis_tips">Tennis tips</string>
     <string name="basketball_tips">Basketball tips</string>
     <string name="football_tips">Football tips</string>
-    <string name="dialy_sure_tips">Dialy Sure Tips</string>
-    <string name="telegram">Telegram</string>
-    <string name="email">Email</string>
-    <string name="whatsapp">WhatsApp</string>
+    <string name="dialy_sure_tips">Daily Sure Tips</string>
+    <string name="telegram" translatable="false">Telegram</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="whatsapp" translatable="false">WhatsApp</string>
     <string name="about_us">About Us</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="terms_and_conditions">Terms And Conditions</string>
+    <string name="set_langauge">Set Langauge</string>
 </resources>
