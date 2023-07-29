@@ -30,4 +30,19 @@
     <string name="cancel">Cancel</string>
     <string name="delete">delete</string>
     <string name="add">Add</string>
+    <string name="live_match">Live match</string>
+    <string name="live_score">Live Score</string>
+    <string name="previous_draws_results">Previous Draws Results</string>
+    <string name="previous_correct_score">Previous Correct Score</string>
+    <string name="special_offers">Special offers</string>
+    <string name="odds_vip">50+ odds VIP</string>
+    <string name="fixed_draws">Fixed draws</string>
+    <string name="correct_scores">Correct scores</string>
+    <string name="tennis_tips">Tennis tips</string>
+    <string name="basketball_tips">Basketball tips</string>
+    <string name="football_tips">Football tips</string>
+    <string name="dialy_sure_tips">Dialy Sure Tips</string>
+    <string name="telegram">Telegram</string>
+    <string name="email">Email</string>
+    <string name="whatsapp">WhatsApp</string>
 </resources>

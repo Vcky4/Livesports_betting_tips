@@ -1,5 +1,6 @@
 package com.lsbt.livesportsbettingtips.data
 
+import androidx.compose.ui.res.stringResource
 import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.data.db.models.HomeItemModel
 import com.lsbt.livesportsbettingtips.data.db.models.NotificationModel
@@ -9,25 +10,25 @@ object StaticData {
     val freeItems = listOf(
         HomeItemModel(
             id = 1,
-            title = "Daily Sure Tips",
+            title = R.string.dialy_sure_tips,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.tips_and_updates
         ),
         HomeItemModel(
             id = 2,
-            title = "Football Tips",
+            title = R.string.football_tips,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.sports_basketball
         ),
         HomeItemModel(
             id = 3,
-            title = "Basketball Tips",
+            title = R.string.basketball_tips,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.sports_basketball
         ),
         HomeItemModel(
             id = 4,
-            title = "Tennis Tips",
+            title = R.string.tennis_tips,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.sports_tennis
         ),
@@ -36,37 +37,37 @@ object StaticData {
     val vipItems = listOf(
         HomeItemModel(
             id = 1,
-            title = "Correct Score",
+            title = R.string.correct_scores,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.sports_score
         ),
         HomeItemModel(
             id = 2,
-            title = "Fixed draws",
+            title = R.string.fixed_draws,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.gps_fixed
         ),
         HomeItemModel(
             id = 3,
-            title = "50+ odds vip",
+            title = R.string.odds_vip,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.casino
         ),
         HomeItemModel(
             id = 4,
-            title = "Special offers",
+            title = R.string.special_offers,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.local_offer
         ),
         HomeItemModel(
             id = 5,
-            title = "Previous correct score",
+            title = R.string.previous_correct_score,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.preview
         ),
         HomeItemModel(
             id = 6,
-            title = "Previous Draws results",
+            title = R.string.previous_draws_results,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.bar_chart
         ),
@@ -75,13 +76,13 @@ object StaticData {
     val liveItems = listOf(
         HomeItemModel(
             id = 5,
-            title = "Live Score",
+            title =R.string.live_score,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.sports_score,
         ),
         HomeItemModel(
             id = 6,
-            title = "Live Match",
+            title = R.string.live_match,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.live_tv
         ),
@@ -90,19 +91,19 @@ object StaticData {
     val contactItems = listOf(
         HomeItemModel(
             id = 5,
-            title = "WhatsApp",
+            title = R.string.whatsapp,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.whatsapp,
         ),
         HomeItemModel(
             id = 6,
-            title = "Email",
+            title = R.string.email,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.outline_email
         ),
         HomeItemModel(
             id = 7,
-            title = "Telegram",
+            title = R.string.telegram,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.telegram
         ),
