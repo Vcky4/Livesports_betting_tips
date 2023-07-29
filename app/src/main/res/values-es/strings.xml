@@ -45,4 +45,5 @@
     <string name="about_us">Sobre nosotros</string>
     <string name="privacy_policy">política de privacidad</string>
     <string name="terms_and_conditions">Términos y condiciones</string>
+    <string name="set_langauge">Elegir lenguaje</string>
 </resources>
