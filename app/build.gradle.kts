@@ -94,4 +94,7 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.datastore.preferences)
     ksp(libs.room.compiler)
+
+    //pdf viewer
+    implementation(libs.pspdfkit)
 }
