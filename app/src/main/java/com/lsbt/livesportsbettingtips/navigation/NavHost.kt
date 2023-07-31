@@ -125,7 +125,7 @@ fun NavHost() {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                            navController.navigate(PdfDisplayDestination(0))
+                            navController.navigate(PdfDisplayDestination("about"))
                             scope.launch {
                                 drawerState.close()
                             }
@@ -226,7 +226,7 @@ fun NavHost() {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-//                           navController.navigate(VipDestination)
+                            navController.navigate(PdfDisplayDestination("privacy"))
                             scope.launch {
                                 drawerState.close()
                             }
@@ -240,7 +240,7 @@ fun NavHost() {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-//                           navController.navigate(VipDestination)
+                            navController.navigate(PdfDisplayDestination("terms"))
                             scope.launch {
                                 drawerState.close()
                             }
@@ -280,6 +280,7 @@ fun NavHost() {
                     IconButton(onClick = {
                         if (currentDestination == AdminDestination
                             || currentDestination == NotificationsDestination
+                            || currentDestination == PdfDisplayDestination
                         ) {
                             navController.navigateUp()
                         } else {
@@ -292,6 +293,7 @@ fun NavHost() {
                             painter = painterResource(
                                 id = if (currentDestination == AdminDestination
                                     || currentDestination == NotificationsDestination
+                                    || currentDestination == PdfDisplayDestination
                                 ) {
                                     R.drawable.arrow_back
                                 } else {
