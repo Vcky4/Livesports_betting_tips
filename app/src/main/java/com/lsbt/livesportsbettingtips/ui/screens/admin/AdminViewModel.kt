@@ -30,6 +30,7 @@ class AdminViewModel : ViewModel(), KoinComponent {
     val tips: LiveData<List<TipModel>> = _tips
     val token: LiveData<String> = _token
     val freeItems = StaticData.freeItems
+    val vipItems = StaticData.vipItems
     val contactItems = StaticData.contactItems
     val whatsApp = _whatsapp
     val telegram = _telegram

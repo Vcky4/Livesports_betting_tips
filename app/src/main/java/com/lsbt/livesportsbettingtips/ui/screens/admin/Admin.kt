@@ -63,6 +63,7 @@ fun Admin(navigator: DestinationsNavigator) {
     val viewModel: AdminViewModel = koinViewModel()
     val token = viewModel.token.observeAsState(initial = "").value
     val freeItems = viewModel.freeItems
+    val vipItem = viewModel.vipItems
     val contactItems = viewModel.contactItems
     val context = LocalContext.current
     var contactTrigger by remember {
@@ -108,6 +109,36 @@ fun Admin(navigator: DestinationsNavigator) {
             ) {
                 items(
                     items = freeItems,
+                ) {
+                    val title = stringResource(id = it.title)
+                    HomeItem(it) {
+                        navigator.navigate(
+                            AdminDetailScreenDestination(
+                                title
+                            )
+                        )
+                    }
+                }
+            }
+            Text(
+                text = stringResource(id = R.string.vip),
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier.heightIn(max = 200.dp)
+            ) {
+                items(
+                    items = vipItem.filter {
+                        it.title == R.string.previous_correct_score
+                                || it.title == R.string.previous_draws_results
+                    },
                 ) {
                     val title = stringResource(id = it.title)
                     HomeItem(it) {

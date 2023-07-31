@@ -93,7 +93,13 @@ fun Home(navigator: DestinationsNavigator) {
             ) {
                 val title = stringResource(id = it.title)
                 HomeItem(it) {
-                    navigator.navigate(VipPinDestination(title))
+                    if (it.title == R.string.previous_correct_score
+                        || it.title == R.string.previous_draws_results
+                    ) {
+                        navigator.navigate(DetailScreenDestination(title))
+                    } else {
+                        navigator.navigate(VipPinDestination(title))
+                    }
                 }
             }
         }
