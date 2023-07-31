@@ -60,6 +60,7 @@ import com.lsbt.livesportsbettingtips.ui.screens.appCurrentDestinationAsState
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.AdminDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.Destination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.NotificationsDestination
+import com.lsbt.livesportsbettingtips.ui.screens.destinations.PdfDisplayDestination
 import com.lsbt.livesportsbettingtips.ui.screens.home.HomeViewModel
 import com.lsbt.livesportsbettingtips.ui.screens.startAppDestination
 import com.lsbt.livesportsbettingtips.ui.theme.Background
@@ -124,7 +125,7 @@ fun NavHost() {
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-//                            uriHandler.openUri(uri)
+                            navController.navigate(PdfDisplayDestination(0))
                             scope.launch {
                                 drawerState.close()
                             }

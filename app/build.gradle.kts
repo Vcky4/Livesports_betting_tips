@@ -96,5 +96,5 @@ dependencies {
     ksp(libs.room.compiler)
 
     //pdf viewer
-    implementation(libs.pspdfkit)
+    implementation(libs.bouquet)
 }

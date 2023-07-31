@@ -27,10 +27,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.pspdfkit.ui.PdfActivity"
-            android:windowSoftInputMode="adjustNothing" />
-
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
             android:enabled="false"
