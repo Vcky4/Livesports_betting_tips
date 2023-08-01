@@ -35,6 +35,8 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
         viewModel.getTips(trigger)
     }
     val tips = viewModel.tips.observeAsState(listOf()).value
+    val prev = stringResource(id = R.string.previous_correct_score)
+    val prev2 = stringResource(id = R.string.previous_draws_results)
     Column {
         Row(
             modifier = Modifier.padding(vertical = 14.dp),
@@ -48,7 +50,11 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                 )
             }
             Text(
-                text = trigger,
+                text = when (trigger) {
+                    prev -> stringResource(id = R.string.correct_scores)
+                    prev2 -> stringResource(id = R.string.fixed_draws)
+                    else -> trigger
+                },
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
@@ -56,33 +62,36 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
             )
         }
         LazyColumn {
-            item {
-                Text(
-                    text = stringResource(id = R.string.today),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    modifier = Modifier.padding(start = 16.dp)
-                )
-            }
-            if (tips.none { DateUtils.isToday(it.date) }) {
+
+            if (trigger != prev && trigger != prev2) {
                 item {
                     Text(
-                        text = stringResource(id = R.string.no_tips_available),
+                        text = stringResource(id = R.string.today),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 30.dp),
-                        textAlign = TextAlign.Center
+                        modifier = Modifier.padding(start = 16.dp)
                     )
                 }
-            } else {
-                items(
-                    items = tips.filter { DateUtils.isToday(it.date) }
-                ) {
-                    DetailItem(it)
+                if (tips.none { DateUtils.isToday(it.date) }) {
+                    item {
+                        Text(
+                            text = stringResource(id = R.string.no_tips_available),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 30.dp),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                } else {
+                    items(
+                        items = tips.filter { DateUtils.isToday(it.date) }
+                    ) {
+                        DetailItem(it)
+                    }
                 }
             }
             item {
