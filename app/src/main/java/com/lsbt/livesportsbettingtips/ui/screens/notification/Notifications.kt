@@ -10,11 +10,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -34,7 +33,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.R
-import com.lsbt.livesportsbettingtips.data.StaticData
 import com.lsbt.livesportsbettingtips.ui.screens.admin.AdminViewModel
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
 import com.lsbt.livesportsbettingtips.ui.theme.Secondary
@@ -49,7 +47,7 @@ import org.koin.androidx.compose.koinViewModel
 @Destination
 @Composable
 fun Notifications(navigator: DestinationsNavigator) {
-    val viewModel: AdminViewModel=  koinViewModel()
+    val viewModel: AdminViewModel = koinViewModel()
     var title by remember {
         mutableStateOf("")
     }
@@ -70,6 +68,9 @@ fun Notifications(navigator: DestinationsNavigator) {
         Log.e("TAG", "notification: " + e.message)
     }
 
+    var processing by remember {
+        mutableStateOf(false)
+    }
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
             Modifier
@@ -151,20 +152,30 @@ fun Notifications(navigator: DestinationsNavigator) {
             )
             Spacer(modifier = Modifier.height(20.dp))
             Button(
-                onClick = { viewModel.sendNotification(notification) },
+                onClick = {
+                    processing = true
+                    viewModel.sendNotification(notification)
+                    title = ""
+                    body = ""
+                    processing = false
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = TextDeep,
                     contentColor = Color.White
                 ),
                 modifier = Modifier.padding(horizontal = 26.dp)
             ) {
-                Text(
-                    text = stringResource(id = R.string.post),
-                    fontSize = 18.sp,
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                if (!processing) {
+                    Text(
+                        text = stringResource(id = R.string.post),
+                        fontSize = 18.sp,
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                } else {
+                    CircularProgressIndicator(color = Color.White)
+                }
             }
         }
     }

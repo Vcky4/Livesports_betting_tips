@@ -34,7 +34,7 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
     }
     private val fcmApi = "https://fcm.googleapis.com/fcm/send"
     private val serverKey =
-        "key=" + "BGvmn4llc1gnffZ5n1zwd8XifRN38wtZqjpsjLejqxXYRWrYh-b9tjC8PWJCWlBoJK-HudZPj2nukbiUDJX82p0"
+        "key=" + "AAAAEeR-yAM:APA91bHoWnh8weLGtIdPywMbAwefu1DNk597kOAHDbBkWIWBZfelIIP9SD0XKCqg3rn6SW3tneosEgIEjRJ9-3j2mKyTZDOGX_9cUH_b4vMWUpEwF88t-xewg46RtxiQzktXR4h8Dfko"
     private val contentType = "application/json"
     private val _token = MutableLiveData<String>()
     private val _whatsapp = MutableLiveData("")

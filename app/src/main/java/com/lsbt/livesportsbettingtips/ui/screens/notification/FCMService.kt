@@ -54,12 +54,12 @@ class FCMService : FirebaseMessagingService() {
 
         val largeIcon = BitmapFactory.decodeResource(
             resources,
-            R.drawable.delete
+            R.drawable.logo
         )
 
         val notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
-            .setSmallIcon(R.drawable.delete)
+            .setSmallIcon(R.drawable.logo)
             .setLargeIcon(largeIcon)
             .setContentTitle(p0.data["title"])
             .setContentText(p0.data["message"])
@@ -75,7 +75,7 @@ class FCMService : FirebaseMessagingService() {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun setupChannels(notificationManager: NotificationManager?) {
         val adminChannelName = "New notification"
-        val adminChannelDescription = "Device to devie notification"
+        val adminChannelDescription = "lsbt notification"
 
         val adminChannel = NotificationChannel(
             ADMIN_CHANNEL_ID,
