@@ -72,6 +72,7 @@ import com.lsbt.livesportsbettingtips.utils.sendMail
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 import com.ramcosta.composedestinations.navigation.navigate
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import java.util.Locale
@@ -101,6 +102,17 @@ fun NavHost() {
         mutableStateOf(false)
     }
     val isFirstTime = homeViewModel.isFirstTime.observeAsState(false).value
+    var clickCount by remember { mutableStateOf(0) }
+    var lastClickTime by remember { mutableStateOf(0L) }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(3000)
+            if (System.currentTimeMillis() - lastClickTime >= 3000) {
+                clickCount = 0 // Reset click count if no new click after 3 seconds
+            }
+        }
+    }
     LaunchedEffect(key1 = isFirstTime) {
         if (isFirstTime) {
             openDialog = true
@@ -256,9 +268,14 @@ fun NavHost() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            navController.navigate(AdminDestination)
-                            scope.launch {
-                                drawerState.close()
+                            lastClickTime = System.currentTimeMillis()
+                            clickCount++
+                            if (clickCount >= 10) {
+                                clickCount = 0 // Reset click count
+                                navController.navigate(AdminDestination)
+                                scope.launch {
+                                    drawerState.close()
+                                }
                             }
                         }
                 )
@@ -310,7 +327,7 @@ fun NavHost() {
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    if (currentDestination != AdminDestination
+                    if (currentDestination == AdminDestination
                         && currentDestination != NotificationsDestination
                     ) {
                         IconButton(onClick = { navController.navigate(NotificationsDestination) }) {

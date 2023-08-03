@@ -13,7 +13,7 @@ val modules = module {
     }
 
     viewModel {
-        AdminViewModel()
+        AdminViewModel(androidApplication())
     }
 
     single {

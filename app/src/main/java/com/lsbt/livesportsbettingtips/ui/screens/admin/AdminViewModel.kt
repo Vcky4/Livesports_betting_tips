@@ -1,10 +1,16 @@
 package com.lsbt.livesportsbettingtips.ui.screens.admin
 
+import android.app.Application
 import android.content.ContentValues.TAG
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -18,10 +24,18 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.lsbt.livesportsbettingtips.data.StaticData
 import com.lsbt.livesportsbettingtips.data.db.models.TipModel
+import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 
-class AdminViewModel : ViewModel(), KoinComponent {
+class AdminViewModel(private val context: Application) : ViewModel(), KoinComponent {
     private val database: DatabaseReference = Firebase.database.reference
+    private val requestQueue: RequestQueue by lazy {
+        Volley.newRequestQueue(context)
+    }
+    private val fcmApi = "https://fcm.googleapis.com/fcm/send"
+    private val serverKey =
+        "key=" + "BGvmn4llc1gnffZ5n1zwd8XifRN38wtZqjpsjLejqxXYRWrYh-b9tjC8PWJCWlBoJK-HudZPj2nukbiUDJX82p0"
+    private val contentType = "application/json"
     private val _token = MutableLiveData<String>()
     private val _whatsapp = MutableLiveData("")
     private val _telegram = MutableLiveData("")
@@ -133,6 +147,27 @@ class AdminViewModel : ViewModel(), KoinComponent {
 
         }
         database.child("tips").child(tag).ref.addChildEventListener(childEventListener)
+    }
+
+    private fun sendNotification(notification: JSONObject) {
+        Log.e("TAG", "sendNotification")
+        val jsonObjectRequest = object : JsonObjectRequest(fcmApi, notification,
+            Response.Listener<JSONObject> { response ->
+                Log.i("TAG", "onResponse: $response")
+            },
+            Response.ErrorListener {
+                Toast.makeText(context, "Request error", Toast.LENGTH_LONG).show()
+                Log.i("TAG", "onErrorResponse: Didn't work")
+            }) {
+
+            override fun getHeaders(): Map<String, String> {
+                val params = HashMap<String, String>()
+                params["Authorization"] = serverKey
+                params["Content-Type"] = contentType
+                return params
+            }
+        }
+        requestQueue.add(jsonObjectRequest)
     }
 
     //get data on init

@@ -32,6 +32,9 @@ room = "2.5.2"
 
 # dataStore
 datastore = "1.0.0"
+firebase-inappmessaging-display-ktx = "20.3.2"
+firebase-messaging-ktx = "23.2.0"
+volley = "1.2.1"
 
 [libraries]
 bouquet = { module = "io.github.grizzi91:bouquet", version.ref = "bouquet" }
@@ -67,6 +70,9 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 # dataStore
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+firebase-inappmessaging-display-ktx = { group = "com.google.firebase", name = "firebase-inappmessaging-display-ktx", version.ref = "firebase-inappmessaging-display-ktx" }
+firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebase-messaging-ktx" }
+volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
 
 
 
