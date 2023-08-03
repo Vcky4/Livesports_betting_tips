@@ -152,12 +152,12 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
      fun sendNotification(notification: JSONObject) {
         Log.e("TAG", "sendNotification")
         val jsonObjectRequest = object : JsonObjectRequest(fcmApi, notification,
-            Response.Listener<JSONObject> { response ->
+            Response.Listener { response ->
                 Log.i("TAG", "onResponse: $response")
             },
             Response.ErrorListener {
                 Toast.makeText(context, "Request error", Toast.LENGTH_LONG).show()
-                Log.i("TAG", "onErrorResponse: Didn't work")
+                Log.i("TAG", "onErrorResponse: Didn't work $it")
             }) {
 
             override fun getHeaders(): Map<String, String> {
