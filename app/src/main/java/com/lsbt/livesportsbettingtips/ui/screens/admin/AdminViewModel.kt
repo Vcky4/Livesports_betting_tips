@@ -149,7 +149,7 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
         database.child("tips").child(tag).ref.addChildEventListener(childEventListener)
     }
 
-    private fun sendNotification(notification: JSONObject) {
+     fun sendNotification(notification: JSONObject) {
         Log.e("TAG", "sendNotification")
         val jsonObjectRequest = object : JsonObjectRequest(fcmApi, notification,
             Response.Listener<JSONObject> { response ->

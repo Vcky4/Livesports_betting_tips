@@ -49,4 +49,9 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="terms_and_conditions">Terms And Conditions</string>
     <string name="set_langauge">Set Langauge</string>
+    <string name="post_a_notification">Post a notification</string>
+    <string name="please_enter_the_details">Please enter the details</string>
+    <string name="body">Write body</string>
+    <string name="what_the_title">WHat\'s the title</string>
+    <string name="post">Post</string>
 </resources>

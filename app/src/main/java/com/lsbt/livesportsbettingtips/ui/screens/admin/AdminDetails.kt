@@ -108,6 +108,9 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
     var processing by remember {
         mutableStateOf(false)
     }
+    var status by remember {
+        mutableStateOf("pending")
+    }
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
 
@@ -252,6 +255,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                     DateFormat.format("MM", it.date).toString().toInt(),
                                     DateFormat.format("dd", it.date).toString().toInt()
                                 )
+                                status = it.status
                             }
                         }
                     }
@@ -279,6 +283,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                         editOpen = true
                         selectedDateText = "$dayOfMonth/${month + 1}/$year"
                         datePicker.updateDate(year, month, dayOfMonth)
+                        status = "pending"
                     }
                     .background(Primary, RoundedCornerShape(50))
                     .clip(RoundedCornerShape(50))
@@ -497,9 +502,22 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                         )
                                         Spacer(modifier = Modifier.width(5.dp))
                                         Icon(
-                                            painter = painterResource(id = R.drawable.outlined_flag),
+                                            painter = painterResource(
+                                                id = when (status) {
+                                                    "won" -> R.drawable.check_circle
+                                                    "lost" -> R.drawable.cancel_fill
+                                                    else -> R.drawable.outlined_flag
+                                                }
+                                            ),
                                             contentDescription = stringResource(id = R.string.flag),
-                                            tint = Primary
+                                            tint = Primary,
+                                            modifier = Modifier.clickable {
+                                                status = when (status) {
+                                                    "won" -> "lost"
+                                                    "lost" -> "pending"
+                                                    else -> "won"
+                                                }
+                                            }
                                         )
                                         Spacer(modifier = Modifier.width(5.dp))
                                         TextField(
@@ -662,10 +680,10 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                 homeScore.text,
                                 awayScore.text,
                                 odd.text,
-                                "pending",
+                                status,
                                 prediction.text,
                                 //convert selected date to timestamp
-                                date = date.timeInMillis
+                                date = date.timeInMillis,
                             ).addOnSuccessListener {
                                 Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
                                 processing = false
