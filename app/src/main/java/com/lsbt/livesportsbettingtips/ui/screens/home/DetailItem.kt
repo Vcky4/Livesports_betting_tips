@@ -33,25 +33,16 @@ import com.lsbt.livesportsbettingtips.ui.theme.CardColor2
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
 import com.lsbt.livesportsbettingtips.ui.theme.Secondary
 import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
-import java.util.Date
 
 @Composable
 fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
     //convert date to time and format it HH:mm
     val context = LocalContext.current
-    val time = if(DateUtils.isToday(item.date)){
-        DateUtils.formatDateTime(
-            context,
-            item.date,
-            DateUtils.FORMAT_SHOW_TIME
-        )
-    }else{
-        DateUtils.formatDateTime(
-            context,
-            item.date,
-            DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME
-        )
-    }
+    val time = DateUtils.formatDateTime(
+        context,
+        item.date,
+        DateUtils.FORMAT_SHOW_DATE
+    )
 
     Card(
         Modifier
@@ -116,7 +107,13 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                         )
                         Spacer(modifier = Modifier.width(5.dp))
                         Icon(
-                            painter = painterResource(id = R.drawable.outlined_flag),
+                            painter = painterResource(
+                                id = when (item.status) {
+                                    "won" -> R.drawable.check_circle
+                                    "lost" -> R.drawable.cancel_fill
+                                    else -> R.drawable.outlined_flag
+                                }
+                            ),
                             contentDescription = "flag",
                             tint = Primary
                         )

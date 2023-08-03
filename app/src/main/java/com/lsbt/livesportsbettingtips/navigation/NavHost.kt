@@ -272,10 +272,10 @@ fun NavHost() {
                             clickCount++
                             if (clickCount >= 10) {
                                 clickCount = 0 // Reset click count
-                                navController.navigate(AdminDestination)
                                 scope.launch {
                                     drawerState.close()
                                 }
+                                navController.navigate(AdminDestination)
                             }
                         }
                 )
