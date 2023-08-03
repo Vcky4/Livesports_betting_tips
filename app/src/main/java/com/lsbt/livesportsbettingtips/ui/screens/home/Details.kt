@@ -37,6 +37,11 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
     val tips = viewModel.tips.observeAsState(listOf()).value
     val prev = stringResource(id = R.string.previous_correct_score)
     val prev2 = stringResource(id = R.string.previous_draws_results)
+    val history = when (trigger) {
+        prev -> tips
+        prev2 -> tips
+        else -> tips.filter { !DateUtils.isToday(it.date) }
+    }
     Column {
         Row(
             modifier = Modifier.padding(vertical = 14.dp),
@@ -103,7 +108,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     modifier = Modifier.padding(start = 16.dp)
                 )
             }
-            if (tips.none { !DateUtils.isToday(it.date) }) {
+            if (history.isEmpty()) {
                 item {
                     Text(
                         text = stringResource(id = R.string.no_tips_history_available),
@@ -118,7 +123,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                 }
             } else {
                 items(
-                    items = tips.filter { !DateUtils.isToday(it.date) }
+                    items = history
                 ) {
                     DetailItem(it)
                 }

@@ -1,7 +1,11 @@
 package com.lsbt.livesportsbettingtips.ui.screens.admin
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.text.format.DateFormat
 import android.text.format.DateUtils
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -63,6 +67,7 @@ import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
+import java.util.Calendar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -104,7 +109,33 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
         mutableStateOf(false)
     }
     val context = LocalContext.current
+    val calendar = Calendar.getInstance()
+
+// Fetching current year, month and day
+    val year = calendar[Calendar.YEAR]
+    val month = calendar[Calendar.MONTH]
+    val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
+
+    var selectedDateText by remember { mutableStateOf("$dayOfMonth/${month + 1}/$year") }
+
     val tips = viewModel.tips.observeAsState(listOf()).value
+    val prev = stringResource(id = R.string.previous_correct_score)
+    val prev2 = stringResource(id = R.string.previous_draws_results)
+    val history = when (trigger) {
+        prev -> tips
+        prev2 -> tips
+        else -> tips.filter { !DateUtils.isToday(it.date) }
+    }
+
+    val datePicker = DatePickerDialog(
+        context,
+        AlertDialog.THEME_HOLO_DARK,
+        { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
+            selectedDateText = "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
+        },
+        year, month, dayOfMonth,
+
+        )
     Box {
         Column {
             Row(
@@ -163,6 +194,16 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                 awayScore = TextFieldValue(it.awayScore)
                                 odd = TextFieldValue(it.odd)
                                 editOpen = true
+                                selectedDateText = DateUtils.formatDateTime(
+                                    context,
+                                    it.date,
+                                    DateUtils.FORMAT_SHOW_DATE
+                                )
+                                datePicker.updateDate(
+                                    DateFormat.format("yyyy", it.date).toString().toInt(),
+                                    DateFormat.format("MM", it.date).toString().toInt(),
+                                    DateFormat.format("dd", it.date).toString().toInt()
+                                )
                             }
                         }
                     }
@@ -175,7 +216,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                             modifier = Modifier.padding(start = 16.dp)
                         )
                     }
-                    if (tips.none { !DateUtils.isToday(it.date) }) {
+                    if (history.isEmpty()) {
                         item {
                             Text(
                                 text = stringResource(id = R.string.no_tips_history_available),
@@ -189,7 +230,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                             )
                         }
                     } else {
-                        items(tips.filter { !DateUtils.isToday(it.date) }) {
+                        items(history) {
                             DetailItem(it) {
                                 //set values
                                 key = it.id
@@ -201,6 +242,16 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                 awayScore = TextFieldValue(it.awayScore)
                                 odd = TextFieldValue(it.odd)
                                 editOpen = true
+                                selectedDateText = DateUtils.formatDateTime(
+                                    context,
+                                    it.date,
+                                    DateUtils.FORMAT_SHOW_DATE
+                                )
+                                datePicker.updateDate(
+                                    DateFormat.format("yyyy", it.date).toString().toInt(),
+                                    DateFormat.format("MM", it.date).toString().toInt(),
+                                    DateFormat.format("dd", it.date).toString().toInt()
+                                )
                             }
                         }
                     }
@@ -226,6 +277,8 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                         awayScore = TextFieldValue("")
                         odd = TextFieldValue("")
                         editOpen = true
+                        selectedDateText = "$dayOfMonth/${month + 1}/$year"
+                        datePicker.updateDate(year, month, dayOfMonth)
                     }
                     .background(Primary, RoundedCornerShape(50))
                     .clip(RoundedCornerShape(50))
@@ -364,9 +417,10 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                     )
                                 }
                                 Text(
-                                    text = "21:30", fontSize = 18.sp,
+                                    text = selectedDateText, fontSize = 18.sp,
                                     color = Color.White,
                                     modifier = Modifier
+                                        .clickable { datePicker.show() }
                                 )
                             }
                             Column(
@@ -593,6 +647,12 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     Button(
                         onClick = {
                             processing = true
+                            val date = Calendar.getInstance()
+                            date.set(
+                                datePicker.datePicker.year,
+                                datePicker.datePicker.month,
+                                datePicker.datePicker.dayOfMonth
+                            )
                             viewModel.saveTip(
                                 trigger,
                                 key,
@@ -603,7 +663,9 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                 awayScore.text,
                                 odd.text,
                                 "pending",
-                                prediction.text
+                                prediction.text,
+                                //convert selected date to timestamp
+                                date = date.timeInMillis
                             ).addOnSuccessListener {
                                 Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
                                 processing = false
