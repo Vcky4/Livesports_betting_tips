@@ -54,4 +54,7 @@
     <string name="body">Write body</string>
     <string name="what_the_title">WHat\'s the title</string>
     <string name="post">Post</string>
+    <string name="announcement">Announcement</string>
+    <string name="type_it_here">Type it here</string>
+    <string name="post_an_announcement">Post an announcement</string>
 </resources>

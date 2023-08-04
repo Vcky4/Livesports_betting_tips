@@ -24,6 +24,7 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.lsbt.livesportsbettingtips.data.StaticData
 import com.lsbt.livesportsbettingtips.data.db.models.TipModel
+import org.json.JSONException
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 
@@ -40,12 +41,14 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
     private val _whatsapp = MutableLiveData("")
     private val _telegram = MutableLiveData("")
     private val _email = MutableLiveData("")
+    private val _announcement = MutableLiveData("")
     private val _tips = MutableLiveData<List<TipModel>>()
     val tips: LiveData<List<TipModel>> = _tips
     val token: LiveData<String> = _token
     val freeItems = StaticData.freeItems
     val vipItems = StaticData.vipItems
     val contactItems = StaticData.contactItems
+    val announcement = _announcement
     val whatsApp = _whatsapp
     val telegram = _telegram
     val email = _email
@@ -66,6 +69,12 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
     //set email address
     fun setEmail(email: String) =
         database.child("contacts").child("email").setValue(email)
+
+    //set announcement
+    fun setAnnouncement(text: String) =
+        database.child("announcement").setValue(text).addOnSuccessListener {
+            sendNotification("Announcement", text)
+        }
 
     fun clearTips(tag: String) = database.child("tips").child(tag).removeValue()
 
@@ -104,6 +113,10 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
         return database.child("tips").child(tag).child(key ?: "").setValue(tip)
             .addOnSuccessListener {
                 getTips(tag)
+                sendNotification(
+                    "New $tag\u200E\uFE0F\u200D\uD83D\uDD25",
+                    "$league\n$home vs $away\n$prediction\n$odd\u200E\uFE0F\u200D\uD83D\uDD25"
+                )
             }
     }
 
@@ -149,8 +162,21 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
         database.child("tips").child(tag).ref.addChildEventListener(childEventListener)
     }
 
-     fun sendNotification(notification: JSONObject) {
+    fun sendNotification(title: String, body: String) {
         Log.e("TAG", "sendNotification")
+        val topic = "Tips" //topic has to match what the receiver subscribed to
+
+        val notification = JSONObject()
+        val notifcationBody = JSONObject()
+
+        try {
+            notifcationBody.put("title", title)
+            notifcationBody.put("message", body)   //Enter your notification message
+            notification.put("to", topic)
+            notification.put("data", notifcationBody)
+        } catch (e: JSONException) {
+            Log.e("TAG", "notification: " + e.message)
+        }
         val jsonObjectRequest = object : JsonObjectRequest(fcmApi, notification,
             Response.Listener { response ->
                 Log.i("TAG", "onResponse: $response")
@@ -185,6 +211,19 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
             }
         }
         database.child("contacts").addValueEventListener(contactListener)
+
+        //get announcement
+        val announcementListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val value = dataSnapshot.getValue<String>()
+                _announcement.value = value ?: ""
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        database.child("announcement").addValueEventListener(announcementListener)
     }
 
 }
