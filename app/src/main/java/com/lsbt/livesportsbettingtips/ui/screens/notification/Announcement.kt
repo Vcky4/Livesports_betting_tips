@@ -44,12 +44,12 @@ fun Announcement(navigator: DestinationsNavigator) {
             Modifier
                 .background(Secondary, shape = MaterialTheme.shapes.medium)
                 .fillMaxWidth(0.9f)
-                .fillMaxHeight(0.9f)
+                .fillMaxHeight(0.8f)
                 .scrollable(
                     orientation = Orientation.Vertical,
                     state = rememberScrollState()
                 )
-                .padding(vertical = 20.dp, horizontal = 5.dp),
+                .padding(vertical = 16.dp, horizontal = 8.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -64,7 +64,7 @@ fun Announcement(navigator: DestinationsNavigator) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = announcement,
-                fontSize = 18.sp,
+                fontSize = 22.sp,
                 color = TextDeep,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
