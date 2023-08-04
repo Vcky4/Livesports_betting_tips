@@ -299,6 +299,7 @@ fun NavHost() {
                         if (currentDestination == AdminDestination
                             || currentDestination == NotificationsDestination
                             || currentDestination == PdfDisplayDestination
+                            || currentDestination == AnnouncementDestination
                         ) {
                             navController.navigateUp()
                         } else {

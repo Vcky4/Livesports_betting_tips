@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -60,6 +61,9 @@ fun Notifications(navigator: DestinationsNavigator) {
     val context = LocalContext.current
     var processing by remember {
         mutableStateOf(false)
+    }
+    LaunchedEffect(key1 = announcement) {
+        title = announcement
     }
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
