@@ -1,14 +1,18 @@
 package com.lsbt.livesportsbettingtips.ui.screens.notification
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.ui.screens.admin.AdminViewModel
-import com.lsbt.livesportsbettingtips.ui.theme.Primary
 import com.lsbt.livesportsbettingtips.ui.theme.Secondary
 import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
 import com.ramcosta.composedestinations.annotation.Destination
@@ -41,7 +44,12 @@ fun Announcement(navigator: DestinationsNavigator) {
             Modifier
                 .background(Secondary, shape = MaterialTheme.shapes.medium)
                 .fillMaxWidth(0.9f)
-                .padding(vertical = 50.dp, horizontal = 16.dp),
+                .fillMaxHeight(0.9f)
+                .scrollable(
+                    orientation = Orientation.Vertical,
+                    state = rememberScrollState()
+                )
+                .padding(vertical = 20.dp, horizontal = 5.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -57,9 +65,11 @@ fun Announcement(navigator: DestinationsNavigator) {
             Text(
                 text = announcement,
                 fontSize = 18.sp,
-                color = Primary,
+                color = TextDeep,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxHeight(0.9f)
+                    .fillMaxWidth()
             )
         }
     }
