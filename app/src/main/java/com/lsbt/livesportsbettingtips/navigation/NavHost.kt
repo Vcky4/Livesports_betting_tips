@@ -58,6 +58,7 @@ import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.ui.screens.NavGraphs
 import com.lsbt.livesportsbettingtips.ui.screens.appCurrentDestinationAsState
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.AdminDestination
+import com.lsbt.livesportsbettingtips.ui.screens.destinations.AnnouncementDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.Destination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.NotificationsDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.PdfDisplayDestination
@@ -327,10 +328,15 @@ fun NavHost() {
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    if (currentDestination == AdminDestination
-                        && currentDestination != NotificationsDestination
+                    if (currentDestination != NotificationsDestination
                     ) {
-                        IconButton(onClick = { navController.navigate(NotificationsDestination) }) {
+                        IconButton(onClick = {
+                            if (currentDestination == AdminDestination) {
+                                navController.navigate(NotificationsDestination)
+                            } else {
+                                navController.navigate(AnnouncementDestination)
+                            }
+                        }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.notifications),
                                 contentDescription = "notification",
