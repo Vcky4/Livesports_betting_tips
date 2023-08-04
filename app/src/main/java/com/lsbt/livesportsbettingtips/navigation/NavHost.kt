@@ -312,6 +312,7 @@ fun NavHost() {
                                 id = if (currentDestination == AdminDestination
                                     || currentDestination == NotificationsDestination
                                     || currentDestination == PdfDisplayDestination
+                                    || currentDestination == AnnouncementDestination
                                 ) {
                                     R.drawable.arrow_back
                                 } else {
@@ -329,6 +330,7 @@ fun NavHost() {
                         fontWeight = FontWeight.Bold
                     )
                     if (currentDestination != NotificationsDestination
+                        && currentDestination != AnnouncementDestination
                     ) {
                         IconButton(onClick = {
                             if (currentDestination == AdminDestination) {
