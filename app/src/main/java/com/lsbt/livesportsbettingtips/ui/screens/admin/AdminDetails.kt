@@ -125,9 +125,9 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
     val prev = stringResource(id = R.string.previous_correct_score)
     val prev2 = stringResource(id = R.string.previous_draws_results)
     val history = when (trigger) {
-        prev -> tips
-        prev2 -> tips
-        else -> tips.filter { !DateUtils.isToday(it.date) }
+        prev -> tips.sortedByDescending { it.date }
+        prev2 -> tips.sortedByDescending { it.date }
+        else -> tips.filter { !DateUtils.isToday(it.date) }.sortedByDescending { it.date }
     }
 
     val datePicker = DatePickerDialog(

@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.R
@@ -71,7 +72,9 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                         text = item.league, fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color.White,
-                        modifier = Modifier
+                        modifier = Modifier,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
                 Text(

@@ -164,7 +164,7 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
 
     fun sendNotification(title: String, body: String) {
         Log.e("TAG", "sendNotification")
-        val topic = "Tips" //topic has to match what the receiver subscribed to
+        val topic = "/topics/Tips" //topic has to match what the receiver subscribed to
 
         val notification = JSONObject()
         val notifcationBody = JSONObject()
