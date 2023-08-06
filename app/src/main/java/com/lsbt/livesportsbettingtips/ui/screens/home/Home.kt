@@ -67,7 +67,12 @@ fun Home(navigator: DestinationsNavigator) {
             items(
                 items = freeItems,
             ) {
-                val title = stringResource(id = it.title)
+                val title = when (it.title) {
+                    R.string.dialy_sure_tips -> "Daily Sure Tips"
+                    R.string.football_tips -> "Football tips"
+                    R.string.basketball_tips -> "Basketball tips"
+                    else -> "Tennis tips"
+                }
                 HomeItem(it) {
                     navigator.navigate(DetailScreenDestination(title))
                 }
@@ -91,7 +96,10 @@ fun Home(navigator: DestinationsNavigator) {
             items(
                 items = vipItems,
             ) {
-                val title = stringResource(id = it.title)
+                val title = when (it.title) {
+                    R.string.previous_draws_results -> "Previous Draws Results"
+                    else -> "Previous Correct Score"
+                }
                 HomeItem(it) {
                     if (it.title == R.string.previous_correct_score
                         || it.title == R.string.previous_draws_results
