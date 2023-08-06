@@ -41,7 +41,7 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
     private val _whatsapp = MutableLiveData("")
     private val _telegram = MutableLiveData("")
     private val _email = MutableLiveData("")
-    private val _announcement = MutableLiveData("")
+    private val _announcement = MutableLiveData<AnnouncementModel>()
     private val _tips = MutableLiveData<List<TipModel>>()
     val tips: LiveData<List<TipModel>> = _tips
     val token: LiveData<String> = _token
@@ -71,10 +71,11 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
         database.child("contacts").child("email").setValue(email)
 
     //set announcement
-    fun setAnnouncement(text: String) =
-        database.child("announcement").setValue(text).addOnSuccessListener {
-            sendNotification("Announcement", text)
-        }
+    fun setAnnouncement(title: String, body: String) =
+        database.child("announcement").setValue(AnnouncementModel(body, title))
+            .addOnSuccessListener {
+                sendNotification(title, body)
+            }
 
     fun clearTips(tag: String) = database.child("tips").child(tag).removeValue()
 
@@ -162,7 +163,7 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
         database.child("tips").child(tag).ref.addChildEventListener(childEventListener)
     }
 
-    fun sendNotification(title: String, body: String) {
+    private fun sendNotification(title: String, body: String) {
         Log.e("TAG", "sendNotification")
         val topic = "/topics/Tips" //topic has to match what the receiver subscribed to
 
@@ -215,8 +216,8 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
         //get announcement
         val announcementListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val value = dataSnapshot.getValue<String>()
-                _announcement.value = value ?: ""
+                val value = dataSnapshot.getValue<AnnouncementModel>()
+                _announcement.value = value ?: AnnouncementModel("", "")
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -244,6 +245,22 @@ data class ContactModel(
             "whatsApp" to whatsapp,
             "telegram" to telegram,
             "email" to email
+        )
+    }
+}
+
+@IgnoreExtraProperties
+data class AnnouncementModel(
+    var announcement: String?,
+    var title: String?
+) {
+    constructor() : this("", "")
+
+    @Exclude
+    fun toMap(): Map<String, Any?> {
+        return mapOf(
+            "announcement" to announcement,
+            "title" to title
         )
     }
 }

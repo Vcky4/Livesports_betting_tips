@@ -472,8 +472,8 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         TextField(
-                                            value = awayScore,
-                                            onValueChange = { awayScore = it },
+                                            value = homeScore,
+                                            onValueChange = { homeScore = it },
                                             colors = TextFieldDefaults.textFieldColors(
                                                 containerColor = Color.Transparent,
                                                 focusedIndicatorColor = Color.Transparent,
@@ -521,8 +521,8 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                         )
                                         Spacer(modifier = Modifier.width(5.dp))
                                         TextField(
-                                            value = homeScore,
-                                            onValueChange = { homeScore = it },
+                                            value = awayScore,
+                                            onValueChange = { awayScore = it },
                                             colors = TextFieldDefaults.textFieldColors(
                                                 containerColor = Color.Transparent,
                                                 focusedIndicatorColor = Color.Transparent,
@@ -677,8 +677,8 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                 league.text,
                                 home.text,
                                 away.text,
-                                homeScore.text,
-                                awayScore.text,
+                                homeScore.text.ifEmpty { "0" },
+                                awayScore.text.ifEmpty { "0" },
                                 odd.text,
                                 status,
                                 prediction.text,

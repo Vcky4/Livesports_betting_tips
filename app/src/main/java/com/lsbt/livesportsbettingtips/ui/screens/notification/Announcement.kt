@@ -37,7 +37,7 @@ import org.koin.androidx.compose.koinViewModel
 fun Announcement(navigator: DestinationsNavigator) {
     val viewModel: AdminViewModel = koinViewModel()
 
-    val announcement = viewModel.announcement.observeAsState("").value
+    val announcement = viewModel.announcement.observeAsState().value
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
@@ -54,7 +54,7 @@ fun Announcement(navigator: DestinationsNavigator) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(id = R.string.announcement),
+                text = announcement?.title ?: stringResource(id = R.string.announcement),
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
                 color = TextDeep,
@@ -63,7 +63,7 @@ fun Announcement(navigator: DestinationsNavigator) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = announcement,
+                text = announcement?.announcement ?: "",
                 fontSize = 22.sp,
                 color = TextDeep,
                 textAlign = TextAlign.Center,

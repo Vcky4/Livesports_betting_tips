@@ -54,16 +54,20 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun Notifications(navigator: DestinationsNavigator) {
     val viewModel: AdminViewModel = koinViewModel()
-    val announcement = viewModel.announcement.observeAsState("").value
+    val announcement = viewModel.announcement.observeAsState().value
     var title by remember {
-        mutableStateOf(announcement)
+        mutableStateOf(announcement?.title ?: "")
+    }
+    var body by remember {
+        mutableStateOf(announcement?.announcement ?: "")
     }
     val context = LocalContext.current
     var processing by remember {
         mutableStateOf(false)
     }
     LaunchedEffect(key1 = announcement) {
-        title = announcement
+        title = announcement?.title ?: ""
+        body = announcement?.announcement ?: ""
     }
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
@@ -101,6 +105,38 @@ fun Notifications(navigator: DestinationsNavigator) {
                 onValueChange = { title = it },
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    errorIndicatorColor = Color.Transparent,
+                    cursorColor = Primary,
+                    textColor = TextDeep
+                ),
+                textStyle = TextStyle(
+                    fontSize = 28.sp,
+                    color = TextDeep,
+                    textAlign = TextAlign.Center,
+                ),
+                shape = RoundedCornerShape(8.dp),
+                placeholder = {
+                    Text(
+                        text = stringResource(id = R.string.type_it_here),
+                        fontSize = 28.sp,
+                        color = TextDeep.copy(alpha = 0.6f),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                },
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            TextField(
+                value = body,
+                onValueChange = { body = it },
+                modifier = Modifier
+                    .fillMaxWidth()
                     .heightIn(min = 150.dp, max = 250.dp)
                     .padding(horizontal = 16.dp),
                 colors = TextFieldDefaults.textFieldColors(
@@ -133,7 +169,7 @@ fun Notifications(navigator: DestinationsNavigator) {
             Button(
                 onClick = {
                     processing = true
-                    viewModel.setAnnouncement(title)
+                    viewModel.setAnnouncement(title, body)
                         .addOnSuccessListener {
                             Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
                             processing = false

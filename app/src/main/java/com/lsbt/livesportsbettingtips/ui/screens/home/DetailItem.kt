@@ -72,7 +72,7 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                         text = item.league, fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color.White,
-                        modifier = Modifier,
+                        modifier = Modifier.fillMaxWidth(0.5f),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -98,6 +98,8 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                         fontWeight = FontWeight.Medium,
                         color = TextDeep,
                         modifier = Modifier.weight(0.3f),
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Row(
                         horizontalArrangement = Arrangement.Center,
@@ -132,7 +134,9 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                         fontWeight = FontWeight.Medium,
                         color = TextDeep,
                         modifier = Modifier.weight(0.3f),
-                        textAlign = TextAlign.End
+                        textAlign = TextAlign.End,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
                 Spacer(modifier = Modifier.height(14.dp))
