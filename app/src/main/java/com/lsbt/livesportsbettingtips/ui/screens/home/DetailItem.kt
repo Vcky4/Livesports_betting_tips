@@ -53,6 +53,13 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
             Modifier
                 .background(Color.White, RoundedCornerShape(8.dp))
         ) {
+            Text(
+                text = time, fontSize = 18.sp,
+                color = Secondary,
+                modifier = Modifier
+                    .padding(vertical = 4.dp, horizontal = 14.dp)
+                    .align(Alignment.End),
+            )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -69,19 +76,14 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = item.league, fontSize = 18.sp,
+                        text = item.league, fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color.White,
-                        modifier = Modifier.fillMaxWidth(0.5f),
+                        modifier = Modifier.fillMaxWidth(0.9f),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
-                Text(
-                    text = time, fontSize = 18.sp,
-                    color = Color.White,
-                    modifier = Modifier
-                )
             }
             Column(
                 modifier = Modifier
