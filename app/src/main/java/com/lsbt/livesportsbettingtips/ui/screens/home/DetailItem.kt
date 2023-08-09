@@ -92,89 +92,88 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = item.home, fontSize = 18.sp,
+                        text = item.home, fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
                         color = TextDeep,
-                        modifier = Modifier.fillMaxWidth(0.5f),
-                        maxLines = 2,
+                        modifier = Modifier.weight(0.5f),
+//                        maxLines = 3,
                         overflow = TextOverflow.Ellipsis
                     )
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .padding(horizontal = 4.dp)
+                    ) {
+                        Text(
+                            text = item.homeScore, fontSize = 16.sp,
+                            color = TextDeep,
+                            fontWeight = FontWeight.Bold,
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Icon(
+                            painter = painterResource(
+                                id = when (item.status) {
+                                    "won" -> R.drawable.check_circle
+                                    "lost" -> R.drawable.cancel_fill
+                                    else -> R.drawable.outlined_flag
+                                }
+                            ),
+                            contentDescription = "flag",
+                            tint = Primary
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Text(
+                            text = item.awayScore, fontSize = 16.sp,
+                            color = TextDeep,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
                     Text(
-                        text = item.away, fontSize = 18.sp,
+                        text = item.away, fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
                         color = TextDeep,
-                        modifier = Modifier.fillMaxWidth(0.5f),
+                        modifier = Modifier.weight(0.5f),
                         textAlign = TextAlign.End,
-                        maxLines = 2,
+//                        maxLines = 3,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
+                Spacer(modifier = Modifier.height(8.dp))
                 Row(
-                    horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp, horizontal = 14.dp)
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(
-                        text = item.homeScore, fontSize = 18.sp,
-                        color = TextDeep,
-                        fontWeight = FontWeight.Bold,
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Icon(
-                        painter = painterResource(
-                            id = when (item.status) {
-                                "won" -> R.drawable.check_circle
-                                "lost" -> R.drawable.cancel_fill
-                                else -> R.drawable.outlined_flag
-                            }
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = CardColor,
                         ),
-                        contentDescription = "flag",
-                        tint = Primary
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Text(
-                        text = item.awayScore, fontSize = 18.sp,
-                        color = TextDeep,
-                        fontWeight = FontWeight.Bold,
-                    )
-                }
-                Spacer(modifier = Modifier.height(14.dp))
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = CardColor,
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 10.dp),
-                    shape = RoundedCornerShape(5.dp)
-                ) {
-                    Text(
-                        text = item.prediction, fontSize = 16.sp,
-                        color = TextDeep,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 6.dp, horizontal = 14.dp)
-                    )
-                }
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = CardColor2,
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    shape = RoundedCornerShape(5.dp)
-                ) {
-                    Text(
-                        text = item.odd, fontSize = 16.sp,
-                        color = TextDeep,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 6.dp, horizontal = 16.dp)
-                    )
+                        modifier = Modifier,
+                        shape = RoundedCornerShape(5.dp)
+                    ) {
+                        Text(
+                            text = item.prediction, fontSize = 14.sp,
+                            color = TextDeep,
+                            modifier = Modifier
+                                .padding(vertical = 6.dp, horizontal = 6.dp)
+                        )
+                    }
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = CardColor2,
+                        ),
+                        modifier = Modifier,
+                        shape = RoundedCornerShape(5.dp)
+                    ) {
+                        Text(
+                            text = item.odd, fontSize = 14.sp,
+                            color = TextDeep,
+                            textAlign = TextAlign.End,
+                            modifier = Modifier
+                                .padding(vertical = 6.dp, horizontal = 6.dp)
+                        )
+                    }
                 }
             }
         }
