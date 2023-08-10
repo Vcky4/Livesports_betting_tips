@@ -271,7 +271,7 @@ fun NavHost() {
                         .clickable {
                             lastClickTime = System.currentTimeMillis()
                             clickCount++
-                            if (clickCount >= 10) {
+                            if (clickCount >= 15) {
                                 clickCount = 0 // Reset click count
                                 scope.launch {
                                     drawerState.close()

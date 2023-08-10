@@ -1,5 +1,7 @@
 package com.lsbt.livesportsbettingtips.ui.screens.admin
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -41,6 +45,10 @@ fun Login(viewModel: AdminViewModel) {
     var pin by remember {
         mutableStateOf("")
     }
+    var processing by remember {
+        mutableStateOf(false)
+    }
+    val context = LocalContext.current
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
             Modifier
@@ -95,20 +103,47 @@ fun Login(viewModel: AdminViewModel) {
             )
             Spacer(modifier = Modifier.height(20.dp))
             Button(
-                onClick = { viewModel.login("hjnbhj") },
+                onClick = {
+                    viewModel.getPassword.addOnSuccessListener {
+                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+                        processing = false
+                        Log.d("TAG", "Login: ${it.value}")
+                        if (it.value == pin) {
+                            viewModel.login("ftyujvf")
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "Wrong pin, please try again",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }.addOnFailureListener {
+                        Toast.makeText(
+                            context,
+                            "Failed: ${it.localizedMessage}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        processing = false
+                    }
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = TextDeep,
                     contentColor = Color.White
                 ),
-                modifier = Modifier.padding(horizontal = 26.dp)
+                modifier = Modifier.padding(horizontal = 26.dp),
+                enabled = pin.length > 2 && !processing
             ) {
-                Text(
-                    text = stringResource(id = R.string.access),
-                    fontSize = 18.sp,
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                if (!processing) {
+                    Text(
+                        text = stringResource(id = R.string.access),
+                        fontSize = 18.sp,
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                } else {
+                    CircularProgressIndicator(color = Color.White)
+                }
             }
         }
     }

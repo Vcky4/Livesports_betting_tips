@@ -52,6 +52,8 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
     val whatsApp = _whatsapp
     val telegram = _telegram
     val email = _email
+
+    val getPassword = database.child("password").get()
     fun login(token: String) {
         _token.value = token
     }
