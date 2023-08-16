@@ -116,10 +116,10 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
         return database.child("tips").child(tag).child(key ?: "").setValue(tip)
             .addOnSuccessListener {
                 getTips(tag)
-                sendNotification(
-                    "New $tag\u200E\uFE0F\u200D\uD83D\uDD25",
-                    "$league\n$home vs $away\n$prediction\n$odd\u200E\uFE0F\u200D\uD83D\uDD25"
-                )
+//                sendNotification(
+//                    "New $tag\u200E\uFE0F\u200D\uD83D\uDD25",
+//                    "$league\n$home vs $away\n$prediction\n$odd\u200E\uFE0F\u200D\uD83D\uDD25"
+//                )
             }
     }
 
