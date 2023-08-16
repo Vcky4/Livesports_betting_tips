@@ -2,6 +2,7 @@ package com.lsbt.livesportsbettingtips.ui.screens.notification
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
@@ -65,6 +66,9 @@ fun Notifications(navigator: DestinationsNavigator) {
     var processing by remember {
         mutableStateOf(false)
     }
+    var isAnnouncement by remember {
+        mutableStateOf(true)
+    }
     LaunchedEffect(key1 = announcement) {
         title = announcement?.title ?: ""
         body = announcement?.announcement ?: ""
@@ -84,12 +88,20 @@ fun Notifications(navigator: DestinationsNavigator) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(id = R.string.post_an_announcement),
+                text = stringResource(
+                    id =
+                    if (isAnnouncement) R.string.post_an_announcement
+                    else R.string.post_a_notification
+                ),
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
                 color = TextDeep,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .clickable {
+                        isAnnouncement = !isAnnouncement
+                    }
+                    .fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
@@ -169,19 +181,26 @@ fun Notifications(navigator: DestinationsNavigator) {
             Button(
                 onClick = {
                     processing = true
-                    viewModel.setAnnouncement(title, body)
-                        .addOnSuccessListener {
-                            Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
-                            processing = false
-                            navigator.popBackStack()
-                        }.addOnFailureListener {
-                            Toast.makeText(
-                                context,
-                                "Failed: ${it.localizedMessage}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            processing = false
-                        }
+                    if (isAnnouncement) {
+                        viewModel.setAnnouncement(title, body)
+                            .addOnSuccessListener {
+                                Toast.makeText(context, "Posted", Toast.LENGTH_SHORT).show()
+                                processing = false
+                                navigator.popBackStack()
+                            }.addOnFailureListener {
+                                Toast.makeText(
+                                    context,
+                                    "Failed: ${it.localizedMessage}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                processing = false
+                            }
+                    } else {
+                        viewModel.sendNotification(title, body)
+                        Toast.makeText(context, "Posted", Toast.LENGTH_SHORT).show()
+                        processing = false
+                        navigator.popBackStack()
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = TextDeep,
