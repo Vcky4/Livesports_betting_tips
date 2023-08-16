@@ -2,7 +2,6 @@ package com.lsbt.livesportsbettingtips
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,7 +24,7 @@ class MainActivity : AppCompatActivity() {
                     msg = "Subscribe failed"
                 }
                 Log.d(TAG, msg)
-                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+//                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
             }
         setContent {
             LivesportsBettingTipsTheme {
