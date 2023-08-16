@@ -56,6 +56,25 @@ android {
 //    androidResources{
 //        generateLocaleConfig = true
 //    }
+    // Instead, use the bundle block to control which types of configuration APKs
+// you want your app bundle to support.
+    bundle {
+        language {
+            // Specifies that the app bundle should not support
+            // configuration APKs for language resources. These
+            // resources are instead packaged with each base and
+            // dynamic feature APK.
+            enableSplit = false
+        }
+        density {
+            // This property is set to true by default.
+            enableSplit = true
+        }
+        abi {
+            // This property is set to true by default.
+            enableSplit = true
+        }
+    }
 }
 
 dependencies {
