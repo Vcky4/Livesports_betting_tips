@@ -29,6 +29,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -48,6 +49,7 @@ import com.lsbt.livesportsbettingtips.ui.theme.Secondary
 import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination
@@ -57,20 +59,20 @@ fun Chat(
     isAdmin: Boolean = false,
     navigator: DestinationsNavigator
 ) {
+    val viewModel: ChatViewModel = koinViewModel()
     var processing by remember {
         mutableStateOf(false)
     }
     var name by remember {
         mutableStateOf("")
     }
-    var firstTime by remember {
-        mutableStateOf(false)
-    }
     var message by remember {
         mutableStateOf("")
     }
+    val userName = viewModel.userName.observeAsState("").value
+    val cId = chatId.ifEmpty { viewModel.chatId.observeAsState("").value }
     val context = LocalContext.current
-    if (firstTime) {
+    if (userName.isEmpty() && !isAdmin) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Column(
                 Modifier
@@ -126,7 +128,7 @@ fun Chat(
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
                     onClick = {
-                        firstTime = false
+                        viewModel.setUserName(name)
 //                    viewModel.getPassword.addOnSuccessListener {
 //                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
 //                        processing = false

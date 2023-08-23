@@ -2,6 +2,7 @@ package com.lsbt.livesportsbettingtips.di
 
 import com.lsbt.livesportsbettingtips.datastore.Settings
 import com.lsbt.livesportsbettingtips.ui.screens.admin.AdminViewModel
+import com.lsbt.livesportsbettingtips.ui.screens.chat.ChatViewModel
 import com.lsbt.livesportsbettingtips.ui.screens.home.HomeViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -14,6 +15,10 @@ val modules = module {
 
     viewModel {
         AdminViewModel(androidApplication())
+    }
+
+    viewModel {
+        ChatViewModel(androidApplication())
     }
 
     single {

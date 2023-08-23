@@ -24,7 +24,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class HomeViewModel : ViewModel(), KoinComponent {
-    val settings: Settings by inject()
+    private val settings: Settings by inject()
     private val database: DatabaseReference = Firebase.database.reference
     private val _whatsapp = MutableLiveData("")
     private val _telegram = MutableLiveData("")
