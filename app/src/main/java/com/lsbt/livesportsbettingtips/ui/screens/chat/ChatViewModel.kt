@@ -42,10 +42,12 @@ class ChatViewModel(private val context: Application) : ViewModel(), KoinCompone
     private val _chatId = MutableLiveData("")
     private val _userName = MutableLiveData("")
     private val _chats = MutableLiveData<List<ChatModel>>()
+    private val _conversations = MutableLiveData<List<ConversationModel>>()
 
     val userName = _userName
     val chatId = _chatId
     val chats = _chats
+    val conversations = _conversations
 
 
     private fun sendNotification(title: String, body: String, to: String) {
@@ -94,10 +96,10 @@ class ChatViewModel(private val context: Application) : ViewModel(), KoinCompone
         name: String = "",
         time: Long = System.currentTimeMillis(),
         isAdmin: Boolean = false,
-        parent: String? = ""
+        parent: String = ""
     ): Task<Void> {
         val key = database.child("chats").push().key
-        val pKey = parent ?: database.child("conversations").push().key
+        val pKey = parent.ifEmpty { database.child("conversations").push().key }
         val conversation = ConversationModel(
             pKey ?: "",
             message,
@@ -116,7 +118,7 @@ class ChatViewModel(private val context: Application) : ViewModel(), KoinCompone
                     name,
                     time,
                     isAdmin,
-                    parent ?: "",
+                    parent,
                 )
                 database.child("chats").child(pKey ?: "").child(key ?: "").setValue(chat)
                     .addOnSuccessListener {
@@ -169,6 +171,49 @@ class ChatViewModel(private val context: Application) : ViewModel(), KoinCompone
 
         }
         database.child("chats").child(parent).ref.addChildEventListener(childEventListener)
+    }
+
+    fun getConversations() {
+        val childEventListener = object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val tipListener = object : ValueEventListener {
+                    private val conversationList = mutableListOf<ConversationModel>()
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        for (dataValues in dataSnapshot.children) {
+                            Log.d(ContentValues.TAG, "dataValues is: $dataValues")
+                            val conversation = dataValues.getValue(ConversationModel::class.java)
+                            if (conversation != null) {
+                                conversationList.add(conversation)
+                            }
+                        }
+                        _conversations.value = conversationList
+                        Log.d(ContentValues.TAG, "list value is: $conversationList")
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        // handle error
+//                        Toast.makeText(context, "unable to update nuggets", Toast.LENGTH_SHORT).show()
+
+                    }
+                }
+                database.child("conversations")
+                    .ref.addListenerForSingleValueEvent(tipListener)
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+
+            override fun onCancelled(error: DatabaseError) {
+//                binding.loadingPost.visibility = GONE
+//                Toast.makeText(context, "unable to update nuggets", Toast.LENGTH_SHORT).show()
+
+            }
+
+        }
+        database.child("conversations").ref.addChildEventListener(childEventListener)
     }
 
     init {

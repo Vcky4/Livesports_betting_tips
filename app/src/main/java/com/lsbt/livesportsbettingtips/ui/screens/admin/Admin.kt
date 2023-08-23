@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.AdminDetailScreenDestination
+import com.lsbt.livesportsbettingtips.ui.screens.destinations.ConversationsDestination
 import com.lsbt.livesportsbettingtips.ui.screens.home.HomeItem
 import com.lsbt.livesportsbettingtips.ui.theme.Secondary
 import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
@@ -177,10 +178,14 @@ fun Admin(navigator: DestinationsNavigator) {
                     items = contactItems,
                 ) {
                     HomeItem(it) {
-                        contactTrigger = when (it.id) {
-                            5 -> "WhatsApp"
-                            6 -> "Email"
-                            else -> "Telegram"
+                        if (it.id == 8) {
+                            navigator.navigate(ConversationsDestination())
+                        } else {
+                            contactTrigger = when (it.id) {
+                                5 -> "WhatsApp"
+                                6 -> "Email"
+                                else -> "Telegram"
+                            }
                         }
                     }
                 }
