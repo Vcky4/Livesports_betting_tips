@@ -6,5 +6,10 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination
 @Composable
-fun Chat(navigator: DestinationsNavigator) {
+fun Chat(
+    chatId: String,
+    isAdmin: Boolean = false,
+    navigator: DestinationsNavigator
+) {
+
 }
