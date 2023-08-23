@@ -1,19 +1,28 @@
 package com.lsbt.livesportsbettingtips.ui.screens.chat
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -27,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -53,62 +63,70 @@ fun Chat(
     var name by remember {
         mutableStateOf("")
     }
+    var firstTime by remember {
+        mutableStateOf(false)
+    }
+    var message by remember {
+        mutableStateOf("")
+    }
     val context = LocalContext.current
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column(
-            Modifier
-                .background(Secondary, shape = MaterialTheme.shapes.medium)
-                .fillMaxWidth(0.9f)
-                .padding(vertical = 50.dp, horizontal = 16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = stringResource(id = R.string.contact_us),
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
-                color = TextDeep,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(id = R.string.whats_your_name),
-                fontSize = 18.sp,
-                color = Primary,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            TextField(
-                value = name,
-                onValueChange = { name = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.White,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent,
-                    errorIndicatorColor = Color.Transparent,
-                    cursorColor = Primary,
-                    textColor = TextDeep
-                ),
-                shape = RoundedCornerShape(8.dp),
-                placeholder = {
-                    Text(
-                        text = stringResource(id = R.string.enter_your_name),
-                        fontSize = 18.sp,
-                        color = TextDeep.copy(alpha = 0.6f),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                },
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            Button(
-                onClick = {
+    if (firstTime) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Column(
+                Modifier
+                    .background(Secondary, shape = MaterialTheme.shapes.medium)
+                    .fillMaxWidth(0.9f)
+                    .padding(vertical = 50.dp, horizontal = 16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(id = R.string.contact_us),
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextDeep,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = stringResource(id = R.string.whats_your_name),
+                    fontSize = 18.sp,
+                    color = Primary,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                TextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.White,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        errorIndicatorColor = Color.Transparent,
+                        cursorColor = Primary,
+                        textColor = TextDeep
+                    ),
+                    shape = RoundedCornerShape(8.dp),
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.enter_your_name),
+                            fontSize = 18.sp,
+                            color = TextDeep.copy(alpha = 0.6f),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    },
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                Button(
+                    onClick = {
+                        firstTime = false
 //                    viewModel.getPassword.addOnSuccessListener {
 //                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
 //                        processing = false
@@ -130,24 +148,118 @@ fun Chat(
 //                        ).show()
 //                        processing = false
 //                    }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = TextDeep,
-                    contentColor = Color.White
-                ),
-                modifier = Modifier.padding(horizontal = 26.dp),
-                enabled = name.length > 2 && !processing
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = TextDeep,
+                        contentColor = Color.White
+                    ),
+                    modifier = Modifier.padding(horizontal = 26.dp),
+                    enabled = name.length > 2 && !processing
+                ) {
+                    if (!processing) {
+                        Text(
+                            text = stringResource(id = R.string.access),
+                            fontSize = 18.sp,
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    } else {
+                        CircularProgressIndicator(color = Color.White)
+                    }
+                }
+            }
+        }
+    } else {
+        Column(Modifier.fillMaxSize()) {
+            LazyColumn(Modifier.weight(1f)) {
+                items(10) {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 8.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Card(
+                            modifier = Modifier
+                                .widthIn(min = 70.dp, max = 260.dp)
+                                .padding(top = 6.dp),
+                            shape = RoundedCornerShape(8.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = Secondary,
+                            ),
+                        ) {
+                            Column {
+                                Text(
+                                    text = "Hello, how are you doing?",
+                                    fontSize = 18.sp,
+                                    color = TextDeep,
+                                    textAlign = TextAlign.Start,
+                                    modifier = Modifier.padding(
+                                        start = 16.dp,
+                                        bottom = 8.dp,
+                                        end = 16.dp,
+                                        top = 16.dp
+                                    )
+                                )
+                                Text(
+                                    text = "2:13pm",
+                                    modifier = Modifier
+                                        .align(Alignment.End)
+                                        .padding(
+                                            start = 16.dp,
+                                            end = 16.dp,
+                                            bottom = 16.dp
+                                        )
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+            Row(
+                Modifier
+                    .padding(horizontal = 20.dp, vertical = 8.dp)
+                    .background(Color.White, shape = RoundedCornerShape(8.dp))
+                    .heightIn(max = 150.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                if (!processing) {
-                    Text(
-                        text = stringResource(id = R.string.access),
-                        fontSize = 18.sp,
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                } else {
-                    CircularProgressIndicator(color = Color.White)
+                TextField(
+                    value = message,
+                    onValueChange = { message = it },
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 16.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.White,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        errorIndicatorColor = Color.Transparent,
+                        cursorColor = Primary,
+                        textColor = TextDeep
+                    ),
+                    shape = RoundedCornerShape(8.dp),
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.start_typing),
+                            fontSize = 18.sp,
+                            color = TextDeep.copy(alpha = 0.6f),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    },
+                )
+
+                AnimatedVisibility(visible = message.isNotEmpty()) {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.send),
+                            contentDescription = "Send",
+                            tint = Primary,
+                        )
+                    }
                 }
             }
         }
