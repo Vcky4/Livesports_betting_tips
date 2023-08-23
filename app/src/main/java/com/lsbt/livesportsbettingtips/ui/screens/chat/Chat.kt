@@ -54,6 +54,8 @@ import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
+import java.text.SimpleDateFormat
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination
@@ -80,6 +82,7 @@ fun Chat(
     LaunchedEffect(key1 = Unit) {
         viewModel.getChats(cId)
     }
+
     if (userName.isEmpty() && !isAdmin) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Column(
@@ -220,7 +223,7 @@ fun Chat(
                                     )
                                 )
                                 Text(
-                                    text = "2:13pm",
+                                    text = getTime(it.time),
                                     modifier = Modifier
                                         .align(
                                             if (it.isAdmin && !isAdmin) Alignment.Start else Alignment.End
@@ -310,4 +313,11 @@ fun Chat(
             }
         }
     }
+}
+
+//convert long o time
+fun getTime(time: Long): String {
+    val date = Date(time)
+    val format = SimpleDateFormat("dd/MM/yyyy HH:mm")
+    return format.format(date)
 }
