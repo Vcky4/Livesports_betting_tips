@@ -1,6 +1,7 @@
 package com.lsbt.livesportsbettingtips.ui.screens.chat
 
 import android.app.Application
+import android.content.ContentValues
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -10,9 +11,16 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.gms.tasks.Task
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.lsbt.livesportsbettingtips.data.db.models.ChatModel
+import com.lsbt.livesportsbettingtips.data.db.models.ConversationModel
 import com.lsbt.livesportsbettingtips.datastore.Settings
 import com.lsbt.livesportsbettingtips.datastore.SettingsConstants
 import kotlinx.coroutines.launch
@@ -33,14 +41,16 @@ class ChatViewModel(private val context: Application) : ViewModel(), KoinCompone
     private val contentType = "application/json"
     private val _chatId = MutableLiveData("")
     private val _userName = MutableLiveData("")
+    private val _chats = MutableLiveData<List<ChatModel>>()
 
     val userName = _userName
     val chatId = _chatId
+    val chats = _chats
 
 
-    fun sendNotification(title: String, body: String) {
+    private fun sendNotification(title: String, body: String, to: String) {
         Log.e("TAG", "sendNotification")
-        val topic = "/topics/Tips" //topic has to match what the receiver subscribed to
+        val topic = "/topics/$to" //topic has to match what the receiver subscribed to
 
         val notification = JSONObject()
         val notifcationBody = JSONObject()
@@ -79,6 +89,87 @@ class ChatViewModel(private val context: Application) : ViewModel(), KoinCompone
         }
     }
 
+    fun sendChat(
+        message: String = "",
+        name: String = "",
+        time: Long = System.currentTimeMillis(),
+        isAdmin: Boolean = false,
+        parent: String? = ""
+    ): Task<Void> {
+        val key = database.child("chats").push().key
+        val pKey = parent ?: database.child("conversations").push().key
+        val conversation = ConversationModel(
+            pKey ?: "",
+            message,
+            name,
+            time,
+        )
+        return database.child("conversations").child(pKey ?: "").setValue(conversation)
+            .addOnSuccessListener {
+                viewModelScope.launch {
+                    settings.putPreference(SettingsConstants.CHAT_ID, pKey ?: "")
+                    _chatId.value = pKey ?: ""
+                }
+                val chat = ChatModel(
+                    key ?: "",
+                    message,
+                    name,
+                    time,
+                    isAdmin,
+                    parent ?: "",
+                )
+                database.child("chats").child(pKey ?: "").child(key ?: "").setValue(chat)
+                    .addOnSuccessListener {
+                        sendNotification(
+                            "New message $name",
+                            message,
+                            if (isAdmin) pKey ?: "" else "adminChat"
+                        )
+                    }
+            }
+    }
+
+    fun getChats(parent: String = "") {
+        val childEventListener = object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val tipListener = object : ValueEventListener {
+                    private val chatList = mutableListOf<ChatModel>()
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        for (dataValues in dataSnapshot.children) {
+                            val chat = dataValues.getValue(ChatModel::class.java)
+                            if (chat != null) {
+                                chatList.add(chat)
+                            }
+                        }
+                        _chats.value = chatList
+                        Log.d(ContentValues.TAG, "list value is: $chatList")
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        // handle error
+//                        Toast.makeText(context, "unable to update nuggets", Toast.LENGTH_SHORT).show()
+
+                    }
+                }
+                database.child("chats")
+                    .child(parent).ref.addListenerForSingleValueEvent(tipListener)
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+
+            override fun onCancelled(error: DatabaseError) {
+//                binding.loadingPost.visibility = GONE
+//                Toast.makeText(context, "unable to update nuggets", Toast.LENGTH_SHORT).show()
+
+            }
+
+        }
+        database.child("chats").child(parent).ref.addChildEventListener(childEventListener)
+    }
 
     init {
         viewModelScope.launch {

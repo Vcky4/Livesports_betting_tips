@@ -1,5 +1,6 @@
 package com.lsbt.livesportsbettingtips.ui.screens.chat
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -28,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -44,6 +47,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.R
+import com.lsbt.livesportsbettingtips.ui.theme.CardColor2
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
 import com.lsbt.livesportsbettingtips.ui.theme.Secondary
 import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
@@ -71,7 +75,11 @@ fun Chat(
     }
     val userName = viewModel.userName.observeAsState("").value
     val cId = chatId.ifEmpty { viewModel.chatId.observeAsState("").value }
+    val chats = viewModel.chats.observeAsState(listOf()).value
     val context = LocalContext.current
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getChats(cId)
+    }
     if (userName.isEmpty() && !isAdmin) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Column(
@@ -175,12 +183,16 @@ fun Chat(
     } else {
         Column(Modifier.fillMaxSize()) {
             LazyColumn(Modifier.weight(1f)) {
-                items(10) {
+                items(
+                    items = chats,
+                ) {
                     Row(
                         Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp, vertical = 8.dp),
-                        horizontalArrangement = Arrangement.End
+                        horizontalArrangement = if (it.isAdmin && !isAdmin)
+                            Arrangement.Start
+                        else Arrangement.End
                     ) {
                         Card(
                             modifier = Modifier
@@ -188,12 +200,15 @@ fun Chat(
                                 .padding(top = 6.dp),
                             shape = RoundedCornerShape(8.dp),
                             colors = CardDefaults.cardColors(
-                                containerColor = Secondary,
+                                containerColor =
+                                if (it.isAdmin && !isAdmin)
+                                    Secondary.copy(0.7f)
+                                else CardColor2.copy(0.7f),
                             ),
                         ) {
                             Column {
                                 Text(
-                                    text = "Hello, how are you doing?",
+                                    text = it.message,
                                     fontSize = 18.sp,
                                     color = TextDeep,
                                     textAlign = TextAlign.Start,
@@ -201,17 +216,19 @@ fun Chat(
                                         start = 16.dp,
                                         bottom = 8.dp,
                                         end = 16.dp,
-                                        top = 16.dp
+                                        top = 12.dp
                                     )
                                 )
                                 Text(
                                     text = "2:13pm",
                                     modifier = Modifier
-                                        .align(Alignment.End)
+                                        .align(
+                                            if (it.isAdmin && !isAdmin) Alignment.Start else Alignment.End
+                                        )
                                         .padding(
                                             start = 16.dp,
                                             end = 16.dp,
-                                            bottom = 16.dp
+                                            bottom = 12.dp
                                         )
                                 )
                             }
@@ -255,12 +272,39 @@ fun Chat(
                 )
 
                 AnimatedVisibility(visible = message.isNotEmpty()) {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.send),
-                            contentDescription = "Send",
-                            tint = Primary,
-                        )
+                    IconButton(
+                        enabled = !processing,
+                        onClick = {
+                            viewModel.sendChat(
+                                message,
+                                userName,
+                                isAdmin = isAdmin,
+                                parent = cId
+                            ).addOnSuccessListener {
+//                            Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
+                                viewModel.getChats(cId)
+                                message = ""
+                                processing = false
+                            }.addOnFailureListener {
+                                Toast.makeText(
+                                    context,
+                                    "Failed: ${it.localizedMessage}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                processing = false
+                            }
+                        }) {
+                        if (processing) {
+                            CircularProgressIndicator(
+                                color = Primary
+                            )
+                        } else {
+                            Icon(
+                                painter = painterResource(id = R.drawable.send),
+                                contentDescription = "Send",
+                                tint = Primary,
+                            )
+                        }
                     }
                 }
             }

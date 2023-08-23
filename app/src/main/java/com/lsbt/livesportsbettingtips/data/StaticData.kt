@@ -75,7 +75,7 @@ object StaticData {
     val liveItems = listOf(
         HomeItemModel(
             id = 5,
-            title =R.string.live_score,
+            title = R.string.live_score,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.sports_score,
         ),
@@ -132,4 +132,5 @@ object StaticData {
             date = System.currentTimeMillis()
         ),
     )
+
 }
