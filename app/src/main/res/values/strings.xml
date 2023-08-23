@@ -57,4 +57,7 @@
     <string name="announcement">Announcement</string>
     <string name="type_it_here">Type it here</string>
     <string name="post_an_announcement">Post an announcement</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="whats_your_name">What\'s your name</string>
+    <string name="chat_with_us">Chat with us</string>
 </resources>

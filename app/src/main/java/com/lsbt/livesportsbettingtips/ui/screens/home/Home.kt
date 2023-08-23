@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.R
+import com.lsbt.livesportsbettingtips.ui.screens.destinations.ChatDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.DetailScreenDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.VipPinDestination
 import com.lsbt.livesportsbettingtips.utils.openTelegram
@@ -163,6 +164,8 @@ fun Home(navigator: DestinationsNavigator) {
                             email ?: "",
                             "Live Sports Betting Tips"
                         )
+
+                        8 -> navigator.navigate(ChatDestination())
 
                         else -> context.openTelegram(telegram ?: "")
                     }

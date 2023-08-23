@@ -1,6 +1,5 @@
 package com.lsbt.livesportsbettingtips.data
 
-import androidx.compose.ui.res.stringResource
 import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.data.db.models.HomeItemModel
 import com.lsbt.livesportsbettingtips.data.db.models.NotificationModel
@@ -89,23 +88,29 @@ object StaticData {
     )
 
     val contactItems = listOf(
-        HomeItemModel(
-            id = 5,
-            title = R.string.whatsapp,
-            description = "Last Updated 2 Weeks Ago",
-            image = R.drawable.whatsapp,
-        ),
+//        HomeItemModel(
+//            id = 5,
+//            title = R.string.whatsapp,
+//            description = "Last Updated 2 Weeks Ago",
+//            image = R.drawable.whatsapp,
+//        ),
         HomeItemModel(
             id = 6,
             title = R.string.email,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.outline_email
         ),
+//        HomeItemModel(
+//            id = 7,
+//            title = R.string.telegram,
+//            description = "Last Updated 2 Weeks Ago",
+//            image = R.drawable.telegram
+//        ),
         HomeItemModel(
-            id = 7,
-            title = R.string.telegram,
+            id = 8,
+            title = R.string.chat_with_us,
             description = "Last Updated 2 Weeks Ago",
-            image = R.drawable.telegram
+            image = R.drawable.chat,
         ),
     )
 
