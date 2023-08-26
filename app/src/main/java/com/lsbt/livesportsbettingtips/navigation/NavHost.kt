@@ -325,7 +325,7 @@ fun NavHost() {
                         )
                     }
                     Text(
-                        "Live Sports Betting Tips",
+                        stringResource(id = R.string.app_name),
                         color = Background,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
