@@ -59,6 +59,7 @@ import com.lsbt.livesportsbettingtips.ui.screens.NavGraphs
 import com.lsbt.livesportsbettingtips.ui.screens.appCurrentDestinationAsState
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.AdminDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.AnnouncementDestination
+import com.lsbt.livesportsbettingtips.ui.screens.destinations.ChatDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.Destination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.NotificationsDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.PdfDisplayDestination
@@ -67,8 +68,6 @@ import com.lsbt.livesportsbettingtips.ui.screens.startAppDestination
 import com.lsbt.livesportsbettingtips.ui.theme.Background
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
 import com.lsbt.livesportsbettingtips.utils.getAppVersion
-import com.lsbt.livesportsbettingtips.utils.openTelegram
-import com.lsbt.livesportsbettingtips.utils.openWhatsApp
 import com.lsbt.livesportsbettingtips.utils.sendMail
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
@@ -184,6 +183,7 @@ fun NavHost() {
                 }
                 AnimatedVisibility(visible = isContactsOpen) {
                     Column {
+                        val appName = stringResource(id = R.string.app_name)
                         Text(
                             stringResource(id = R.string.email),
                             color = Background,
@@ -195,38 +195,35 @@ fun NavHost() {
                                     scope.launch {
                                         context.sendMail(
                                             email,
-                                            "Live Sports Betting Tips"
+                                            appName
                                         )
                                         drawerState.close()
                                     }
                                 }
                         )
+//                        Text(
+//                            stringResource(id = R.string.whatsapp),
+//                            color = Background,
+//                            fontSize = 18.sp,
+//                            fontWeight = FontWeight.Bold,
+//                            modifier = Modifier
+//                                .padding(start = 30.dp, bottom = 16.dp)
+//                                .clickable {
+//                                    scope.launch {
+//                                        context.openWhatsApp(whatsapp)
+//                                        drawerState.close()
+//                                    }
+//                                }
+//                        )
                         Text(
-                            stringResource(id = R.string.whatsapp),
-                            color = Background,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .padding(start = 30.dp, bottom = 16.dp)
-                                .clickable {
-                                    scope.launch {
-                                        context.openWhatsApp(whatsapp)
-                                        drawerState.close()
-                                    }
-                                }
-                        )
-                        Text(
-                            stringResource(id = R.string.telegram),
+                            stringResource(id = R.string.chat_with_us),
                             color = Background,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
                                 .padding(top = 10.dp, start = 30.dp, bottom = 16.dp)
                                 .clickable {
-                                    scope.launch {
-                                        context.openTelegram(telegram)
-                                        drawerState.close()
-                                    }
+                                    navController.navigate(ChatDestination())
                                 }
                         )
                     }
