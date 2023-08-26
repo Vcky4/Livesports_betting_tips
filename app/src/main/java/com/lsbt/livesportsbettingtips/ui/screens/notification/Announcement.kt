@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +37,10 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun Announcement(navigator: DestinationsNavigator) {
     val viewModel: AdminViewModel = koinViewModel()
+    val path = stringResource(id = R.string.announcement)
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getAnnouncement(path)
+    }
 
     val announcement = viewModel.announcement.observeAsState().value
 

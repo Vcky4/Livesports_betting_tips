@@ -73,8 +73,8 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
         database.child("contacts").child("email").setValue(email)
 
     //set announcement
-    fun setAnnouncement(title: String, body: String) =
-        database.child("announcement").setValue(AnnouncementModel(body, title))
+    fun setAnnouncement(title: String, body: String, path: String) =
+        database.child(path).setValue(AnnouncementModel(body, title))
             .addOnSuccessListener {
                 sendNotification(title, body)
             }
@@ -196,7 +196,22 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
                 return params
             }
         }
-        requestQueue.add(jsonObjectRequest)
+         requestQueue.add(jsonObjectRequest)
+     }
+
+    fun getAnnouncement(path: String) {
+        //get announcement
+        val announcementListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val value = dataSnapshot.getValue<AnnouncementModel>()
+                _announcement.value = value ?: AnnouncementModel("", "")
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        database.child(path).addValueEventListener(announcementListener)
     }
 
     //get data on init
@@ -214,19 +229,6 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
             }
         }
         database.child("contacts").addValueEventListener(contactListener)
-
-        //get announcement
-        val announcementListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val value = dataSnapshot.getValue<AnnouncementModel>()
-                _announcement.value = value ?: AnnouncementModel("", "")
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-            }
-        }
-        database.child("announcement").addValueEventListener(announcementListener)
     }
 
 }

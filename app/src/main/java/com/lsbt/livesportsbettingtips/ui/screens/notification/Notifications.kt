@@ -178,11 +178,12 @@ fun Notifications(navigator: DestinationsNavigator) {
             )
 
             Spacer(modifier = Modifier.height(20.dp))
+            val path = stringResource(id = R.string.announcement)
             Button(
                 onClick = {
                     processing = true
                     if (isAnnouncement) {
-                        viewModel.setAnnouncement(title, body)
+                        viewModel.setAnnouncement(title, body, path)
                             .addOnSuccessListener {
                                 Toast.makeText(context, "Posted", Toast.LENGTH_SHORT).show()
                                 processing = false
