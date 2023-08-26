@@ -46,4 +46,9 @@
     <string name="privacy_policy">política de privacidad</string>
     <string name="terms_and_conditions">Términos y condiciones</string>
     <string name="set_langauge">Elegir lenguaje</string>
+    <string name="announcement">anuncio</string>
+    <string name="enter_your_name">Introduzca su nombre</string>
+    <string name="whats_your_name">Cómo te llamas</string>
+    <string name="chat_with_us">habla con nosotros</string>
+    <string name="start_typing">Empieza a escribir...</string>
 </resources>
