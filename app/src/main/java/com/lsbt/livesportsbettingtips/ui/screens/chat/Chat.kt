@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -75,12 +76,21 @@ fun Chat(
     var message by remember {
         mutableStateOf("")
     }
+    val listState = rememberLazyListState()
+
     val userName = viewModel.userName.observeAsState("").value
     val cId = chatId.ifEmpty { viewModel.chatId.observeAsState("").value }
     val chats = viewModel.chats.observeAsState(listOf()).value
     val context = LocalContext.current
     LaunchedEffect(key1 = Unit) {
         viewModel.getChats(cId)
+    }
+    //scroll to bottom when new item added
+    LaunchedEffect(key1 = chats) {
+        //check if list is empty
+        if (chats.isNotEmpty()) {
+            listState.animateScrollToItem(chats.size - 1)
+        }
     }
 
     if (userName.isEmpty() && !isAdmin) {
@@ -185,7 +195,10 @@ fun Chat(
         }
     } else {
         Column(Modifier.fillMaxSize()) {
-            LazyColumn(Modifier.weight(1f)) {
+            LazyColumn(
+                Modifier.weight(1f),
+                state = listState
+            ) {
                 items(
                     items = chats,
                 ) {
