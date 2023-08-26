@@ -10,7 +10,7 @@ data class ChatModel(
     val message: String = "",
     val name: String = "",
     val time: Long = 0L,
-    val isAdmin: Boolean = false,
+    val admin: Boolean = false,
     val parent: String = ""
 ) {
     constructor() : this("", "", "", 0L, false, "")
@@ -22,7 +22,7 @@ data class ChatModel(
             "message" to message,
             "name" to name,
             "time" to time,
-            "isAdmin" to isAdmin,
+            "admin" to admin,
             "parent" to parent
         )
     }

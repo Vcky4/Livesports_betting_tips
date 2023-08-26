@@ -193,9 +193,11 @@ fun Chat(
                         Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp, vertical = 8.dp),
-                        horizontalArrangement = if (it.isAdmin && !isAdmin)
-                            Arrangement.Start
-                        else Arrangement.End
+                        horizontalArrangement = if (isAdmin) {
+                            if (it.admin) Arrangement.End else Arrangement.Start
+                        } else {
+                            if (it.admin) Arrangement.Start else Arrangement.End
+                        }
                     ) {
                         Card(
                             modifier = Modifier
@@ -204,9 +206,13 @@ fun Chat(
                             shape = RoundedCornerShape(8.dp),
                             colors = CardDefaults.cardColors(
                                 containerColor =
-                                if (it.isAdmin && !isAdmin)
-                                    Secondary.copy(0.7f)
-                                else CardColor2.copy(0.7f),
+                                if (isAdmin) {
+                                    if (it.admin) CardColor2.copy(0.7f)
+                                    else Secondary.copy(0.7f)
+                                } else {
+                                    if (it.admin) Secondary.copy(0.7f)
+                                    else CardColor2.copy(0.7f)
+                                },
                             ),
                         ) {
                             Column {
@@ -226,7 +232,7 @@ fun Chat(
                                     text = getTime(it.time),
                                     modifier = Modifier
                                         .align(
-                                            if (it.isAdmin && !isAdmin) Alignment.Start else Alignment.End
+                                            if (it.admin && !isAdmin) Alignment.Start else Alignment.End
                                         )
                                         .padding(
                                             start = 16.dp,
@@ -280,7 +286,7 @@ fun Chat(
                         onClick = {
                             viewModel.sendChat(
                                 message,
-                                userName,
+                                if (isAdmin) "Admin" else userName,
                                 isAdmin = isAdmin,
                                 parent = cId
                             ).addOnSuccessListener {

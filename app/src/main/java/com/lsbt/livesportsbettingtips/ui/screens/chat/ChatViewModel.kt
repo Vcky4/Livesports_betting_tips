@@ -95,7 +95,7 @@ class ChatViewModel(private val context: Application) : ViewModel(), KoinCompone
         message: String = "",
         name: String = "",
         time: Long = System.currentTimeMillis(),
-        isAdmin: Boolean = false,
+        isAdmin: Boolean,
         parent: String = ""
     ): Task<Void> {
         val key = database.child("chats").push().key
