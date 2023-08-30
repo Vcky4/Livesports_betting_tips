@@ -84,6 +84,15 @@ class ChatViewModel(private val context: Application) : ViewModel(), KoinCompone
         requestQueue.add(jsonObjectRequest)
     }
 
+    fun deleteChat(parent: String, key: String): Task<Void> {
+        return database.child("chats").child(parent).child(key).removeValue()
+    }
+
+    fun deleteConversation(key: String): Task<Void> {
+        database.child("chats").child(key).removeValue()
+        return database.child("conversations").child(key).removeValue()
+    }
+
     fun setUserName(name: String) {
         viewModelScope.launch {
             settings.putPreference(SettingsConstants.USER_NAME, name)
@@ -118,7 +127,7 @@ class ChatViewModel(private val context: Application) : ViewModel(), KoinCompone
                     name,
                     time,
                     isAdmin,
-                    parent,
+                    pKey ?: ""
                 )
                 database.child("chats").child(pKey ?: "").child(key ?: "").setValue(chat)
                     .addOnSuccessListener {
