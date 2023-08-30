@@ -37,11 +37,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.R
+import com.lsbt.livesportsbettingtips.ui.screens.destinations.ChatDestination
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
 import com.lsbt.livesportsbettingtips.ui.theme.Secondary
 import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
-import com.lsbt.livesportsbettingtips.utils.openTelegram
-import com.lsbt.livesportsbettingtips.utils.openWhatsApp
 import com.lsbt.livesportsbettingtips.utils.sendMail
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -154,29 +153,30 @@ fun VipPin(trigger: String, navigator: DestinationsNavigator) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.clickable {
-                            context.openWhatsApp(whatsapp)
-                        }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.whatsapp),
-                            contentDescription = "whatsapp",
-                            tint = TextDeep
-                        )
-                        Text(
-                            text = "Whatsapp",
-                            fontSize = 18.sp,
-                            color = TextDeep,
-                            textAlign = TextAlign.Center,
-                        )
-                    }
+//                    Column(
+//                        horizontalAlignment = Alignment.CenterHorizontally,
+//                        modifier = Modifier.clickable {
+//                            context.openWhatsApp(whatsapp)
+//                        }) {
+//                        Icon(
+//                            painter = painterResource(id = R.drawable.whatsapp),
+//                            contentDescription = "whatsapp",
+//                            tint = TextDeep
+//                        )
+//                        Text(
+//                            text = "Whatsapp",
+//                            fontSize = 18.sp,
+//                            color = TextDeep,
+//                            textAlign = TextAlign.Center,
+//                        )
+//                    }
+                    val appName = stringResource(id = R.string.app_name)
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.clickable {
                             context.sendMail(
                                 email,
-                                "Live Sports Betting Tips"
+                                appName
                             )
                         }) {
                         Icon(
@@ -194,20 +194,37 @@ fun VipPin(trigger: String, navigator: DestinationsNavigator) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.clickable {
-                            context.openTelegram(telegram)
+                            navigator.navigate(ChatDestination())
                         }) {
                         Icon(
-                            painter = painterResource(id = R.drawable.telegram),
-                            contentDescription = "telegram",
+                            painter = painterResource(id = R.drawable.chat),
+                            contentDescription = stringResource(id = R.string.chat_with_us),
                             tint = TextDeep
                         )
                         Text(
-                            text = "Telegram",
+                            text = stringResource(id = R.string.chat_with_us),
                             fontSize = 18.sp,
                             color = TextDeep,
                             textAlign = TextAlign.Center,
                         )
                     }
+//                    Column(
+//                        horizontalAlignment = Alignment.CenterHorizontally,
+//                        modifier = Modifier.clickable {
+//                            context.openTelegram(telegram)
+//                        }) {
+//                        Icon(
+//                            painter = painterResource(id = R.drawable.telegram),
+//                            contentDescription = "telegram",
+//                            tint = TextDeep
+//                        )
+//                        Text(
+//                            text = "Telegram",
+//                            fontSize = 18.sp,
+//                            color = TextDeep,
+//                            textAlign = TextAlign.Center,
+//                        )
+//                    }
 
 
                 }
