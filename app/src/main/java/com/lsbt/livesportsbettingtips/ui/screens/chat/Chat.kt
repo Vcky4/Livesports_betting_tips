@@ -3,6 +3,7 @@ package com.lsbt.livesportsbettingtips.ui.screens.chat
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -229,6 +230,26 @@ fun Chat(
                             ),
                         ) {
                             Column {
+                                if (isAdmin && it.admin) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.delete),
+                                        contentDescription = "delete",
+                                        tint = Primary,
+                                        modifier = Modifier.clickable {
+                                            viewModel.deleteChat(it.parent, it.key)
+                                                .addOnSuccessListener {
+                                                    viewModel.getChats(cId)
+                                                }.addOnFailureListener {
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Failed: ${it.localizedMessage}",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                }
+                                        }
+                                    )
+
+                                }
                                 Text(
                                     text = it.message,
                                     fontSize = 18.sp,
