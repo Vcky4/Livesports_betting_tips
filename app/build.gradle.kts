@@ -91,6 +91,7 @@ dependencies {
     implementation(libs.firebase.inappmessaging.display.ktx)
     implementation(libs.firebase.messaging.ktx)
     implementation(libs.volley)
+    implementation(libs.firebase.storage.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -119,4 +120,7 @@ dependencies {
 
     //pdf viewer
     implementation(libs.bouquet)
+
+    //coil
+    implementation(libs.coil.compose)
 }

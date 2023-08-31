@@ -11,9 +11,10 @@ data class ChatModel(
     val name: String = "",
     val time: Long = 0L,
     val admin: Boolean = false,
-    val parent: String = ""
+    val parent: String = "",
+    val imageUrl: String = "",
 ) {
-    constructor() : this("", "", "", 0L, false, "")
+    constructor() : this("", "", "", 0L, false, "", "")
 
     @Exclude
     fun toMap(): Map<String, Any?> {
@@ -23,7 +24,8 @@ data class ChatModel(
             "name" to name,
             "time" to time,
             "admin" to admin,
-            "parent" to parent
+            "parent" to parent,
+            "imageUrl" to imageUrl,
         )
     }
 }

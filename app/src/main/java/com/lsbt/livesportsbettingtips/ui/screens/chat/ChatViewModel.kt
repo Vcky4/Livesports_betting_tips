@@ -2,6 +2,7 @@ package com.lsbt.livesportsbettingtips.ui.screens.chat
 
 import android.app.Application
 import android.content.ContentValues
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -19,6 +20,9 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageTask
+import com.google.firebase.storage.UploadTask
+import com.google.firebase.storage.ktx.storage
 import com.lsbt.livesportsbettingtips.data.db.models.ChatModel
 import com.lsbt.livesportsbettingtips.data.db.models.ConversationModel
 import com.lsbt.livesportsbettingtips.datastore.Settings
@@ -31,7 +35,10 @@ import org.koin.core.component.inject
 
 class ChatViewModel(private val context: Application) : ViewModel(), KoinComponent {
     private val database: DatabaseReference = Firebase.database.reference
-    val settings: Settings by inject()
+
+    // Create a storage reference from our app
+    var storageRef = Firebase.storage.reference
+    private val settings: Settings by inject()
     private val requestQueue: RequestQueue by lazy {
         Volley.newRequestQueue(context)
     }
@@ -137,6 +144,69 @@ class ChatViewModel(private val context: Application) : ViewModel(), KoinCompone
                             if (isAdmin) pKey ?: "" else "adminChat"
                         )
                     }
+            }
+    }
+
+    fun uploadImage(
+        message: String = "",
+        name: String = "",
+        time: Long = System.currentTimeMillis(),
+        isAdmin: Boolean,
+        parent: String = "",
+        uri: String
+    ): StorageTask<UploadTask.TaskSnapshot> {
+        val key = database.child("chats").push().key
+        val pKey = parent.ifEmpty { database.child("conversations").push().key }
+        val conversation = ConversationModel(
+            pKey ?: "",
+            message,
+            name,
+            time,
+        )
+        val chats = _chats.value ?: listOf()
+        _chats.value = chats + ChatModel(
+            key ?: "",
+            message,
+            name,
+            time,
+            isAdmin,
+            parent,
+            uri
+        )
+        val imageRef = storageRef.child("images/${key}.jpg")
+        return imageRef.putFile(Uri.parse(uri))
+            .addOnSuccessListener {
+                //get download url
+                imageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+                    Log.d(ContentValues.TAG, "download url is: $downloadUrl")
+                    if (it != null) {
+                        database.child("conversations").child(pKey ?: "").setValue(conversation)
+                            .addOnSuccessListener {
+                                viewModelScope.launch {
+                                    settings.putPreference(SettingsConstants.CHAT_ID, pKey ?: "")
+                                    _chatId.value = pKey ?: ""
+                                }
+                                val chat = ChatModel(
+                                    key ?: "",
+                                    message,
+                                    name,
+                                    time,
+                                    isAdmin,
+                                    pKey ?: "",
+                                    downloadUrl.toString()
+                                )
+                                database.child("chats").child(pKey ?: "").child(key ?: "")
+                                    .setValue(chat)
+                                    .addOnSuccessListener {
+                                        sendNotification(
+                                            "New message $name",
+                                            message,
+                                            if (isAdmin) pKey ?: "" else "adminChat"
+                                        )
+                                    }
+                            }
+                    }
+                }
             }
     }
 

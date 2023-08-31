@@ -1,7 +1,10 @@
 package com.lsbt.livesportsbettingtips.ui.screens.chat
 
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -49,6 +53,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.Constants
 import com.google.firebase.messaging.ktx.messaging
@@ -73,6 +78,9 @@ fun Chat(
     var processing by remember {
         mutableStateOf(false)
     }
+    var uploadLoading by remember {
+        mutableStateOf(false)
+    }
     var name by remember {
         mutableStateOf("")
     }
@@ -85,6 +93,35 @@ fun Chat(
     val cId = chatId.ifEmpty { viewModel.chatId.observeAsState("").value }
     val chats = viewModel.chats.observeAsState(listOf()).value
     val context = LocalContext.current
+
+    var imageUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+    val launcher = rememberLauncherForActivityResult(
+        contract =
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uploadLoading = true
+        imageUri = uri
+        viewModel.uploadImage(
+            message,
+            if (isAdmin) "Admin" else userName,
+            isAdmin = isAdmin,
+            parent = cId,
+            uri = imageUri.toString()
+        ).addOnSuccessListener {
+//                            Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
+            viewModel.getChats(cId)
+            message = ""
+            uploadLoading = false
+        }.addOnFailureListener {
+            Toast.makeText(
+                context, "Failed: ${it.localizedMessage}", Toast.LENGTH_SHORT
+            ).show()
+            uploadLoading = false
+        }
+    }
     LaunchedEffect(key1 = Unit) {
         viewModel.getChats(cId)
     }
@@ -176,27 +213,6 @@ fun Chat(
                 Button(
                     onClick = {
                         viewModel.setUserName(name)
-//                    viewModel.getPassword.addOnSuccessListener {
-//                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
-//                        processing = false
-//                        Log.d("TAG", "Login: ${it.value}")
-//                        if (it.value == pin) {
-//                            viewModel.login("ftyujvf")
-//                        } else {
-//                            Toast.makeText(
-//                                context,
-//                                "Wrong pin, please try again",
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                        }
-//                    }.addOnFailureListener {
-//                        Toast.makeText(
-//                            context,
-//                            "Failed: ${it.localizedMessage}",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                        processing = false
-//                    }
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = TextDeep, contentColor = Color.White
@@ -270,6 +286,24 @@ fun Chat(
                                         })
 
                                 }
+                                //show image if available
+                                if (it.imageUrl.isNotEmpty()) {
+                                    Box {
+                                        AsyncImage(
+                                            model = it.imageUrl,
+                                            contentDescription = "image",
+                                            modifier = Modifier
+                                                .fillMaxWidth(),
+                                            contentScale = ContentScale.FillBounds
+                                        )
+                                        if (uploadLoading) {
+                                            CircularProgressIndicator(
+                                                color = Primary,
+                                                modifier = Modifier.align(Alignment.Center)
+                                            )
+                                        }
+                                    }
+                                }
                                 Text(
                                     text = it.message,
                                     fontSize = 18.sp,
@@ -300,14 +334,48 @@ fun Chat(
                     .heightIn(max = 150.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.SpaceBetween
+//                horizontalArrangement = Arrangement.SpaceBetween
             ) {
+//                AnimatedVisibility(visible = message.isEmpty()) {
+                IconButton(enabled = !processing, onClick = {
+                    launcher.launch("image/*")
+//                        viewModel.sendChat(
+//                            message,
+//                            if (isAdmin) "Admin" else userName,
+//                            isAdmin = isAdmin,
+//                            parent = cId
+//                        ).addOnSuccessListener {
+////                            Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
+//                            viewModel.getChats(cId)
+//                            message = ""
+//                            processing = false
+//                        }.addOnFailureListener {
+//                            Toast.makeText(
+//                                context, "Failed: ${it.localizedMessage}", Toast.LENGTH_SHORT
+//                            ).show()
+//                            processing = false
+//                        }
+                }) {
+//                        if (processing) {
+//                            CircularProgressIndicator(
+//                                color = Primary
+//                            )
+//                        } else {
+                    Icon(
+                        painter = painterResource(id = R.drawable.add_photo),
+                        contentDescription = "Send",
+                        tint = Primary,
+//                        modifier = Modifier.size(24.dp)
+                    )
+//                        }
+                }
+//                }
                 TextField(
                     value = message,
                     onValueChange = { message = it },
                     modifier = Modifier
                         .weight(1f)
-                        .padding(horizontal = 16.dp),
+                        .padding(end = 16.dp),
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = Color.White,
                         focusedIndicatorColor = Color.Transparent,
@@ -351,7 +419,7 @@ fun Chat(
                             CircularProgressIndicator(
                                 color = Primary
                             )
-                        } else {
+                        } else if (uploadLoading) {
                             Icon(
                                 painter = painterResource(id = R.drawable.send),
                                 contentDescription = "Send",
