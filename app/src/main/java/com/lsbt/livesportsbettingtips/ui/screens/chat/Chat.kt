@@ -1,5 +1,6 @@
 package com.lsbt.livesportsbettingtips.ui.screens.chat
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -48,6 +49,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.Constants
+import com.google.firebase.messaging.ktx.messaging
 import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.ui.theme.CardColor2
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
@@ -63,9 +67,7 @@ import java.util.Date
 @Destination
 @Composable
 fun Chat(
-    chatId: String = "",
-    isAdmin: Boolean = false,
-    navigator: DestinationsNavigator
+    chatId: String = "", isAdmin: Boolean = false, navigator: DestinationsNavigator
 ) {
     val viewModel: ChatViewModel = koinViewModel()
     var processing by remember {
@@ -91,6 +93,29 @@ fun Chat(
         //check if list is empty
         if (chats.isNotEmpty()) {
             listState.animateScrollToItem(chats.size - 1)
+        }
+    }
+
+
+    LaunchedEffect(key1 = Unit) {
+        if (isAdmin) {
+            Firebase.messaging.subscribeToTopic("adminChat").addOnCompleteListener { task ->
+                var msg = "Subscribed adminChat"
+                if (!task.isSuccessful) {
+                    msg = "Subscribe adminChat failed"
+                }
+                Log.d(Constants.TAG, msg)
+//                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Firebase.messaging.subscribeToTopic(cId).addOnCompleteListener { task ->
+                var msg = "Subscribed $cId"
+                if (!task.isSuccessful) {
+                    msg = "Subscribe $cId failed"
+                }
+                Log.d(Constants.TAG, msg)
+//                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -174,8 +199,7 @@ fun Chat(
 //                    }
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = TextDeep,
-                        contentColor = Color.White
+                        containerColor = TextDeep, contentColor = Color.White
                     ),
                     modifier = Modifier.padding(horizontal = 26.dp),
                     enabled = name.length > 2 && !processing
@@ -197,8 +221,7 @@ fun Chat(
     } else {
         Column(Modifier.fillMaxSize()) {
             LazyColumn(
-                Modifier.weight(1f),
-                state = listState
+                Modifier.weight(1f), state = listState
             ) {
                 items(
                     items = chats,
@@ -219,8 +242,7 @@ fun Chat(
                                 .padding(top = 6.dp),
                             shape = RoundedCornerShape(8.dp),
                             colors = CardDefaults.cardColors(
-                                containerColor =
-                                if (isAdmin) {
+                                containerColor = if (isAdmin) {
                                     if (it.admin) CardColor2.copy(0.7f)
                                     else Secondary.copy(0.7f)
                                 } else {
@@ -231,8 +253,7 @@ fun Chat(
                         ) {
                             Column {
                                 if (isAdmin && it.admin) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.delete),
+                                    Icon(painter = painterResource(id = R.drawable.delete),
                                         contentDescription = "delete",
                                         tint = Primary,
                                         modifier = Modifier.clickable {
@@ -246,8 +267,7 @@ fun Chat(
                                                         Toast.LENGTH_SHORT
                                                     ).show()
                                                 }
-                                        }
-                                    )
+                                        })
 
                                 }
                                 Text(
@@ -256,22 +276,16 @@ fun Chat(
                                     color = TextDeep,
                                     textAlign = TextAlign.Start,
                                     modifier = Modifier.padding(
-                                        start = 16.dp,
-                                        bottom = 8.dp,
-                                        end = 16.dp,
-                                        top = 12.dp
+                                        start = 16.dp, bottom = 8.dp, end = 16.dp, top = 12.dp
                                     )
                                 )
                                 Text(
-                                    text = getTime(it.time),
-                                    modifier = Modifier
+                                    text = getTime(it.time), modifier = Modifier
                                         .align(
                                             if (it.admin && !isAdmin) Alignment.Start else Alignment.End
                                         )
                                         .padding(
-                                            start = 16.dp,
-                                            end = 16.dp,
-                                            bottom = 12.dp
+                                            start = 16.dp, end = 16.dp, bottom = 12.dp
                                         )
                                 )
                             }
@@ -315,28 +329,24 @@ fun Chat(
                 )
 
                 AnimatedVisibility(visible = message.isNotEmpty()) {
-                    IconButton(
-                        enabled = !processing,
-                        onClick = {
-                            viewModel.sendChat(
-                                message,
-                                if (isAdmin) "Admin" else userName,
-                                isAdmin = isAdmin,
-                                parent = cId
-                            ).addOnSuccessListener {
+                    IconButton(enabled = !processing, onClick = {
+                        viewModel.sendChat(
+                            message,
+                            if (isAdmin) "Admin" else userName,
+                            isAdmin = isAdmin,
+                            parent = cId
+                        ).addOnSuccessListener {
 //                            Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
-                                viewModel.getChats(cId)
-                                message = ""
-                                processing = false
-                            }.addOnFailureListener {
-                                Toast.makeText(
-                                    context,
-                                    "Failed: ${it.localizedMessage}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                processing = false
-                            }
-                        }) {
+                            viewModel.getChats(cId)
+                            message = ""
+                            processing = false
+                        }.addOnFailureListener {
+                            Toast.makeText(
+                                context, "Failed: ${it.localizedMessage}", Toast.LENGTH_SHORT
+                            ).show()
+                            processing = false
+                        }
+                    }) {
                         if (processing) {
                             CircularProgressIndicator(
                                 color = Primary
