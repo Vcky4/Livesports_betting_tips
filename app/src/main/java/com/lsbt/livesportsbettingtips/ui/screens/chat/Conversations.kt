@@ -28,6 +28,7 @@ import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.ChatDestination
 import com.lsbt.livesportsbettingtips.ui.theme.CardColor
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
+import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
@@ -67,12 +68,14 @@ fun Conversations(navigator: DestinationsNavigator) {
                             Text(
                                 text = it.name,
                                 fontSize = 20.sp,
-                                modifier = Modifier.padding(bottom = 4.dp)
+                                modifier = Modifier.padding(bottom = 4.dp),
+                                color = TextDeep
                             )
                             Text(
                                 text = it.lastMessage,
                                 fontSize = 14.sp,
-                                modifier = Modifier.padding(bottom = 4.dp)
+                                modifier = Modifier.padding(bottom = 4.dp),
+                                color = TextDeep
                             )
                         }
                         IconButton(onClick = {
@@ -100,7 +103,8 @@ fun Conversations(navigator: DestinationsNavigator) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 4.dp),
-                        textAlign = TextAlign.End
+                        textAlign = TextAlign.End,
+                        color = TextDeep
                     )
                 }
             }
