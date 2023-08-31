@@ -419,7 +419,7 @@ fun Chat(
                             CircularProgressIndicator(
                                 color = Primary
                             )
-                        } else if (uploadLoading) {
+                        } else if (!uploadLoading) {
                             Icon(
                                 painter = painterResource(id = R.drawable.send),
                                 contentDescription = "Send",
