@@ -124,9 +124,11 @@ class ChatViewModel(private val context: Application) : ViewModel(), KoinCompone
         )
         return database.child("conversations").child(pKey ?: "").setValue(conversation)
             .addOnSuccessListener {
-                viewModelScope.launch {
-                    settings.putPreference(SettingsConstants.CHAT_ID, pKey ?: "")
-                    _chatId.value = pKey ?: ""
+                if (!isAdmin) {
+                    viewModelScope.launch {
+                        settings.putPreference(SettingsConstants.CHAT_ID, pKey ?: "")
+                        _chatId.value = pKey ?: ""
+                    }
                 }
                 val chat = ChatModel(
                     key ?: "",
@@ -182,9 +184,14 @@ class ChatViewModel(private val context: Application) : ViewModel(), KoinCompone
                     if (it != null) {
                         database.child("conversations").child(pKey ?: "").setValue(conversation)
                             .addOnSuccessListener {
-                                viewModelScope.launch {
-                                    settings.putPreference(SettingsConstants.CHAT_ID, pKey ?: "")
-                                    _chatId.value = pKey ?: ""
+                                if (!isAdmin) {
+                                    viewModelScope.launch {
+                                        settings.putPreference(
+                                            SettingsConstants.CHAT_ID,
+                                            pKey ?: ""
+                                        )
+                                        _chatId.value = pKey ?: ""
+                                    }
                                 }
                                 val chat = ChatModel(
                                     key ?: "",
