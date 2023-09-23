@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -74,7 +75,9 @@ fun Conversations(navigator: DestinationsNavigator) {
                             Text(
                                 text = it.lastMessage,
                                 fontSize = 14.sp,
-                                modifier = Modifier.padding(bottom = 4.dp),
+                                modifier = Modifier
+                                    .widthIn(max = 200.dp)
+                                    .padding(bottom = 4.dp),
                                 color = TextDeep
                             )
                         }
