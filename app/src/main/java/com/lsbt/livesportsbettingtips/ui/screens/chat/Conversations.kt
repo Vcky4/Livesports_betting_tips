@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.R
@@ -65,20 +65,23 @@ fun Conversations(navigator: DestinationsNavigator) {
                         .padding(horizontal = 18.dp, vertical = 10.dp)
                 ) {
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Column {
+                        Column(Modifier.weight(0.9f)) {
                             Text(
                                 text = it.name,
                                 fontSize = 20.sp,
                                 modifier = Modifier.padding(bottom = 4.dp),
-                                color = TextDeep
+                                color = TextDeep,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                             Text(
                                 text = it.lastMessage,
                                 fontSize = 14.sp,
                                 modifier = Modifier
-                                    .widthIn(max = 200.dp)
                                     .padding(bottom = 4.dp),
-                                color = TextDeep
+                                color = TextDeep,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                         IconButton(onClick = {
