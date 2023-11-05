@@ -64,8 +64,13 @@ class FCMService : FirebaseMessagingService() {
             .setContentTitle(p0.data["title"])
             .setContentText(p0.data["message"])
             .setAutoCancel(true)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(p0.data["title"]))
             .setSound(notificationSoundUri)
             .setContentIntent(pendingIntent)
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(p0.data["message"])
+            )
 
         //Set notification color to match your app color template
         notificationBuilder.color = resources.getColor(R.color.background_dark)
