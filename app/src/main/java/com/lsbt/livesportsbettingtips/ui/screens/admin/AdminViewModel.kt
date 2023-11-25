@@ -174,7 +174,8 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
 
          try {
              notifcationBody.put("title", title)
-             notifcationBody.put("message", body)   //Enter your notification message
+             notifcationBody.put("body", body)   //Enter your notification message
+             notifcationBody.put("icon", "logo")
              notification.put("to", topic)
             notification.put("data", notifcationBody)
         } catch (e: JSONException) {

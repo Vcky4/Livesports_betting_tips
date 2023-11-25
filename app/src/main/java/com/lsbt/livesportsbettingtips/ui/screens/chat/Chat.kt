@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -398,6 +399,7 @@ fun Chat(
 
                 AnimatedVisibility(visible = message.isNotEmpty()) {
                     IconButton(enabled = !processing, onClick = {
+                        processing = true
                         viewModel.sendChat(
                             message,
                             if (isAdmin) "Admin" else userName,
@@ -417,7 +419,8 @@ fun Chat(
                     }) {
                         if (processing) {
                             CircularProgressIndicator(
-                                color = Primary
+                                color = Primary,
+                                modifier = Modifier.size(24.dp)
                             )
                         } else if (!uploadLoading) {
                             Icon(

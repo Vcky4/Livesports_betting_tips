@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -44,6 +47,7 @@ import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
 import com.lsbt.livesportsbettingtips.utils.sendMail
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,6 +62,15 @@ fun VipPin(trigger: String, navigator: DestinationsNavigator) {
     val whatsapp = homeViewModel.whatsApp.observeAsState("").value
     val telegram = homeViewModel.telegram.observeAsState("").value
     val email = homeViewModel.email.observeAsState("").value
+
+    var showError by remember {
+        mutableStateOf(false)
+    }
+
+    LaunchedEffect(key1 = showError) {
+        delay(2000)
+        showError = false
+    }
     Box {
         Box(
             modifier = Modifier
@@ -139,6 +152,36 @@ fun VipPin(trigger: String, navigator: DestinationsNavigator) {
                         )
                     },
                 )
+                if (showError) {
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(
+                        text = stringResource(id = R.string.pin_is_incorrect),
+                        fontSize = 18.sp,
+                        color = Color.Red,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                Button(
+                    onClick = {
+                        showError = true
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = TextDeep,
+                        contentColor = Color.White
+                    ),
+                    modifier = Modifier.padding(horizontal = 26.dp),
+                    enabled = pin.length > 2
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.enter),
+                        fontSize = 18.sp,
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = stringResource(id = R.string.dont_have_a_vip_pin),
