@@ -100,35 +100,51 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
 //                        maxLines = 3,
                         overflow = TextOverflow.Ellipsis
                     )
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .padding(horizontal = 4.dp)
-                    ) {
-                        Text(
-                            text = item.homeScore, fontSize = 16.sp,
-                            color = TextDeep,
-                            fontWeight = FontWeight.Bold,
-                        )
-                        Spacer(modifier = Modifier.width(5.dp))
-                        Icon(
-                            painter = painterResource(
-                                id = when (item.status) {
-                                    "won" -> R.drawable.check_circle
-                                    "lost" -> R.drawable.cancel_fill
-                                    else -> R.drawable.outlined_flag
-                                }
-                            ),
-                            contentDescription = "flag",
-                            tint = Primary
-                        )
-                        Spacer(modifier = Modifier.width(5.dp))
-                        Text(
-                            text = item.awayScore, fontSize = 16.sp,
-                            color = TextDeep,
-                            fontWeight = FontWeight.Bold,
-                        )
+                    Column {
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .padding(horizontal = 4.dp)
+                        ) {
+                            Text(
+                                text = item.homeScore, fontSize = 16.sp,
+                                color = TextDeep,
+                                fontWeight = FontWeight.Bold,
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Icon(
+                                painter = painterResource(
+                                    id = when (item.status) {
+                                        "won" -> R.drawable.check_circle
+                                        "lost" -> R.drawable.cancel_fill
+                                        else -> R.drawable.outlined_flag
+                                    }
+                                ),
+                                contentDescription = "flag",
+                                tint = Primary
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Text(
+                                text = item.awayScore, fontSize = 16.sp,
+                                color = TextDeep,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
+
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .padding(horizontal = 4.dp)
+                        ) {
+                            Text(
+                                text = item.halfScore, fontSize = 16.sp,
+                                color = TextDeep,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center,
+                            )
+                        }
                     }
                     Text(
                         text = item.away, fontSize = 16.sp,

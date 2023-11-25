@@ -102,6 +102,9 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
     var odd by remember {
         mutableStateOf(TextFieldValue(""))
     }
+    var halfScore by remember {
+        mutableStateOf(TextFieldValue(""))
+    }
     var key by remember {
         mutableStateOf<String?>(null)
     }
@@ -196,6 +199,8 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                 homeScore = TextFieldValue(it.homeScore)
                                 awayScore = TextFieldValue(it.awayScore)
                                 odd = TextFieldValue(it.odd)
+                                halfScore = TextFieldValue(it.halfScore)
+                                status = it.status
                                 editOpen = true
                                 selectedDateText = DateUtils.formatDateTime(
                                     context,
@@ -244,6 +249,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                 homeScore = TextFieldValue(it.homeScore)
                                 awayScore = TextFieldValue(it.awayScore)
                                 odd = TextFieldValue(it.odd)
+                                halfScore = TextFieldValue(it.halfScore)
                                 editOpen = true
                                 selectedDateText = DateUtils.formatDateTime(
                                     context,
@@ -280,6 +286,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                         homeScore = TextFieldValue("")
                         awayScore = TextFieldValue("")
                         odd = TextFieldValue("")
+                        halfScore = TextFieldValue("")
                         editOpen = true
                         selectedDateText = "$dayOfMonth/${month + 1}/$year"
                         datePicker.updateDate(year, month, dayOfMonth)
@@ -467,62 +474,96 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                             )
                                         },
                                     )
-                                    Row(
-                                        horizontalArrangement = Arrangement.Center,
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        TextField(
-                                            value = homeScore,
-                                            onValueChange = { homeScore = it },
-                                            colors = TextFieldDefaults.textFieldColors(
-                                                containerColor = Color.Transparent,
-                                                focusedIndicatorColor = Color.Transparent,
-                                                unfocusedIndicatorColor = Color.Transparent,
-                                                disabledIndicatorColor = Color.Transparent,
-                                                errorIndicatorColor = Color.Transparent,
-                                                cursorColor = TextDeep,
-                                                textColor = TextDeep
-                                            ),
-                                            textStyle = TextStyle(
-                                                fontWeight = FontWeight.Bold,
-                                                fontSize = 18.sp
-                                            ),
-                                            modifier = Modifier
-                                                .width(40.dp),
-                                            placeholder = {
-                                                Text(
-                                                    text = "0",
-                                                    fontSize = 18.sp,
+                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                        Row(
+                                            horizontalArrangement = Arrangement.Center,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            TextField(
+                                                value = homeScore,
+                                                onValueChange = { homeScore = it },
+                                                colors = TextFieldDefaults.textFieldColors(
+                                                    containerColor = Color.Transparent,
+                                                    focusedIndicatorColor = Color.Transparent,
+                                                    unfocusedIndicatorColor = Color.Transparent,
+                                                    disabledIndicatorColor = Color.Transparent,
+                                                    errorIndicatorColor = Color.Transparent,
+                                                    cursorColor = TextDeep,
+                                                    textColor = TextDeep
+                                                ),
+                                                textStyle = TextStyle(
                                                     fontWeight = FontWeight.Bold,
-                                                    color = TextDeep.copy(alpha = 0.6f),
-                                                    textAlign = TextAlign.Center,
-                                                    modifier = Modifier.fillMaxWidth()
-                                                )
-                                            },
-                                        )
-                                        Spacer(modifier = Modifier.width(5.dp))
-                                        Icon(
-                                            painter = painterResource(
-                                                id = when (status) {
-                                                    "won" -> R.drawable.check_circle
-                                                    "lost" -> R.drawable.cancel_fill
-                                                    else -> R.drawable.outlined_flag
+                                                    fontSize = 18.sp
+                                                ),
+                                                modifier = Modifier
+                                                    .width(40.dp),
+                                                placeholder = {
+                                                    Text(
+                                                        text = "0",
+                                                        fontSize = 18.sp,
+                                                        fontWeight = FontWeight.Bold,
+                                                        color = TextDeep.copy(alpha = 0.6f),
+                                                        textAlign = TextAlign.Center,
+                                                        modifier = Modifier.fillMaxWidth()
+                                                    )
+                                                },
+                                            )
+                                            Spacer(modifier = Modifier.width(5.dp))
+                                            Icon(
+                                                painter = painterResource(
+                                                    id = when (status) {
+                                                        "won" -> R.drawable.check_circle
+                                                        "lost" -> R.drawable.cancel_fill
+                                                        else -> R.drawable.outlined_flag
+                                                    }
+                                                ),
+                                                contentDescription = stringResource(id = R.string.flag),
+                                                tint = Primary,
+                                                modifier = Modifier.clickable {
+                                                    status = when (status) {
+                                                        "won" -> "lost"
+                                                        "lost" -> "pending"
+                                                        else -> "won"
+                                                    }
                                                 }
-                                            ),
-                                            contentDescription = stringResource(id = R.string.flag),
-                                            tint = Primary,
-                                            modifier = Modifier.clickable {
-                                                status = when (status) {
-                                                    "won" -> "lost"
-                                                    "lost" -> "pending"
-                                                    else -> "won"
-                                                }
-                                            }
-                                        )
-                                        Spacer(modifier = Modifier.width(5.dp))
+                                            )
+                                            Spacer(modifier = Modifier.width(5.dp))
+                                            TextField(
+                                                value = awayScore,
+                                                onValueChange = { awayScore = it },
+                                                colors = TextFieldDefaults.textFieldColors(
+                                                    containerColor = Color.Transparent,
+                                                    focusedIndicatorColor = Color.Transparent,
+                                                    unfocusedIndicatorColor = Color.Transparent,
+                                                    disabledIndicatorColor = Color.Transparent,
+                                                    errorIndicatorColor = Color.Transparent,
+                                                    cursorColor = TextDeep,
+                                                    textColor = TextDeep
+                                                ),
+                                                textStyle = TextStyle(
+                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 18.sp,
+                                                    textAlign = TextAlign.Center
+                                                ),
+                                                modifier = Modifier
+                                                    .width(40.dp),
+                                                placeholder = {
+                                                    Text(
+                                                        text = "0",
+                                                        fontSize = 18.sp,
+                                                        fontWeight = FontWeight.Bold,
+                                                        color = TextDeep.copy(alpha = 0.6f),
+                                                        textAlign = TextAlign.Center,
+                                                        modifier = Modifier.fillMaxWidth()
+                                                    )
+                                                },
+                                            )
+
+                                        }
+
                                         TextField(
-                                            value = awayScore,
-                                            onValueChange = { awayScore = it },
+                                            value = halfScore,
+                                            onValueChange = { halfScore = it },
                                             colors = TextFieldDefaults.textFieldColors(
                                                 containerColor = Color.Transparent,
                                                 focusedIndicatorColor = Color.Transparent,
@@ -536,11 +577,10 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                                 fontWeight = FontWeight.Bold,
                                                 fontSize = 18.sp
                                             ),
-                                            modifier = Modifier
-                                                .width(40.dp),
+                                            modifier = Modifier.width(90.dp),
                                             placeholder = {
                                                 Text(
-                                                    text = "0",
+                                                    text = "(0 - 0)",
                                                     fontSize = 18.sp,
                                                     fontWeight = FontWeight.Bold,
                                                     color = TextDeep.copy(alpha = 0.6f),
@@ -682,6 +722,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                 odd.text,
                                 status,
                                 prediction.text,
+                                halfScore.text,
                                 //convert selected date to timestamp
                                 date = date.timeInMillis,
                             ).addOnSuccessListener {

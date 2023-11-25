@@ -17,8 +17,9 @@ data class TipModel(
     val date: Long = System.currentTimeMillis(),
     val status: String,
     val prediction: String,
+    val halfScore: String = "",
 ) {
-    constructor() : this("", "", "", "", "", "", "", 0, "", "")
+    constructor() : this("", "", "", "", "", "", "", 0, "", "","")
 
     @Exclude
     fun toMap(): Map<String, Any?> {
@@ -32,7 +33,8 @@ data class TipModel(
             "odd" to odd,
             "date" to date,
             "status" to status,
-            "prediction" to prediction
+            "prediction" to prediction,
+            "halfScore" to halfScore,
         )
     }
 }

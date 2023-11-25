@@ -98,6 +98,7 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
         odd: String,
         status: String,
         prediction: String,
+        halfScore: String = "",
         date: Long = System.currentTimeMillis()
     ): Task<Void> {
         val key = id ?: database.child("tips").child(tag).push().key
@@ -111,6 +112,7 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
             odd,
             date,
             status,
+            halfScore,
             prediction,
         )
         return database.child("tips").child(tag).child(key ?: "").setValue(tip)
