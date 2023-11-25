@@ -60,7 +60,7 @@ class FCMService : FirebaseMessagingService() {
         val notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
             .setSmallIcon(R.drawable.logo)
-            .setLargeIcon(largeIcon)
+//            .setLargeIcon(largeIcon)
             .setContentTitle(p0.data["title"])
             .setContentText(p0.data["message"])
             .setAutoCancel(true)
@@ -85,12 +85,12 @@ class FCMService : FirebaseMessagingService() {
         val adminChannel = NotificationChannel(
             ADMIN_CHANNEL_ID,
             adminChannelName,
-            NotificationManager.IMPORTANCE_HIGH
+            NotificationManager.IMPORTANCE_DEFAULT
         )
         adminChannel.description = adminChannelDescription
         adminChannel.enableLights(true)
         adminChannel.lightColor = Color.RED
-        adminChannel.enableVibration(true)
+        adminChannel.enableVibration(false)
         notificationManager?.createNotificationChannel(adminChannel)
     }
 }
