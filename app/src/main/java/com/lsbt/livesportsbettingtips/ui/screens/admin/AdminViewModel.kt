@@ -112,9 +112,9 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
             odd,
             date,
             status,
-            halfScore,
             prediction,
-        )
+            halfScore,
+            )
         return database.child("tips").child(tag).child(key ?: "").setValue(tip)
             .addOnSuccessListener {
                 getTips(tag)

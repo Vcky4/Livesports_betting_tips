@@ -722,7 +722,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                 odd.text,
                                 status,
                                 prediction.text,
-                                halfScore.text,
+                               halfScore =  halfScore.text,
                                 //convert selected date to timestamp
                                 date = date.timeInMillis,
                             ).addOnSuccessListener {
