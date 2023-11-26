@@ -17,7 +17,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -26,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.ChatDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.DetailScreenDestination
+import com.lsbt.livesportsbettingtips.ui.screens.destinations.MyWebViewDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.VipPinDestination
 import com.lsbt.livesportsbettingtips.utils.openTelegram
 import com.lsbt.livesportsbettingtips.utils.openWhatsApp
@@ -44,7 +44,6 @@ fun Home(navigator: DestinationsNavigator) {
     val vipItems = homeViewModel.vipItems
     val liveItems = homeViewModel.liveItems
     val contactItems = homeViewModel.contactItems
-    val uriHandler = LocalUriHandler.current
     val context = LocalContext.current
     val whatsapp = homeViewModel.whatsApp.observeAsState().value
     val telegram = homeViewModel.telegram.observeAsState().value
@@ -132,9 +131,9 @@ fun Home(navigator: DestinationsNavigator) {
             ) {
                 HomeItem(it) {
                     if (it.id == 5) {
-                        uriHandler.openUri("https://www.livescore.com")
+                        navigator.navigate(MyWebViewDestination("https://www.livescore.com"))
                     } else {
-                        uriHandler.openUri("https://www.livesports088.com")
+                        navigator.navigate(MyWebViewDestination("https://www.livesports088.com"))
                     }
                 }
             }
