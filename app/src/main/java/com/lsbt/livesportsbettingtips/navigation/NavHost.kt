@@ -121,6 +121,7 @@ fun NavHost() {
     }
 
     ModalNavigationDrawer(
+        gesturesEnabled = false,
         drawerState = drawerState,
         drawerContent = {
             Column(
