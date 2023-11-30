@@ -37,6 +37,15 @@ fun MyWebView(
                 }
                 settings.javaScriptEnabled = true
 
+                //allow redirect
+                settings.javaScriptCanOpenWindowsAutomatically = true
+                settings.setSupportMultipleWindows(true)
+                settings.domStorageEnabled = true
+                settings.loadWithOverviewMode = true
+                settings.useWideViewPort = true
+                settings.setSupportZoom(true)
+                settings.builtInZoomControls = true
+                settings.displayZoomControls = false
                 loadUrl(url)
                 webView = this
             }
