@@ -29,12 +29,12 @@ import com.lsbt.livesportsbettingtips.ui.theme.Primary
 fun HomeItem(item: HomeItemModel, onClick: () -> Unit) {
     Card(Modifier
         .clickable { onClick.invoke() }
-        .padding(vertical = 8.dp, horizontal = 14.dp)) {
+        .padding(vertical = 4.dp, horizontal = 4.dp)) {
         Row(
             modifier = Modifier
                 .background(Color.White, RoundedCornerShape(8.dp))
                 .fillMaxWidth()
-                .padding(horizontal = 14.dp, vertical = 16.dp),
+                .padding(horizontal = 10.dp, vertical = 12.dp),
 //            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -49,7 +49,7 @@ fun HomeItem(item: HomeItemModel, onClick: () -> Unit) {
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = stringResource(id = item.title) ,
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
                 color = Primary
             )

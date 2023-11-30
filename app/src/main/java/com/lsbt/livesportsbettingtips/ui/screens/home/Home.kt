@@ -62,7 +62,7 @@ fun Home(navigator: DestinationsNavigator) {
         )
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier = Modifier.heightIn(max = 200.dp)
+            modifier = Modifier.heightIn(max = 230.dp).padding(horizontal = 8.dp)
         ) {
             items(
                 items = freeItems,
@@ -91,7 +91,7 @@ fun Home(navigator: DestinationsNavigator) {
         )
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier = Modifier.heightIn(max = 300.dp)
+            modifier = Modifier.heightIn(max = 230.dp).padding(horizontal = 8.dp)
         ) {
             items(
                 items = vipItems,
@@ -124,7 +124,7 @@ fun Home(navigator: DestinationsNavigator) {
         )
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier = Modifier.heightIn(max = 200.dp)
+            modifier = Modifier.heightIn(max = 230.dp).padding(horizontal = 8.dp)
         ) {
             items(
                 items = liveItems,
@@ -151,7 +151,7 @@ fun Home(navigator: DestinationsNavigator) {
         )
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier = Modifier.heightIn(max = 200.dp)
+            modifier = Modifier.heightIn(max = 230.dp).padding(horizontal = 8.dp)
         ) {
             items(
                 items = contactItems,
