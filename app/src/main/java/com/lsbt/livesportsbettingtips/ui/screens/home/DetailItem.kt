@@ -100,7 +100,7 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
 //                        maxLines = 3,
                         overflow = TextOverflow.Ellipsis
                     )
-                    Column {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Row(
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically,
@@ -136,10 +136,9 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
-                                .padding(horizontal = 4.dp)
                         ) {
                             Text(
-                                text = item.halfScore, fontSize = 16.sp,
+                                text = item.halfScore, fontSize = 14.sp,
                                 color = TextDeep,
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center,
