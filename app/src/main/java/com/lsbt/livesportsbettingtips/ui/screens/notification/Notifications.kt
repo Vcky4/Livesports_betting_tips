@@ -180,6 +180,7 @@ fun Notifications(navigator: DestinationsNavigator) {
             Spacer(modifier = Modifier.height(20.dp))
             val path = stringResource(id = R.string.announcement)
             Button(
+                enabled = !processing,
                 onClick = {
                     processing = true
                     if (isAnnouncement) {
