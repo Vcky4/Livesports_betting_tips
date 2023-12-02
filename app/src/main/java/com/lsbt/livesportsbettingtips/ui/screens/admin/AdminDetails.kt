@@ -8,6 +8,7 @@ import android.text.format.DateUtils
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -412,7 +413,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                             textColor = TextDeep
                                         ),
                                         textStyle = TextStyle(
-                                            fontSize = 18.sp,
+                                            fontSize = 16.sp,
                                             textAlign = TextAlign.Start
                                         ),
                                         modifier = Modifier
@@ -420,7 +421,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                         placeholder = {
                                             Text(
                                                 text = stringResource(id = R.string.league),
-                                                fontSize = 18.sp,
+                                                fontSize = 16.sp,
                                                 color = TextDeep.copy(alpha = 0.6f),
                                                 textAlign = TextAlign.Start,
                                                 modifier = Modifier.fillMaxWidth()
@@ -429,7 +430,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                     )
                                 }
                                 Text(
-                                    text = selectedDateText, fontSize = 18.sp,
+                                    text = selectedDateText, fontSize = 16.sp,
                                     color = Color.White,
                                     modifier = Modifier
                                         .clickable { datePicker.show() }
@@ -459,14 +460,14 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                         ),
                                         textStyle = TextStyle(
                                             fontWeight = FontWeight.Medium,
-                                            fontSize = 18.sp
+                                            fontSize = 16.sp
                                         ),
                                         modifier = Modifier
                                             .weight(0.35f),
                                         placeholder = {
                                             Text(
                                                 text = stringResource(id = R.string.home),
-                                                fontSize = 18.sp,
+                                                fontSize = 16.sp,
                                                 fontWeight = FontWeight.Medium,
                                                 color = TextDeep.copy(alpha = 0.6f),
                                                 textAlign = TextAlign.Center,
@@ -493,7 +494,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                                 ),
                                                 textStyle = TextStyle(
                                                     fontWeight = FontWeight.Bold,
-                                                    fontSize = 18.sp
+                                                    fontSize = 16.sp
                                                 ),
                                                 modifier = Modifier
                                                     .width(40.dp),
@@ -509,7 +510,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                                 },
                                             )
                                             Spacer(modifier = Modifier.width(5.dp))
-                                            Icon(
+                                            Image(
                                                 painter = painterResource(
                                                     id = when (status) {
                                                         "won" -> R.drawable.check_circle
@@ -518,7 +519,6 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                                     }
                                                 ),
                                                 contentDescription = stringResource(id = R.string.flag),
-                                                tint = Primary,
                                                 modifier = Modifier.clickable {
                                                     status = when (status) {
                                                         "won" -> "lost"
@@ -542,7 +542,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                                 ),
                                                 textStyle = TextStyle(
                                                     fontWeight = FontWeight.Bold,
-                                                    fontSize = 18.sp,
+                                                    fontSize = 16.sp,
                                                     textAlign = TextAlign.Center
                                                 ),
                                                 modifier = Modifier
@@ -550,7 +550,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                                 placeholder = {
                                                     Text(
                                                         text = "0",
-                                                        fontSize = 18.sp,
+                                                        fontSize = 16.sp,
                                                         fontWeight = FontWeight.Bold,
                                                         color = TextDeep.copy(alpha = 0.6f),
                                                         textAlign = TextAlign.Center,
@@ -575,13 +575,13 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                             ),
                                             textStyle = TextStyle(
                                                 fontWeight = FontWeight.Bold,
-                                                fontSize = 18.sp
+                                                fontSize = 16.sp
                                             ),
                                             modifier = Modifier.width(90.dp),
                                             placeholder = {
                                                 Text(
                                                     text = "(0 - 0)",
-                                                    fontSize = 18.sp,
+                                                    fontSize = 16.sp,
                                                     fontWeight = FontWeight.Bold,
                                                     color = TextDeep.copy(alpha = 0.6f),
                                                     textAlign = TextAlign.Center,
@@ -605,7 +605,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                         ),
                                         textStyle = TextStyle(
                                             fontWeight = FontWeight.Medium,
-                                            fontSize = 18.sp,
+                                            fontSize = 16.sp,
                                             textAlign = TextAlign.End
                                         ),
                                         modifier = Modifier
@@ -613,7 +613,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                         placeholder = {
                                             Text(
                                                 text = "Away",
-                                                fontSize = 18.sp,
+                                                fontSize = 16.sp,
                                                 fontWeight = FontWeight.Medium,
                                                 color = TextDeep.copy(alpha = 0.6f),
                                                 textAlign = TextAlign.Center,
@@ -648,13 +648,13 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                                 textColor = TextDeep
                                             ),
                                             textStyle = TextStyle(
-                                                fontSize = 18.sp,
+                                                fontSize = 16.sp,
                                             ),
                                             modifier = Modifier.widthIn(max = 120.dp),
                                             placeholder = {
                                                 Text(
                                                     text = stringResource(id = R.string.prediction),
-                                                    fontSize = 18.sp,
+                                                    fontSize = 16.sp,
                                                     color = TextDeep.copy(alpha = 0.6f),
                                                     textAlign = TextAlign.Center,
                                                     modifier = Modifier.fillMaxWidth()
@@ -680,14 +680,14 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                                 textColor = TextDeep
                                             ),
                                             textStyle = TextStyle(
-                                                fontSize = 18.sp,
+                                                fontSize = 16.sp,
                                                 textAlign = TextAlign.Center
                                             ),
                                             modifier = Modifier.widthIn(max = 80.dp),
                                             placeholder = {
                                                 Text(
                                                     text = stringResource(id = R.string.odd),
-                                                    fontSize = 18.sp,
+                                                    fontSize = 16.sp,
                                                     color = TextDeep.copy(alpha = 0.6f),
                                                     textAlign = TextAlign.Center,
                                                     modifier = Modifier.fillMaxWidth()
@@ -749,7 +749,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                         if (!processing) {
                             Text(
                                 text = stringResource(id = R.string.save),
-                                fontSize = 18.sp,
+                                fontSize = 16.sp,
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.fillMaxWidth()

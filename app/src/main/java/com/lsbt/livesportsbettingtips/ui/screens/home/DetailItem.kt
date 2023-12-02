@@ -1,5 +1,6 @@
 package com.lsbt.livesportsbettingtips.ui.screens.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -51,13 +52,6 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
             Modifier
                 .background(Color.White, RoundedCornerShape(8.dp))
         ) {
-            Text(
-                text = time, fontSize = 18.sp,
-                color = Secondary,
-                modifier = Modifier
-                    .padding(vertical = 4.dp, horizontal = 14.dp)
-                    .align(Alignment.End),
-            )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -66,7 +60,9 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                     .fillMaxWidth()
                     .padding(vertical = 8.dp, horizontal = 14.dp)
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)) {
                     Icon(
                         painter = painterResource(id = R.drawable.outlined_flag),
                         contentDescription = "flag",
@@ -74,14 +70,19 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = item.league, fontSize = 16.sp,
+                        text = item.league, fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color.White,
-                        modifier = Modifier.fillMaxWidth(0.9f),
+                        modifier = Modifier,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
+                Text(
+                    text = time, fontSize = 12.sp,
+                    color = Color.White,
+                    modifier = Modifier
+                )
             }
             Column(
                 modifier = Modifier
@@ -93,7 +94,7 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = item.home, fontSize = 16.sp,
+                        text = item.home, fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
                         color = TextDeep,
                         modifier = Modifier.weight(0.5f),
@@ -108,12 +109,12 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                                 .padding(horizontal = 4.dp)
                         ) {
                             Text(
-                                text = item.homeScore, fontSize = 16.sp,
+                                text = item.homeScore, fontSize = 14.sp,
                                 color = TextDeep,
                                 fontWeight = FontWeight.Bold,
                             )
                             Spacer(modifier = Modifier.width(5.dp))
-                            Icon(
+                            Image(
                                 painter = painterResource(
                                     id = when (item.status) {
                                         "won" -> R.drawable.check_circle
@@ -122,11 +123,10 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                                     }
                                 ),
                                 contentDescription = "flag",
-                                tint = Primary
                             )
                             Spacer(modifier = Modifier.width(5.dp))
                             Text(
-                                text = item.awayScore, fontSize = 16.sp,
+                                text = item.awayScore, fontSize = 14.sp,
                                 color = TextDeep,
                                 fontWeight = FontWeight.Bold,
                             )
@@ -146,7 +146,7 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                         }
                     }
                     Text(
-                        text = item.away, fontSize = 16.sp,
+                        text = item.away, fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
                         color = TextDeep,
                         modifier = Modifier.weight(0.5f),
@@ -169,10 +169,10 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                         shape = RoundedCornerShape(5.dp)
                     ) {
                         Text(
-                            text = item.prediction, fontSize = 14.sp,
+                            text = item.prediction, fontSize = 13.sp,
                             color = TextDeep,
                             modifier = Modifier
-                                .padding(vertical = 6.dp, horizontal = 6.dp)
+                                .padding(vertical = 4.dp, horizontal = 6.dp)
                         )
                     }
                     Card(
@@ -183,11 +183,11 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                         shape = RoundedCornerShape(5.dp)
                     ) {
                         Text(
-                            text = item.odd, fontSize = 14.sp,
+                            text = item.odd, fontSize = 13.sp,
                             color = TextDeep,
                             textAlign = TextAlign.End,
                             modifier = Modifier
-                                .padding(vertical = 6.dp, horizontal = 6.dp)
+                                .padding(vertical = 4.dp, horizontal = 6.dp)
                         )
                     }
                 }
