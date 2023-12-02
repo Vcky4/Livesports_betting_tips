@@ -114,7 +114,7 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
             status,
             prediction,
             halfScore,
-            )
+        )
         return database.child("tips").child(tag).child(key ?: "").setValue(tip)
             .addOnSuccessListener {
                 getTips(tag)
@@ -167,17 +167,17 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
         database.child("tips").child(tag).ref.addChildEventListener(childEventListener)
     }
 
-     fun sendNotification(title: String, body: String) {
-         Log.e("TAG", "sendNotification")
-         val topic = "/topics/Tips" //topic has to match what the receiver subscribed to
+    fun sendNotification(title: String, body: String) {
+        Log.e("TAG", "sendNotification")
+        val topic = "/topics/Tips" //topic has to match what the receiver subscribed to
 
-         val notification = JSONObject()
-         val notifcationBody = JSONObject()
+        val notification = JSONObject()
+        val notifcationBody = JSONObject()
 
-         try {
-             notifcationBody.put("title", title)
-             notifcationBody.put("message", body)   //Enter your notification message
-             notification.put("to", topic)
+        try {
+            notifcationBody.put("title", title)
+            notifcationBody.put("message", body)   //Enter your notification message
+            notification.put("to", topic)
             notification.put("data", notifcationBody)
         } catch (e: JSONException) {
             Log.e("TAG", "notification: " + e.message)
@@ -198,8 +198,8 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
                 return params
             }
         }
-         requestQueue.add(jsonObjectRequest)
-     }
+        requestQueue.add(jsonObjectRequest)
+    }
 
     fun getAnnouncement(path: String) {
         //get announcement
