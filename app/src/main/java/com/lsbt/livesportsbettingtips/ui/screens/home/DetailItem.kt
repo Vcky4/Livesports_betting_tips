@@ -62,7 +62,7 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .fillMaxWidth(0.8f)) {
+                        .fillMaxWidth(0.75f)) {
                     Icon(
                         painter = painterResource(id = R.drawable.outlined_flag),
                         contentDescription = "flag",
@@ -94,7 +94,7 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = item.home, fontSize = 14.sp,
+                        text = item.home, fontSize = 15.sp,
                         fontWeight = FontWeight.Medium,
                         color = TextDeep,
                         modifier = Modifier.weight(0.5f),
@@ -138,7 +138,7 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                             modifier = Modifier
                         ) {
                             Text(
-                                text = item.halfScore, fontSize = 14.sp,
+                                text = item.halfScore, fontSize = 15.sp,
                                 color = TextDeep,
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center,

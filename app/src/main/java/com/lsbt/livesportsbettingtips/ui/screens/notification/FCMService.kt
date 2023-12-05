@@ -59,7 +59,7 @@ class FCMService : FirebaseMessagingService() {
 
         val notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
-            .setSmallIcon(R.drawable.logo)
+            .setSmallIcon(R.drawable.ic_stat_name)
 //            .setLargeIcon(largeIcon)
             .setContentTitle(p0.data["title"])
             .setContentText(p0.data["message"])
@@ -73,13 +73,13 @@ class FCMService : FirebaseMessagingService() {
             )
 
         //Set notification color to match your app color template
-        notificationBuilder.color = resources.getColor(R.color.background_dark)
+        notificationBuilder.color = resources.getColor(R.color.orange)
         notificationManager.notify(notificationID, notificationBuilder.build())
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun setupChannels(notificationManager: NotificationManager?) {
-        val adminChannelName = "New notification"
+        val adminChannelName = "lsbt notification"
         val adminChannelDescription = "lsbt notification"
 
         val adminChannel = NotificationChannel(

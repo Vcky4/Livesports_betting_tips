@@ -266,14 +266,14 @@ class ChatViewModel(private val context: Application) : ViewModel(), KoinCompone
                     private val conversationList = mutableListOf<ConversationModel>()
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         for (dataValues in dataSnapshot.children) {
-                            Log.d(ContentValues.TAG, "dataValues is: $dataValues")
+//                            Log.d(ContentValues.TAG, "dataValues is: $dataValues")
                             val conversation = dataValues.getValue(ConversationModel::class.java)
                             if (conversation != null) {
                                 conversationList.add(conversation)
                             }
                         }
                         _conversations.value = conversationList
-                        Log.d(ContentValues.TAG, "list value is: $conversationList")
+//                        Log.d(ContentValues.TAG, "list value is: $conversationList")
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
