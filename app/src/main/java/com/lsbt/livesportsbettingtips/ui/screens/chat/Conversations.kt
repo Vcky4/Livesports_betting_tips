@@ -47,7 +47,7 @@ fun Conversations(navigator: DestinationsNavigator) {
 
     LazyColumn {
         items(
-            items = conversations
+            items = conversations.sortedByDescending { it.lastUpdated },
         ) {
             Row(
                 Modifier
