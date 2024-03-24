@@ -66,4 +66,7 @@
     <string name="default_notification_channel_id" translatable="false">admin_channel</string>
     <string name="default_notification_channel_name" translatable="false">lsbt notification</string>
     <string name="default_notification_channel_description" translatable="false">lsbt notification</string>
+    <string name="today_tips">TODAY TIPS</string>
+    <string name="view_history">VIEW HISTORY</string>
+
 </resources>
