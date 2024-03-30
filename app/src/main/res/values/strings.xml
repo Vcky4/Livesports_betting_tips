@@ -4,7 +4,7 @@
     <string name="vip">VIP</string>
     <string name="live">Live</string>
     <string name="contact_us">Contact Us</string>
-    <string name="back">back</string>
+    <string name="back">Back</string>
     <string name="today">Today</string>
     <string name="no_tips_available">No tips available</string>
     <string name="history">History</string>
@@ -68,5 +68,7 @@
     <string name="default_notification_channel_description" translatable="false">lsbt notification</string>
     <string name="today_tips">TODAY TIPS</string>
     <string name="view_history">VIEW HISTORY</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
 
 </resources>

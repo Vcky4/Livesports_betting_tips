@@ -4,6 +4,7 @@ import android.text.format.DateUtils
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,14 +12,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,10 +40,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.R
+import com.lsbt.livesportsbettingtips.components.Button2
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.rizzi.bouquet.PageContentInt
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalStdlibApi::class)
@@ -59,6 +62,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
             title = "History"
         ),
     )
+    var page by remember{ mutableStateOf(0) }
     val tips = viewModel.tips.observeAsState(listOf()).value
     val pagerState = rememberPagerState(
         0
@@ -155,48 +159,80 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                         }
                     } else {
                         items(
-                            items = history
+                            items = history.slice(page..page.plus(2))
                         ) {
                             DetailItem(it)
                         }
                     }
-
+                    if (history.isNotEmpty()) {
+                        item {
+                            Row(
+                                modifier = Modifier.fillMaxSize()
+                                    .padding(end = 40.dp),
+                                horizontalArrangement = Arrangement.SpaceEvenly,
+                                verticalAlignment = Alignment.Bottom
+                            ) {
+                                Button2(
+                                    modifier = Modifier.align(Alignment.CenterVertically),
+                                    text = stringResource(id = R.string.back),
+                                    color = Color.Black,
+                                    contentColor = Color.White,
+                                    onClick = {
+                                        if (page > 0) {
+                                            page--
+                                        }
+                                    }
+                                )
+                                Button2(
+                                    modifier = Modifier.align(Alignment.CenterVertically),
+                                    text = stringResource(id = R.string.next),
+                                    color = Color.Black,
+                                    contentColor = Color.White,
+                                    onClick = {
+                                        if (page < history.size - 1) {
+                                            page++
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    }
                 }
-
             }
-        }
 
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .align(Alignment.CenterHorizontally),
-            verticalAlignment = Alignment.Bottom
-        ) {
-            tabItems.forEachIndexed { index, item ->
-                val isSelected = selectedTabIndex == index
-                val backgroundColor = if (isSelected) Primary else Color.Unspecified
-                Box(modifier = Modifier
-                    .weight(0.5f)
-                    .height(60.dp)
-                    .clickable { selectedTabIndex = index }
-                    .background(color = backgroundColor),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = item.title,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-            }
         }
     }
+//    if (history.isNotEmpty()) {
+//
+//    }
+    Row(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalAlignment = Alignment.Bottom
+    ) {
+        tabItems.forEachIndexed { index, item ->
+            val isSelected = selectedTabIndex == index
+            val backgroundColor = if (isSelected) Primary else Color.Transparent
+            Box(modifier = Modifier
+                .weight(0.5f)
+                .height(60.dp)
+                .clickable { selectedTabIndex = index }
+                .background(color = backgroundColor),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = item.title,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            }
 
+        }
+    }
 }
 
 
