@@ -51,4 +51,9 @@
     <string name="whats_your_name">Cómo te llamas</string>
     <string name="chat_with_us">habla con nosotros</string>
     <string name="start_typing">Empieza a escribir...</string>
+    <string name="today_tips">HOY</string>
+    <string name="view_history">VER HISTORIAL</string>
+    <string name="next">Próximo</string>
+    <string name="previous">Previo</string>
+    <string name="coming_soon">Muy pronto</string>
 </resources>
