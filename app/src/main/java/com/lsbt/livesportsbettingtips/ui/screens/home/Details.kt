@@ -1,13 +1,13 @@
 package com.lsbt.livesportsbettingtips.ui.screens.home
 
 import android.text.format.DateUtils
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -39,8 +39,8 @@ import com.lsbt.livesportsbettingtips.ui.theme.Primary
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
+import java.util.Date
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalStdlibApi::class)
 @Destination
 @Composable
 fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
@@ -56,11 +56,11 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
             title = "History"
         ),
     )
-    var page by remember{ mutableStateOf(0) }
-    val tips = viewModel.tips.observeAsState(listOf()).value.filter {
+    var page by remember { mutableStateOf(0) }
+    val tips = viewModel.tips.observeAsState(listOf()).value.asSequence().filter {
         //it.date is not future
         it.date < System.currentTimeMillis()
-    }
+    }.toList()
 //    val pagerState = rememberPagerState(
 //        0
 //    )
@@ -76,10 +76,13 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
 //    LaunchedEffect(pagerState.currentPage) {
 //        selectedTabIndex = pagerState.currentPage
 //    }
-    val history = when (trigger) {
-        prev -> tips.sortedByDescending { it.date }
-        prev2 -> tips.sortedByDescending { it.date }
-        else -> tips.filter { !DateUtils.isToday(it.date) }.sortedByDescending { it.date }
+    val history = if (trigger == prev || trigger == prev2) {
+        tips.sortedByDescending { it.date }
+    } else {
+        tips.asSequence()
+            .filter { DateUtils.isToday(it.date.plus(80400000 * (page + 1))) }
+            .sortedByDescending { it.date }
+            .toList()
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -105,6 +108,18 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     modifier = Modifier.padding(start = 16.dp)
+                )
+            }
+            if (trigger == "Free 200 plus Odds") {
+                Text(
+                    text = stringResource(id = R.string.coming_soon),
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 30.dp),
+                    textAlign = TextAlign.Center
                 )
             }
 //        HorizontalPager(
@@ -133,7 +148,8 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                             }
                         } else {
                             items(
-                                items = tips.filter { DateUtils.isToday(it.date) }
+                                items = tips.asSequence().filter { DateUtils.isToday(it.date) }
+                                    .toList()
                             ) {
                                 DetailItem(it)
                             }
@@ -157,43 +173,61 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                         }
                     } else {
                         items(
-                            items = history.slice(page..page.plus(2))
+                            items = history
                         ) {
                             DetailItem(it)
                         }
                     }
-                    if (history.isNotEmpty()) {
-                        item {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceEvenly,
-                                verticalAlignment = Alignment.Bottom
-                            ) {
-                                Button2(
-                                    modifier = Modifier.align(Alignment.CenterVertically),
-                                    text = stringResource(id = R.string.back),
-                                    color = Color.Black,
-                                    contentColor = Color.White,
-                                    onClick = {
-                                        if (page > 0) {
-                                            page--
-                                        }
+//                    if (history.isNotEmpty()) {
+                    item {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Button2(
+                                modifier = Modifier.align(Alignment.CenterVertically),
+                                text = stringResource(id = R.string.back),
+                                color = Color.Black,
+                                contentColor = Color.White,
+                                onClick = {
+                                    if (page > 0) {
+                                        page--
                                     }
-                                )
-                                Button2(
-                                    modifier = Modifier.align(Alignment.CenterVertically),
-                                    text = stringResource(id = R.string.next),
-                                    color = Color.Black,
-                                    contentColor = Color.White,
-                                    onClick = {
-                                        if (page < history.size - 1) {
-                                            page++
-                                        }
-                                    }
-                                )
-                            }
+                                }
+                            )
+                            Text(
+                                text = if (history.isNotEmpty()) {
+                                    "${
+                                        Date(history[0].date).date
+                                    }/${Date(history[0].date).month.plus(1)}/${
+                                        Date(history[0].date).year.plus(
+                                            1900
+                                        )
+                                    }"
+                                } else "No Tips",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp),
+                                textAlign = TextAlign.Center
+                            )
+                            Button2(
+                                modifier = Modifier.align(Alignment.CenterVertically),
+                                text = stringResource(id = R.string.next),
+                                color = Color.Black,
+                                contentColor = Color.White,
+                                onClick = {
+//                                    if (page < tips.size - 1) {
+                                    page++
+//                                    }
+                                }
+                            )
                         }
+                        Spacer(modifier = Modifier.height(80.dp))
                     }
+//                    }
                 }
             }
 

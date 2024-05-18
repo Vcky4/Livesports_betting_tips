@@ -1,5 +1,6 @@
 package com.lsbt.livesportsbettingtips.ui.screens.home
 
+import android.text.format.DateUtils
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,14 +35,16 @@ import com.lsbt.livesportsbettingtips.ui.theme.CardColor2
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
 import com.lsbt.livesportsbettingtips.ui.theme.Secondary
 import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
-import java.util.Date
 
 @Composable
 fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
     val context = LocalContext.current
     //format date to DD/MM/YYYY
-    val time =
-        "${Date(item.date).date}/${Date(item.date).month.plus(1)}/${Date(item.date).year.plus(1900)}"
+    val time = DateUtils.formatDateTime(
+        context,
+        item.date,
+        DateUtils.FORMAT_SHOW_TIME
+    )
 
 
     Card(
