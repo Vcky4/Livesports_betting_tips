@@ -9,6 +9,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -124,84 +125,93 @@ fun NavHost() {
         gesturesEnabled = false,
         drawerState = drawerState,
         drawerContent = {
-            Column(
+            Box(
                 Modifier
-                    .background(Primary)
-                    .fillMaxWidth(0.6f)
+                    .fillMaxSize()
+                    .clickable {
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    }
             ) {
-                Spacer(modifier = Modifier.padding(16.dp))
-                Text(
-                    stringResource(id = R.string.about_us),
-                    color = Background,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .clickable {
-                            navController.navigate(PdfDisplayDestination("about"))
-                            scope.launch {
-                                drawerState.close()
-                            }
-                        }
-                )
-                Text(
-                    stringResource(id = R.string.set_langauge),
-                    color = Background,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .clickable {
-                            openDialog = true
-                            scope.launch {
-                                drawerState.close()
-                            }
-                        }
-                )
-                Row(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth()
-                        .clickable {
-                            isContactsOpen = !isContactsOpen
-                        },
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                Column(
+                    Modifier
+                        .background(Primary)
+                        .fillMaxWidth(0.6f)
                 ) {
+                    Spacer(modifier = Modifier.padding(16.dp))
                     Text(
-                        stringResource(id = R.string.contact_us),
+                        stringResource(id = R.string.about_us),
                         color = Background,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                    )
-                    Icon(
-                        painter = painterResource(id = R.drawable.arrow_right),
-                        contentDescription = "expand",
-                        tint = Background,
                         modifier = Modifier
-                            .rotate(if (isContactsOpen) 90f else 0f)
+                            .padding(16.dp)
+                            .clickable {
+                                navController.navigate(PdfDisplayDestination("about"))
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                            }
                     )
-                }
-                AnimatedVisibility(visible = isContactsOpen) {
-                    Column {
-                        val appName = stringResource(id = R.string.app_name)
+                    Text(
+                        stringResource(id = R.string.set_langauge),
+                        color = Background,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .clickable {
+                                openDialog = true
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                            }
+                    )
+                    Row(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                            .clickable {
+                                isContactsOpen = !isContactsOpen
+                            },
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
                         Text(
-                            stringResource(id = R.string.email),
+                            stringResource(id = R.string.contact_us),
                             color = Background,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .padding(bottom = 16.dp, start = 30.dp)
-                                .clickable {
-                                    scope.launch {
-                                        context.sendMail(
-                                            email,
-                                            appName
-                                        )
-                                        drawerState.close()
-                                    }
-                                }
                         )
+                        Icon(
+                            painter = painterResource(id = R.drawable.arrow_right),
+                            contentDescription = "expand",
+                            tint = Background,
+                            modifier = Modifier
+                                .rotate(if (isContactsOpen) 90f else 0f)
+                        )
+                    }
+                    AnimatedVisibility(visible = isContactsOpen) {
+                        Column {
+                            val appName = stringResource(id = R.string.app_name)
+                            Text(
+                                stringResource(id = R.string.email),
+                                color = Background,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier
+                                    .padding(bottom = 16.dp, start = 30.dp)
+                                    .clickable {
+                                        scope.launch {
+                                            context.sendMail(
+                                                email,
+                                                appName
+                                            )
+                                            drawerState.close()
+                                        }
+                                    }
+                            )
 //                        Text(
 //                            stringResource(id = R.string.whatsapp),
 //                            color = Background,
@@ -216,72 +226,82 @@ fun NavHost() {
 //                                    }
 //                                }
 //                        )
-                        Text(
-                            stringResource(id = R.string.chat_with_us),
-                            color = Background,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .padding(top = 10.dp, start = 30.dp, bottom = 16.dp)
-                                .clickable {
-                                    navController.navigate(ChatDestination())
-                                }
-                        )
+                            Text(
+                                stringResource(id = R.string.chat_with_us),
+                                color = Background,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier
+                                    .padding(top = 10.dp, start = 30.dp, bottom = 16.dp)
+                                    .clickable {
+                                        navController.navigate(ChatDestination())
+                                    }
+                            )
+                        }
                     }
-                }
-                Text(
-                    stringResource(id = R.string.privacy_policy),
-                    color = Background,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .clickable {
-                            navController.navigate(PdfDisplayDestination("privacy"))
-                            scope.launch {
-                                drawerState.close()
-                            }
-                        }
-                )
-                Text(
-                    stringResource(id = R.string.terms_and_conditions),
-                    color = Background,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .clickable {
-                            navController.navigate(PdfDisplayDestination("terms"))
-                            scope.launch {
-                                drawerState.close()
-                            }
-                        }
-                )
-                Spacer(modifier = Modifier.padding(20.dp))
-                Text(
-                    "V " + context.getAppVersion()?.versionName,
-                    color = Background,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            lastClickTime = System.currentTimeMillis()
-                            clickCount++
-                            if (clickCount >= 15) {
-                                clickCount = 0 // Reset click count
+                    Text(
+                        stringResource(id = R.string.privacy_policy),
+                        color = Background,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .clickable {
+                                navController.navigate(PdfDisplayDestination("privacy"))
                                 scope.launch {
                                     drawerState.close()
                                 }
-                                navController.navigate(AdminDestination)
                             }
-                        }
-                )
-                Spacer(modifier = Modifier.padding(20.dp))
+                    )
+                    Text(
+                        stringResource(id = R.string.terms_and_conditions),
+                        color = Background,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .clickable {
+                                navController.navigate(PdfDisplayDestination("terms"))
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                            }
+                    )
+                    Spacer(modifier = Modifier.padding(20.dp))
+                    Text(
+                        "V " + context.getAppVersion()?.versionName,
+                        color = Background,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                lastClickTime = System.currentTimeMillis()
+                                clickCount++
+                                if (clickCount >= 15) {
+                                    clickCount = 0 // Reset click count
+                                    scope.launch {
+                                        drawerState.close()
+                                    }
+                                    navController.navigate(AdminDestination)
+                                }
+                            }
+                    )
+                    Spacer(modifier = Modifier.padding(20.dp))
+                }
+
+                IconButton(onClick = {
+                    scope.launch {
+                        drawerState.close()
+                    }
+                }, modifier = Modifier.align(Alignment.TopEnd)) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.close),
+                        contentDescription = stringResource(id = androidx.compose.ui.R.string.close_drawer)
+                    )
+                }
             }
-
-
         }
     ) {
         Scaffold(
