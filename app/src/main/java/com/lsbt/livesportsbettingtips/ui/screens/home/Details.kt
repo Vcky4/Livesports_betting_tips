@@ -12,14 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -63,60 +57,64 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
         ),
     )
     var page by remember{ mutableStateOf(0) }
-    val tips = viewModel.tips.observeAsState(listOf()).value
-    val pagerState = rememberPagerState(
-        0
-    )
+    val tips = viewModel.tips.observeAsState(listOf()).value.filter {
+        //it.date is not future
+        it.date < System.currentTimeMillis()
+    }
+//    val pagerState = rememberPagerState(
+//        0
+//    )
     val prev = stringResource(id = R.string.previous_correct_score)
     val prev2 = stringResource(id = R.string.previous_draws_results)
 
     var selectedTabIndex by remember {
         mutableStateOf(0)
     }
-    LaunchedEffect(selectedTabIndex) {
-        pagerState.animateScrollToPage(selectedTabIndex)
-    }
-    LaunchedEffect(pagerState.currentPage) {
-        selectedTabIndex = pagerState.currentPage
-    }
+//    LaunchedEffect(selectedTabIndex) {
+//        pagerState.animateScrollToPage(selectedTabIndex)
+//    }
+//    LaunchedEffect(pagerState.currentPage) {
+//        selectedTabIndex = pagerState.currentPage
+//    }
     val history = when (trigger) {
         prev -> tips.sortedByDescending { it.date }
         prev2 -> tips.sortedByDescending { it.date }
         else -> tips.filter { !DateUtils.isToday(it.date) }.sortedByDescending { it.date }
     }
 
-    Column (modifier = Modifier.fillMaxSize()) {
-        Row(
-            modifier = Modifier.padding(vertical = 14.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = { navigator.navigateUp() }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.arrow_back),
-                    contentDescription = stringResource(id = R.string.back),
-                    tint = Color.White
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            Row(
+                modifier = Modifier.padding(vertical = 14.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = { navigator.navigateUp() }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.arrow_back),
+                        contentDescription = stringResource(id = R.string.back),
+                        tint = Color.White
+                    )
+                }
+                Text(
+                    text = when (trigger) {
+                        prev -> stringResource(id = R.string.correct_scores)
+                        prev2 -> stringResource(id = R.string.fixed_draws)
+                        else -> trigger
+                    },
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 16.dp)
                 )
             }
-            Text(
-                text = when (trigger) {
-                    prev -> stringResource(id = R.string.correct_scores)
-                    prev2 -> stringResource(id = R.string.fixed_draws)
-                    else -> trigger
-                },
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                modifier = Modifier.padding(start = 16.dp)
-            )
-        }
-        HorizontalPager(
-            state = pagerState,
-            pageCount = 2,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-        ) { index ->
-            when (index) {
+//        HorizontalPager(
+//            state = pagerState,
+//            pageCount = 2,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .weight(1f)
+//        ) { index ->
+            when (selectedTabIndex) {
                 0 -> LazyColumn {
                     if (trigger != prev && trigger != prev2) {
 
@@ -167,8 +165,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     if (history.isNotEmpty()) {
                         item {
                             Row(
-                                modifier = Modifier.fillMaxSize()
-                                    .padding(end = 40.dp),
+                                modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceEvenly,
                                 verticalAlignment = Alignment.Bottom
                             ) {
@@ -200,37 +197,39 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                 }
             }
 
+//        }
         }
-    }
 //    if (history.isNotEmpty()) {
 //
 //    }
-    Row(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalAlignment = Alignment.Bottom
-    ) {
-        tabItems.forEachIndexed { index, item ->
-            val isSelected = selectedTabIndex == index
-            val backgroundColor = if (isSelected) Primary else Color.Transparent
-            Box(modifier = Modifier
-                .weight(0.5f)
-                .height(60.dp)
-                .clickable { selectedTabIndex = index }
-                .background(color = backgroundColor),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = item.title,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-            }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            tabItems.forEachIndexed { index, item ->
+                val isSelected = selectedTabIndex == index
+                val backgroundColor = if (isSelected) Primary else Color.Transparent
+                Box(modifier = Modifier
+                    .weight(0.5f)
+                    .height(60.dp)
+                    .clickable { selectedTabIndex = index }
+                    .background(color = backgroundColor),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = item.title,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                }
 
+            }
         }
     }
 }
