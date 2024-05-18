@@ -291,11 +291,13 @@ fun NavHost() {
                     Spacer(modifier = Modifier.padding(20.dp))
                 }
 
-                IconButton(onClick = {
-                    scope.launch {
-                        drawerState.close()
-                    }
-                }, modifier = Modifier.align(Alignment.TopEnd)) {
+                IconButton(
+                    onClick = {
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    },
+                ) {
                     Icon(
                         painter = painterResource(id = R.drawable.close),
                         contentDescription = stringResource(id = androidx.compose.ui.R.string.close_drawer)
