@@ -73,10 +73,12 @@ fun Home(navigator: DestinationsNavigator) {
                     R.string.dialy_sure_tips -> "Daily Sure Tips"
                     R.string.football_tips -> "Football tips"
                     R.string.basketball_tips -> "Basketball tips"
+                    R.string.over_under -> "Over Under"
+                    R.string.free_200 -> "Free 200 plus Odds"
                     else -> "Tennis tips"
                 }
                 HomeItem(it) {
-                    if (it.title != R.string.coming_soon) navigator.navigate(
+                    navigator.navigate(
                         DetailScreenDestination(
                             title
                         )

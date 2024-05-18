@@ -106,7 +106,9 @@ fun Admin(navigator: DestinationsNavigator) {
             )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
-                modifier = Modifier.heightIn(max = 230.dp).padding(horizontal = 8.dp)
+                modifier = Modifier
+                    .heightIn(max = 230.dp)
+                    .padding(horizontal = 8.dp)
             ) {
                 items(
                     items = freeItems,
@@ -115,6 +117,9 @@ fun Admin(navigator: DestinationsNavigator) {
                         R.string.dialy_sure_tips -> "Daily Sure Tips"
                         R.string.football_tips -> "Football tips"
                         R.string.basketball_tips -> "Basketball tips"
+                        R.string.over_under -> "Over Under"
+                        R.string.free_200 -> "Free 200 plus Odds"
+
                         else -> "Tennis tips"
                     }
                     HomeItem(it) {
@@ -138,7 +143,9 @@ fun Admin(navigator: DestinationsNavigator) {
             )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
-                modifier = Modifier.heightIn(max = 230.dp).padding(horizontal = 8.dp)
+                modifier = Modifier
+                    .heightIn(max = 230.dp)
+                    .padding(horizontal = 8.dp)
             ) {
                 items(
                     items = vipItem.filter {
@@ -172,7 +179,9 @@ fun Admin(navigator: DestinationsNavigator) {
             )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
-                modifier = Modifier.heightIn(max = 230.dp).padding(horizontal = 8.dp)
+                modifier = Modifier
+                    .heightIn(max = 230.dp)
+                    .padding(horizontal = 8.dp)
             ) {
                 items(
                     items = contactItems,

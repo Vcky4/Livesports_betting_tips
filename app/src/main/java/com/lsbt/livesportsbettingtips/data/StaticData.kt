@@ -31,19 +31,17 @@ object StaticData {
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.sports_tennis
         ),
-
         HomeItemModel(
-            id = 4,
+            id = 5,
+            title = R.string.over_under,
+            description = "Last Updated 2 Weeks Ago",
+            image = R.drawable.tips_and_updates
+        ),
+        HomeItemModel(
+            id = 6,
             title = R.string.free_200,
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.sports_score
-        ),
-
-        HomeItemModel(
-            id = 4,
-            title = R.string.coming_soon,
-            description = "Last Updated 2 Weeks Ago",
-            image = R.drawable.tips_and_updates
         ),
     )
 
