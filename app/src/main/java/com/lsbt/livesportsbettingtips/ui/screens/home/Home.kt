@@ -62,7 +62,9 @@ fun Home(navigator: DestinationsNavigator) {
         )
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier = Modifier.heightIn(max = 230.dp).padding(horizontal = 8.dp)
+            modifier = Modifier
+                .heightIn(max = 230.dp)
+                .padding(horizontal = 8.dp)
         ) {
             items(
                 items = freeItems,
@@ -74,7 +76,11 @@ fun Home(navigator: DestinationsNavigator) {
                     else -> "Tennis tips"
                 }
                 HomeItem(it) {
-                    navigator.navigate(DetailScreenDestination(title))
+                    if (it.title != R.string.coming_soon) navigator.navigate(
+                        DetailScreenDestination(
+                            title
+                        )
+                    )
                 }
             }
         }
@@ -91,7 +97,9 @@ fun Home(navigator: DestinationsNavigator) {
         )
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier = Modifier.heightIn(max = 230.dp).padding(horizontal = 8.dp)
+            modifier = Modifier
+                .heightIn(max = 230.dp)
+                .padding(horizontal = 8.dp)
         ) {
             items(
                 items = vipItems,
@@ -124,7 +132,9 @@ fun Home(navigator: DestinationsNavigator) {
         )
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier = Modifier.heightIn(max = 230.dp).padding(horizontal = 8.dp)
+            modifier = Modifier
+                .heightIn(max = 230.dp)
+                .padding(horizontal = 8.dp)
         ) {
             items(
                 items = liveItems,
@@ -151,7 +161,9 @@ fun Home(navigator: DestinationsNavigator) {
         )
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier = Modifier.heightIn(max = 230.dp).padding(horizontal = 8.dp)
+            modifier = Modifier
+                .heightIn(max = 230.dp)
+                .padding(horizontal = 8.dp)
         ) {
             items(
                 items = contactItems,
