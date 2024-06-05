@@ -1,10 +1,6 @@
 package com.lsbt.livesportsbettingtips.utils
 
-import android.annotation.TargetApi
-import android.content.Context
-import android.os.Build
-import com.lsbt.livesportsbettingtips.di.MyApp
-import java.util.Locale
+import java.util.Calendar
 
 //object LocaleHelper {
 //    fun setLocale(context: Context, language: String): Context? {
@@ -35,3 +31,11 @@ import java.util.Locale
 //        return context
 //    }
 //}
+
+// Helper function to check if two timestamps are on the same day
+fun isSameDay(time1: Long, time2: Long): Boolean {
+    val calendar1 = Calendar.getInstance().apply { timeInMillis = time1 }
+    val calendar2 = Calendar.getInstance().apply { timeInMillis = time2 }
+    return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) &&
+            calendar1.get(Calendar.DAY_OF_YEAR) == calendar2.get(Calendar.DAY_OF_YEAR)
+}

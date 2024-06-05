@@ -43,7 +43,7 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
     val time = DateUtils.formatDateTime(
         context,
         item.date,
-        DateUtils.FORMAT_SHOW_TIME
+        DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_24HOUR
     )
 
 

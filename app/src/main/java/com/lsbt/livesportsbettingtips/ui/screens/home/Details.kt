@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.components.Button2
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
+import com.lsbt.livesportsbettingtips.utils.isSameDay
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
@@ -76,14 +77,23 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
 //    LaunchedEffect(pagerState.currentPage) {
 //        selectedTabIndex = pagerState.currentPage
 //    }
+    val oneDayMillis = 24 * 60 * 60 * 1000L
+    val today = System.currentTimeMillis()
+    val targetDate = today - (page.plus(1) * oneDayMillis)
     val history = if (trigger == prev || trigger == prev2) {
         tips.sortedByDescending { it.date }
     } else {
         tips.asSequence()
-            .filter { DateUtils.isToday(it.date.plus(80400000 * (page + 1))) }
+            .filter { isSameDay(it.date, targetDate) }
             .sortedByDescending { it.date }
             .toList()
     }
+
+//    LaunchedEffect(history) {
+//        if (tips.isNotEmpty() && tips.indexOf(history.last()) < tips.size - 2) {
+//            viewModel.loadMoreTips(trigger)
+//        }
+//    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -132,7 +142,35 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
             when (selectedTabIndex) {
                 0 -> LazyColumn {
                     if (trigger != prev && trigger != prev2) {
-
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .align(Alignment.BottomCenter),
+//            horizontalArrangement = Arrangement.SpaceBetween
+//        ) {
+//            tabItems.forEachIndexed { index, item ->
+//                val isSelected = selectedTabIndex == index
+//                val backgroundColor = if (isSelected) Primary else Color.Transparent
+//                Box(modifier = Modifier
+//                    .weight(0.5f)
+//                    .height(60.dp)
+//                    .clickable { selectedTabIndex = index }
+//                    .background(color = backgroundColor),
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    Text(
+//                        text = item.title,
+//                        fontSize = 20.sp,
+//                        fontWeight = FontWeight.Bold,
+//                        color = Color.White,
+//                        modifier = Modifier
+//                            .fillMaxWidth(),
+//                        textAlign = TextAlign.Center
+//                    )
+//                }
+//
+//            }
+//        }
                         if (tips.none { DateUtils.isToday(it.date) }) {
                             item {
                                 Text(
@@ -175,6 +213,10 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                         items(
                             items = history
                         ) {
+                            val index = tips.indexOf(it)
+                            if (index == tips.size - 1) {
+                                viewModel.loadMoreTips(trigger)
+                            }
                             DetailItem(it)
                         }
                     }
@@ -219,6 +261,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                 color = Color.Black,
                                 contentColor = Color.White,
                                 onClick = {
+                                    viewModel.loadMoreTips(trigger)
 //                                    if (page < tips.size - 1) {
                                     page++
 //                                    }
