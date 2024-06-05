@@ -124,6 +124,12 @@ object StaticData {
             description = "Last Updated 2 Weeks Ago",
             image = R.drawable.chat,
         ),
+        HomeItemModel(
+            id = 9,
+            title = R.string.rate_us,
+            description = "Last Updated 2 Weeks Ago",
+            image = R.drawable.star_rate_24,
+        ),
     )
 
     val tips = listOf<TipModel>(

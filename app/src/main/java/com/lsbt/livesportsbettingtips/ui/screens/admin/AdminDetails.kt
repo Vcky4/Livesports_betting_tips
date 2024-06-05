@@ -3,9 +3,11 @@ package com.lsbt.livesportsbettingtips.ui.screens.admin
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.text.format.DateFormat
 import android.text.format.DateUtils
 import android.widget.DatePicker
+import android.widget.TimePicker
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -65,6 +67,7 @@ import com.lsbt.livesportsbettingtips.ui.theme.CardColor2
 import com.lsbt.livesportsbettingtips.ui.theme.Primary
 import com.lsbt.livesportsbettingtips.ui.theme.Secondary
 import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
+import com.lsbt.livesportsbettingtips.utils.isSameDay
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
@@ -117,13 +120,17 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
     }
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
+    val selectedDate by remember { mutableStateOf(Calendar.getInstance()) }
 
-// Fetching current year, month and day
-    val year = calendar[Calendar.YEAR]
-    val month = calendar[Calendar.MONTH]
-    val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
-
-    var selectedDateText by remember { mutableStateOf("$dayOfMonth/${month + 1}/$year") }
+    var selectedDateText by remember {
+        mutableStateOf(
+            DateUtils.formatDateTime(
+                context,
+                calendar.timeInMillis,
+                DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_24HOUR
+            )
+        )
+    }
 
     val tips = viewModel.tips.observeAsState(listOf()).value
     val prev = stringResource(id = R.string.previous_correct_score)
@@ -137,10 +144,28 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
     val datePicker = DatePickerDialog(
         context,
         AlertDialog.THEME_HOLO_DARK,
-        { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
-            selectedDateText = "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
+        { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+            selectedDate.set(Calendar.YEAR, year)
+            selectedDate.set(Calendar.MONTH, month)
+            selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            selectedDateText = "$year/${month + 1}/$dayOfMonth"
+            val timePickerDialog = TimePickerDialog(
+                context,
+                { _: TimePicker, hourOfDay: Int, minute: Int ->
+                    selectedDate.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                    selectedDate.set(Calendar.MINUTE, minute)
+                    selectedDateText =
+                        "$year/${month + 1}/$dayOfMonth $hourOfDay:$minute"
+                },
+                selectedDate.get(Calendar.HOUR_OF_DAY),
+                selectedDate.get(Calendar.MINUTE),
+                false
+            )
+            timePickerDialog.show()
         },
-        year, month, dayOfMonth,
+        selectedDate.get(Calendar.YEAR),
+        selectedDate.get(Calendar.MONTH),
+        selectedDate.get(Calendar.DAY_OF_MONTH)
 
         )
     Box {
@@ -168,14 +193,19 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                 LazyColumn(Modifier.fillMaxSize()) {
                     item {
                         Text(
-                            text = stringResource(id = R.string.today),
+                            text = stringResource(id = R.string.upcoming),
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
                             modifier = Modifier.padding(start = 16.dp)
                         )
                     }
-                    if (tips.none { DateUtils.isToday(it.date) }) {
+                    if (tips.none {
+                            it.date > System.currentTimeMillis() && isSameDay(
+                                it.date,
+                                System.currentTimeMillis()
+                            ).not()
+                        }) {
                         item {
                             Text(
                                 text = stringResource(id = R.string.no_tips_available),
@@ -189,7 +219,16 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                             )
                         }
                     } else {
-                        items(tips.filter { DateUtils.isToday(it.date) }) {
+                        items(tips.filter {
+                            it.date > System.currentTimeMillis() && isSameDay(
+                                it.date,
+                                System.currentTimeMillis()
+                            ).not()
+                        }) {
+                            val index = tips.indexOf(it)
+                            if (index == tips.size - 1) {
+                                viewModel.loadMoreTips(trigger)
+                            }
                             DetailItem(it) {
                                 //set values
                                 key = it.id
@@ -206,7 +245,71 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                 selectedDateText = DateUtils.formatDateTime(
                                     context,
                                     it.date,
-                                    DateUtils.FORMAT_SHOW_DATE
+                                    DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_24HOUR
+                                )
+                                datePicker.updateDate(
+                                    DateFormat.format("yyyy", it.date).toString().toInt(),
+                                    DateFormat.format("MM", it.date).toString().toInt(),
+                                    DateFormat.format("dd", it.date).toString().toInt()
+                                )
+                            }
+                        }
+                    }
+                    item {
+                        Text(
+                            text = stringResource(id = R.string.today),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
+                    if (tips.none {
+                            DateUtils.isToday(it.date) && isSameDay(
+                                it.date,
+                                System.currentTimeMillis()
+                            )
+                        }) {
+                        item {
+                            Text(
+                                text = stringResource(id = R.string.no_tips_available),
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 30.dp),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    } else {
+                        items(tips.filter {
+                            DateUtils.isToday(it.date) && isSameDay(
+                                it.date,
+                                System.currentTimeMillis()
+                            )
+                        }) {
+                            val index = tips.indexOf(it)
+                            if (index == tips.size - 1) {
+                                viewModel.loadMoreTips(trigger)
+                            }
+                            DetailItem(it) {
+                                //set values
+                                key = it.id
+                                league = TextFieldValue(it.league)
+                                prediction = TextFieldValue(it.prediction)
+                                home = TextFieldValue(it.home)
+                                away = TextFieldValue(it.away)
+                                homeScore = TextFieldValue(it.homeScore)
+                                awayScore = TextFieldValue(it.awayScore)
+                                odd = TextFieldValue(it.odd)
+                                halfScore = TextFieldValue(it.halfScore)
+                                status = it.status
+                                editOpen = true
+                                selectedDateText = DateUtils.formatDateTime(
+                                    context,
+                                    it.date,
+                                    DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_24HOUR
                                 )
                                 datePicker.updateDate(
                                     DateFormat.format("yyyy", it.date).toString().toInt(),
@@ -240,6 +343,10 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                         }
                     } else {
                         items(history) {
+                            val index = tips.indexOf(it)
+                            if (index == tips.size - 1) {
+                                viewModel.loadMoreTips(trigger)
+                            }
                             DetailItem(it) {
                                 //set values
                                 key = it.id
@@ -255,7 +362,7 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                 selectedDateText = DateUtils.formatDateTime(
                                     context,
                                     it.date,
-                                    DateUtils.FORMAT_SHOW_DATE
+                                    DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_24HOUR
                                 )
                                 datePicker.updateDate(
                                     DateFormat.format("yyyy", it.date).toString().toInt(),
@@ -289,8 +396,25 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                         odd = TextFieldValue("")
                         halfScore = TextFieldValue("")
                         editOpen = true
-                        selectedDateText = "$dayOfMonth/${month + 1}/$year"
-                        datePicker.updateDate(year, month, dayOfMonth)
+                        selectedDateText = DateUtils.formatDateTime(
+                            context,
+                            System.currentTimeMillis(),
+                            DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_24HOUR
+                        )
+                        datePicker.updateDate(
+                            DateFormat
+                                .format("yyyy", System.currentTimeMillis())
+                                .toString()
+                                .toInt(),
+                            DateFormat
+                                .format("MM", System.currentTimeMillis())
+                                .toString()
+                                .toInt(),
+                            DateFormat
+                                .format("dd", System.currentTimeMillis())
+                                .toString()
+                                .toInt()
+                        )
                         status = "pending"
                     }
                     .background(Primary, RoundedCornerShape(50))
@@ -705,12 +829,6 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                     Button(
                         onClick = {
                             processing = true
-                            val date = Calendar.getInstance()
-                            date.set(
-                                datePicker.datePicker.year,
-                                datePicker.datePicker.month,
-                                datePicker.datePicker.dayOfMonth
-                            )
                             viewModel.saveTip(
                                 trigger,
                                 key,
@@ -722,9 +840,9 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                 odd.text,
                                 status,
                                 prediction.text,
-                               halfScore =  halfScore.text,
+                                halfScore = halfScore.text,
                                 //convert selected date to timestamp
-                                date = date.timeInMillis,
+                                date = selectedDate.timeInMillis,
                             ).addOnSuccessListener {
                                 Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
                                 processing = false

@@ -1,5 +1,6 @@
 package com.lsbt.livesportsbettingtips.ui.screens.home
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.lsbt.livesportsbettingtips.R
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.ChatDestination
 import com.lsbt.livesportsbettingtips.ui.screens.destinations.DetailScreenDestination
@@ -179,6 +181,27 @@ fun Home(navigator: DestinationsNavigator) {
                         )
 
                         8 -> navigator.navigate(ChatDestination())
+                        9 -> {
+                            val manager = ReviewManagerFactory.create(context)
+                            val request = manager.requestReviewFlow()
+                            request.addOnCompleteListener { request ->
+                                if (request.isSuccessful) {
+                                    // We got the ReviewInfo object
+                                    val reviewInfo = request.result
+                                    val flow = manager.launchReviewFlow(
+                                        context as Activity,
+                                        reviewInfo
+                                    )
+                                    flow.addOnCompleteListener { _ ->
+                                        // The flow has finished. The API does not indicate whether the user
+                                        // reviewed or not, or even whether the review dialog was shown. Thus, no
+                                        // matter the result, we continue our app flow.
+                                    }
+                                } else {
+                                    // There was some problem, continue regardless of the result.
+                                }
+                            }
+                        }
 
                         else -> context.openTelegram(telegram ?: "")
                     }

@@ -60,7 +60,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
     var page by remember { mutableStateOf(0) }
     val tips = viewModel.tips.observeAsState(listOf()).value.asSequence().filter {
         //it.date is not future
-        it.date < System.currentTimeMillis()
+        it.date < System.currentTimeMillis() || DateUtils.isToday(it.date)
     }.toList()
 //    val pagerState = rememberPagerState(
 //        0

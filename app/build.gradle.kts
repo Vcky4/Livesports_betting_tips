@@ -123,4 +123,7 @@ dependencies {
 
     //coil
     implementation(libs.coil.compose)
+
+    //play core
+    implementation("com.google.android.play:core-ktx:1.8.1")
 }

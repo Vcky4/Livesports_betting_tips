@@ -1,6 +1,7 @@
 package com.lsbt.livesportsbettingtips.ui.screens.admin
 
 import android.app.Application
+import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.util.Log
 import android.widget.Toast
@@ -12,12 +13,12 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.tasks.Task
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
+import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
@@ -42,7 +43,7 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
     private val _telegram = MutableLiveData("")
     private val _email = MutableLiveData("")
     private val _announcement = MutableLiveData<AnnouncementModel>()
-    private val _tips = MutableLiveData<List<TipModel>>()
+    private val _tips = MutableLiveData<List<TipModel>>(listOf())
     val tips: LiveData<List<TipModel>> = _tips
     val token: LiveData<String> = _token
     val freeItems = StaticData.freeItems
@@ -125,48 +126,57 @@ class AdminViewModel(private val context: Application) : ViewModel(), KoinCompon
             }
     }
 
+    private var lastDate: Long? = null
+    private val pageSize = 10
+
+
     //get all tips
-    fun getTips(tag: String) {
-        val childEventListener = object : ChildEventListener {
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                val tipListener = object : ValueEventListener {
-                    private val tipList = mutableListOf<TipModel>()
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        for (dataValues in dataSnapshot.children) {
-                            val tip = dataValues.getValue(TipModel::class.java)
-                            if (tip != null) {
-                                tipList.add(tip)
-                            }
-                        }
-                        _tips.value = tipList
-                        Log.d(TAG, "list value is: $tipList")
-                    }
+    fun getTips(tag: String, loadMore: Boolean = false) {
+        var query: Query =
+            database.child("tips").child(tag)
+                .orderByChild("date").limitToLast(pageSize)
 
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        // handle error
-//                        Toast.makeText(context, "unable to update nuggets", Toast.LENGTH_SHORT).show()
+        if (loadMore && lastDate != null) {
+            Log.d("last id", "lastId is: $lastDate")
+            query = database.child("tips")
+                .child(tag).orderByChild("date")
+                .endBefore(lastDate!!.toDouble())
+                .limitToLast(pageSize)
+        }
 
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            private val tipList = mutableListOf<TipModel>()
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (dataValues in dataSnapshot.children) {
+                    val tip = dataValues.getValue(TipModel::class.java)
+                    if (tip != null && _tips.value!!.any { it.id == tip.id }.not()) {
+                        tipList.add(tip)
                     }
                 }
-                database.child("tips").child(tag).ref.addListenerForSingleValueEvent(tipListener)
+                if (tipList.isNotEmpty()) {
+                    lastDate =
+                        tipList.last().date
+                }
+                if (loadMore) {
+                    val currentList = _tips.value?.toMutableList() ?: mutableListOf()
+                    currentList.addAll(0, tipList) // Prepend new tips
+                    _tips.value = currentList
+                } else {
+                    _tips.value = tipList.reversed() // Reverse to show newest first
+                }
+                Log.d(TAG, "list value is: ${_tips.value}")
             }
 
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {}
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-
-            override fun onCancelled(error: DatabaseError) {
-//                binding.loadingPost.visibility = GONE
-//                Toast.makeText(context, "unable to update nuggets", Toast.LENGTH_SHORT).show()
-
+            override fun onCancelled(databaseError: DatabaseError) {
+                // handle error
+//                Toast.makeText(context, "unable to update tips", Toast.LENGTH_SHORT).show()
             }
-
-        }
-        database.child("tips").child(tag).ref.addChildEventListener(childEventListener)
+        })
     }
 
+    fun loadMoreTips(tag: String) {
+        getTips(tag, loadMore = true)
+    }
     fun sendNotification(title: String, body: String) {
         Log.e("TAG", "sendNotification")
         val topic = "/topics/Tips" //topic has to match what the receiver subscribed to
