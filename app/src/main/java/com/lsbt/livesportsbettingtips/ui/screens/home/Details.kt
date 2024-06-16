@@ -67,9 +67,10 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
 //    )
     val prev = stringResource(id = R.string.previous_correct_score)
     val prev2 = stringResource(id = R.string.previous_draws_results)
+    val isHistory = trigger == prev || trigger == prev2
 
     var selectedTabIndex by remember {
-        mutableStateOf(0)
+        mutableStateOf(if (isHistory) 1 else 0)
     }
 //    LaunchedEffect(selectedTabIndex) {
 //        pagerState.animateScrollToPage(selectedTabIndex)
@@ -80,7 +81,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
     val oneDayMillis = 24 * 60 * 60 * 1000L
     val today = System.currentTimeMillis()
     val targetDate = today - (page.plus(1) * oneDayMillis)
-    val history = if (trigger == prev || trigger == prev2) {
+    val history = if (isHistory) {
         tips.sortedByDescending { it.date }
     } else {
         tips.asSequence()
@@ -189,7 +190,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                 items = tips.asSequence().filter { DateUtils.isToday(it.date) }
                                     .toList()
                             ) {
-                                DetailItem(it)
+                                DetailItem(it, isHistory = isHistory)
                             }
                         }
                     }
@@ -217,60 +218,60 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                             if (index == tips.size - 1) {
                                 viewModel.loadMoreTips(trigger)
                             }
-                            DetailItem(it)
+                            DetailItem(it, isHistory = isHistory)
                         }
                     }
-//                    if (history.isNotEmpty()) {
-                    item {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Button2(
-                                modifier = Modifier.align(Alignment.CenterVertically),
-                                text = stringResource(id = R.string.back),
-                                color = Color.Black,
-                                contentColor = Color.White,
-                                onClick = {
-                                    if (page > 0) {
-                                        page--
+                    if (history.isNotEmpty() && isHistory.not()) {
+                        item {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceEvenly,
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Button2(
+                                    modifier = Modifier.align(Alignment.CenterVertically),
+                                    text = stringResource(id = R.string.back),
+                                    color = Color.Black,
+                                    contentColor = Color.White,
+                                    onClick = {
+                                        if (page > 0) {
+                                            page--
+                                        }
                                     }
-                                }
-                            )
-                            Text(
-                                text = if (history.isNotEmpty()) {
-                                    "${
-                                        Date(history[0].date).date
-                                    }/${Date(history[0].date).month.plus(1)}/${
-                                        Date(history[0].date).year.plus(
-                                            1900
-                                        )
-                                    }"
-                                } else "No Tips",
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp),
-                                textAlign = TextAlign.Center
-                            )
-                            Button2(
-                                modifier = Modifier.align(Alignment.CenterVertically),
-                                text = stringResource(id = R.string.next),
-                                color = Color.Black,
-                                contentColor = Color.White,
-                                onClick = {
-                                    viewModel.loadMoreTips(trigger)
+                                )
+                                Text(
+                                    text = if (history.isNotEmpty()) {
+                                        "${
+                                            Date(history[0].date).date
+                                        }/${Date(history[0].date).month.plus(1)}/${
+                                            Date(history[0].date).year.plus(
+                                                1900
+                                            )
+                                        }"
+                                    } else "No Tips",
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White,
+                                    modifier = Modifier
+                                        .padding(horizontal = 16.dp),
+                                    textAlign = TextAlign.Center
+                                )
+                                Button2(
+                                    modifier = Modifier.align(Alignment.CenterVertically),
+                                    text = stringResource(id = R.string.next),
+                                    color = Color.Black,
+                                    contentColor = Color.White,
+                                    onClick = {
+                                        viewModel.loadMoreTips(trigger)
 //                                    if (page < tips.size - 1) {
-                                    page++
+                                        page++
 //                                    }
-                                }
-                            )
+                                    }
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(80.dp))
                         }
-                        Spacer(modifier = Modifier.height(80.dp))
                     }
-//                    }
                 }
             }
 
@@ -279,33 +280,35 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
 //    if (history.isNotEmpty()) {
 //
 //    }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            tabItems.forEachIndexed { index, item ->
-                val isSelected = selectedTabIndex == index
-                val backgroundColor = if (isSelected) Primary else Color.Transparent
-                Box(modifier = Modifier
-                    .weight(0.5f)
-                    .height(60.dp)
-                    .clickable { selectedTabIndex = index }
-                    .background(color = backgroundColor),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = item.title,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center
-                    )
-                }
+        if (!isHistory) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                tabItems.forEachIndexed { index, item ->
+                    val isSelected = selectedTabIndex == index
+                    val backgroundColor = if (isSelected) Primary else Color.Transparent
+                    Box(modifier = Modifier
+                        .weight(0.5f)
+                        .height(60.dp)
+                        .clickable { selectedTabIndex = index }
+                        .background(color = backgroundColor),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = item.title,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center
+                        )
+                    }
 
+                }
             }
         }
     }

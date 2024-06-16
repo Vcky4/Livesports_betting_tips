@@ -37,13 +37,14 @@ import com.lsbt.livesportsbettingtips.ui.theme.Secondary
 import com.lsbt.livesportsbettingtips.ui.theme.TextDeep
 
 @Composable
-fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
+fun DetailItem(item: TipModel, isHistory: Boolean = false, onClick: () -> Unit = {}) {
     val context = LocalContext.current
     //format date to DD/MM/YYYY
     val time = DateUtils.formatDateTime(
         context,
         item.date,
-        DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_24HOUR
+        if (isHistory) DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_24HOUR
+        else DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_24HOUR
     )
 
 
@@ -63,9 +64,11 @@ fun DetailItem(item: TipModel, onClick: () -> Unit = {}) {
                     .fillMaxWidth()
                     .padding(vertical = 8.dp, horizontal = 14.dp)
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically,
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .fillMaxWidth(0.75f)) {
+                        .fillMaxWidth(0.75f)
+                ) {
                     Icon(
                         painter = painterResource(id = R.drawable.outlined_flag),
                         contentDescription = "flag",
