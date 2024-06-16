@@ -140,7 +140,21 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
         prev2 -> tips.sortedByDescending { it.date }
         else -> tips.filter { !DateUtils.isToday(it.date) }.sortedByDescending { it.date }
     }
-
+    val timePickerDialog = TimePickerDialog(
+        context,
+        { _: TimePicker, hourOfDay: Int, minute: Int ->
+            selectedDate.set(Calendar.HOUR_OF_DAY, hourOfDay)
+            selectedDate.set(Calendar.MINUTE, minute)
+            selectedDateText = DateUtils.formatDateTime(
+                context,
+                selectedDate.timeInMillis,
+                DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_24HOUR
+            )
+        },
+        selectedDate.get(Calendar.HOUR_OF_DAY),
+        selectedDate.get(Calendar.MINUTE),
+        true
+    )
     val datePicker = DatePickerDialog(
         context,
         AlertDialog.THEME_HOLO_DARK,
@@ -148,18 +162,10 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
             selectedDate.set(Calendar.YEAR, year)
             selectedDate.set(Calendar.MONTH, month)
             selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            selectedDateText = "$year/${month + 1}/$dayOfMonth"
-            val timePickerDialog = TimePickerDialog(
+            selectedDateText = DateUtils.formatDateTime(
                 context,
-                { _: TimePicker, hourOfDay: Int, minute: Int ->
-                    selectedDate.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                    selectedDate.set(Calendar.MINUTE, minute)
-                    selectedDateText =
-                        "$year/${month + 1}/$dayOfMonth $hourOfDay:$minute"
-                },
-                selectedDate.get(Calendar.HOUR_OF_DAY),
-                selectedDate.get(Calendar.MINUTE),
-                false
+                selectedDate.timeInMillis,
+                DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_24HOUR
             )
             timePickerDialog.show()
         },
@@ -247,10 +253,15 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                     it.date,
                                     DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_24HOUR
                                 )
+                                selectedDate.timeInMillis = it.date
                                 datePicker.updateDate(
                                     DateFormat.format("yyyy", it.date).toString().toInt(),
                                     DateFormat.format("MM", it.date).toString().toInt(),
                                     DateFormat.format("dd", it.date).toString().toInt()
+                                )
+                                timePickerDialog.updateTime(
+                                    DateFormat.format("HH", it.date).toString().toInt(),
+                                    DateFormat.format("mm", it.date).toString().toInt()
                                 )
                             }
                         }
@@ -311,10 +322,15 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                     it.date,
                                     DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_24HOUR
                                 )
+                                selectedDate.timeInMillis = it.date
                                 datePicker.updateDate(
                                     DateFormat.format("yyyy", it.date).toString().toInt(),
                                     DateFormat.format("MM", it.date).toString().toInt(),
                                     DateFormat.format("dd", it.date).toString().toInt()
+                                )
+                                timePickerDialog.updateTime(
+                                    DateFormat.format("HH", it.date).toString().toInt(),
+                                    DateFormat.format("mm", it.date).toString().toInt()
                                 )
                             }
                         }
@@ -364,10 +380,15 @@ fun AdminDetailScreen(trigger: String, navigator: DestinationsNavigator) {
                                     it.date,
                                     DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_24HOUR
                                 )
+                                selectedDate.timeInMillis = it.date
                                 datePicker.updateDate(
                                     DateFormat.format("yyyy", it.date).toString().toInt(),
                                     DateFormat.format("MM", it.date).toString().toInt(),
                                     DateFormat.format("dd", it.date).toString().toInt()
+                                )
+                                timePickerDialog.updateTime(
+                                    DateFormat.format("HH", it.date).toString().toInt(),
+                                    DateFormat.format("mm", it.date).toString().toInt()
                                 )
                                 status = it.status
                             }
