@@ -14,8 +14,8 @@ android {
         applicationId = "com.lsbt.livesportsbettingtips"
         minSdk = 21
         targetSdk = 33
-        versionCode = 12
-        versionName = "1.1.9"
+        versionCode = 14
+        versionName = "1.2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

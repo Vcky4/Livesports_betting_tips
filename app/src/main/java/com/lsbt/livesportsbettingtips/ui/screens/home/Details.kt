@@ -221,7 +221,7 @@ fun DetailScreen(trigger: String, navigator: DestinationsNavigator) {
                             DetailItem(it, isHistory = isHistory)
                         }
                     }
-                    if (history.isNotEmpty() && isHistory.not()) {
+                    if (isHistory.not()) {
                         item {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
